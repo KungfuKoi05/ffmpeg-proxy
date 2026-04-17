@@ -1,1 +1,1 @@
-.agents/ffmpeg-proxy/server.js
+server.js
