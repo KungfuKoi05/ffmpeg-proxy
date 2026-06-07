@@ -1,35 +1,37 @@
-# Content to confirm / replace
+# Content status
 
-The source links (Setmore booking page and the Google Maps listing) could **not
-be fetched from the build environment** — its network policy blocks
-`setmore.com` and `google.com/maps` (`x-deny-reason: host_not_allowed`). So the
-text below uses realistic, professional **placeholder** content. The booking and
-directions links, however, are the **real** ones you provided and work for
-visitors.
+The shop's real details are now in the page. Here's what's live vs. still optional.
 
-Swap these out with the shop's real details (search `index.html` for each item):
-
-## Real links already wired in ✅
-- **Booking** → `https://cesarbarbershop.setmore.com/` (every "Book" button)
+## Live & real ✅
+- **Name:** Cesar Barber Shop
+- **Booking** → `https://cesarbarbershop.setmore.com/` (every "Book" / "Reservar" button)
 - **Directions / Reviews** → `https://maps.app.goo.gl/sLoc4hKyQqMyccCq6?g_st=ic`
+- **Address:** 14902 Union Ave SW D, Lakewood, WA 98498 (also drives the map embed + JSON-LD)
+- **Hours (PT):** Mon 8–5 · Tue Closed · Wed–Sat 8–5 · Sun Closed
+- **Services & pricing:**
+  - Men's Cut — $45
+  - Cut & Beard — $60
+  - Full Cut + Beard + Face Mask — $65
+  - Beard — $30
+  - Boy's Cut — $35
+  - Monday Military — $35
+  - Line-Up — $21
+  - Eyebrows — $15
 
-## Replace with real info 🔧
-| Where | Placeholder | Replace with |
-|-------|-------------|--------------|
-| Visit → Contact | "Add your street address here" | Real street address |
-| Visit → Contact | "Add your phone number" (`tel:+10000000000`) | Real phone (update both text and `href="tel:"`) |
-| Hours (Visit + Footer) | Tue–Fri 9–7, Sat 8–5 | Real opening hours |
-| Services & Pricing | 6 sample services & prices | Real service menu from Setmore |
-| Reviews | 3 sample testimonials | Real Google review quotes + names |
-| `<script type="application/ld+json">` (in `<head>`) | empty address/phone | Fill in for SEO |
-| Map embed | `?q=Cesar%20Barbershop` | Paste the official "Embed a map" iframe from the Google listing for an exact pin |
+## Still optional / placeholder 🔧
+| Where | Status | To finalize |
+|-------|--------|-------------|
+| Phone number | Not provided | Add a `tel:` contact line if you want one shown |
+| Reviews section | 3 generic testimonials | Replace with real Google review quotes + names (the "Read Reviews on Google" button already links to your listing) |
+| JSON-LD `telephone` / `image` | empty | Optional: add for richer SEO |
+| Map embed | uses address query | Optional: paste the official "Embed a map" iframe from your Google listing for an exact pin |
 
 ## Photos 📸
-Drop real shop photos into `assets/` with these exact names and the page will
-use them automatically (otherwise it shows tasteful styled placeholders):
+Drop real shop photos into `assets/` with these exact names and the page uses
+them automatically (otherwise it shows tasteful styled placeholders):
 
 - `assets/barber-at-work.jpg` — About section (portrait, ~4:5)
 - `assets/gallery-1.jpg` … `assets/gallery-6.jpg` — Gallery grid (landscape/square)
 
-Recommended: real photos of the shop, barbers, and finished cuts — they're the
-single biggest upgrade to this page.
+Real photos of the shop, barbers and finished cuts are the single biggest
+upgrade left.
