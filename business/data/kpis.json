@@ -1,8 +1,27 @@
 {
   "last_updated": "2026-08-13",
-  "bottleneck": "No validated demand - 0 of 625 prospects contacted. Gated on A-001 (founder sends batch 1).",
-  "revenue": { "mrr": 0, "this_month": 0, "growth_mom": null },
-  "customers": { "leads_sourced": 28, "qualified": 14, "paying": 0, "churned": 0, "retention": null },
-  "sales": { "avg_deal_value": null, "cac": null },
-  "operations": { "fulfillment_minutes": null, "cost_per_customer": null, "gross_margin": null, "automation_pct": null, "founder_hours_week": null }
+  "bottleneck": "No validated demand - 20 emails written and ready, 0 sent. Gated on A-001 (founder collects addresses, then sends).",
+  "revenue": {
+    "mrr": 0,
+    "this_month": 0,
+    "growth_mom": null
+  },
+  "customers": {
+    "leads_sourced": 35,
+    "qualified": 21,
+    "paying": 0,
+    "churned": 0,
+    "retention": null
+  },
+  "sales": {
+    "avg_deal_value": null,
+    "cac": null
+  },
+  "operations": {
+    "fulfillment_minutes": null,
+    "cost_per_customer": null,
+    "gross_margin": null,
+    "automation_pct": null,
+    "founder_hours_week": null
+  }
 }

@@ -5,12 +5,30 @@ Most prospects will not reply to the first message — persistence without nuisa
 
 **Before sending anything:** open the company's site, find the owner's name, and find one true,
 specific detail. The bracketed fields below are not optional. A message that could have been sent to
-any of the 28 companies will be treated as if it were.
+any of the 35 companies will be treated as if it were.
+
+**Batch 1 is already written.** `batch-1.md` instantiates touch 1 for the 20 Tier-A prospects with
+personalization filled in. Use this file for touches 2–5.
 
 **Rules.** Real identity, real signature, plain text, no tracking pixels, no images, no attachments on
 the first touch. If someone says stop, stop — remove them from the list that day and mark
 `status=do_not_contact`. Send 20–40 per day maximum from a personal mailbox; more than that risks the
 founder's own email reputation, and the whole plan depends on it.
+
+**Required signature block — every touch, no exceptions.** US commercial email falls under CAN-SPAM,
+which requires accurate header information, a non-deceptive subject line, a valid physical postal
+address, and a working opt-out. The first three are covered by sending honestly from a real mailbox;
+the last two need this block:
+
+```
+[Your name]
+[phone] · [postal address]
+Not useful? Reply "no thanks" and I won't follow up.
+```
+
+A home address is legal; a PO box or virtual mailbox is the usual answer if the founder would rather
+not publish theirs. Honor every opt-out the same day — one complaint in an industry this networked
+costs more than the entire campaign returns.
 
 ---
 
@@ -33,8 +51,9 @@ founder's own email reputation, and the whole plan depends on it.
 >
 > Worth a try?
 >
-> [Founder name]
-> [phone] · [reply address]
+> [Your name]
+> [phone] · [postal address]
+> Not useful? Reply "no thanks" and I won't follow up.
 
 **Why it works:** opens with a question about their process rather than a claim about ours; names a
 specific number from their own site; the ask is forwarding a file, not booking a call.
@@ -56,7 +75,9 @@ specific number from their own site; the ask is forwarding a file, not booking a
 >
 > Two free meetings still stands if you want to test it on your own recording.
 >
-> [Founder name]
+> [Your name]
+> [phone] · [postal address]
+> Not useful? Reply "no thanks" and I won't follow up.
 
 ---
 
@@ -75,7 +96,9 @@ specific number from their own site; the ask is forwarding a file, not booking a
 > If your boards already record, we can start this week. If not, that conversation with one board is
 > the only setup involved.
 >
-> [Founder name]
+> [Your name]
+> [phone] · [postal address]
+> Not useful? Reply "no thanks" and I won't follow up.
 
 **Note for two-party consent states (CA, FL, PA):** the announcement at the top of the meeting is
 what makes this lawful [FACT: https://thehoahandbook.com/is-it-legal-to-record-hoa-meetings-state-laws-explained/].
@@ -99,7 +122,9 @@ Say so plainly if asked — it is a selling point, not a liability.
 >
 > Still happy to do two free.
 >
-> [Founder name]
+> [Your name]
+> [phone] · [postal address]
+> Not useful? Reply "no thanks" and I won't follow up.
 
 ---
 
@@ -116,7 +141,9 @@ Say so plainly if asked — it is a selling point, not a liability.
 >
 > Good luck with the season.
 >
-> [Founder name]
+> [Your name]
+> [phone] · [postal address]
+> Not useful? Reply "no thanks" and I won't follow up.
 
 **Why close out rather than escalate:** in an industry this networked, a graceful exit preserves the
 option. Several of the eventual customers will come from this email months later.

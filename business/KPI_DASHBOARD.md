@@ -22,8 +22,8 @@ Current MRR **$0.00** of $10,000.00 target — gap of $10,000.00, which is 8 mor
 
 | Metric | Value |
 |---|---|
-| Leads sourced | 28 |
-| Qualified leads | 14 |
+| Leads sourced | 35 |
+| Qualified leads | 21 |
 | Conversations held | 0 |
 | Paying customers | 0 |
 | Churned | 0 |
@@ -60,7 +60,7 @@ Current MRR **$0.00** of $10,000.00 target — gap of $10,000.00, which is 8 mor
 
 ---
 
-**Current bottleneck:** No validated demand - 0 of 625 prospects contacted. Gated on A-001 (founder sends batch 1).
+**Current bottleneck:** No validated demand - 20 emails written and ready, 0 sent. Gated on A-001 (founder collects addresses, then sends).
 
 **Last updated:** 2026-08-13
 
