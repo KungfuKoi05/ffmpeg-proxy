@@ -1,0 +1,8 @@
+node_modules/
+.env
+.env.local
+*.log
+.DS_Store
+
+# Customer data and anything with real personal information stays out of git
+business/customers/private/

@@ -1,0 +1,7 @@
+{
+  "experiments": [
+    { "id": "E-001", "name": "Cold outreach to management company owners", "status": "ready", "cost": 0, "start": null, "end": null, "result": null, "decision": null },
+    { "id": "E-002", "name": "Do HOA boards actually record meetings", "status": "ready", "cost": 0, "start": null, "end": null, "result": null, "decision": null },
+    { "id": "E-003", "name": "Manual delivery time under 90 minutes", "status": "ready", "cost": 0, "start": null, "end": null, "result": null, "decision": null }
+  ]
+}

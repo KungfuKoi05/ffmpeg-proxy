@@ -1,0 +1,21 @@
+{
+  "target_mrr": 10000,
+  "price_per_customer": 1250,
+  "founder_hours_per_week": 8,
+  "share_of_time_on_outreach": 0.5,
+  "minutes_per_touch": 6,
+  "funnel": {
+    "prospects_contacted": 0,
+    "replies": 0,
+    "conversations": 0,
+    "proposals": 0,
+    "customers": 0
+  },
+  "assumed_rates": {
+    "reply_rate": 0.08,
+    "conversation_rate": 0.5,
+    "proposal_rate": 0.8,
+    "close_rate": 0.4
+  },
+  "rate_basis": "ASSUMPTION until 50+ sends. Reply rate assumes hand-sent, individually researched emails to named management company owners offering a free finished sample - not automated volume. Conversation and close rates are high because the offer leads with completed work rather than a meeting request; this is the assumption most likely to be wrong and E-001 exists to test it."
+}
