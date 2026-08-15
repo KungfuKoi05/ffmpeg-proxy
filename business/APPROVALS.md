@@ -32,6 +32,34 @@ with it reauthorized, a human still presses send.
 **Set once before sending:** `[Your name]`, `[phone]`, and `[postal address]` in the signature.
 The postal address and opt-out line are CAN-SPAM requirements, not decoration.
 
+### A-002 — Founder action: publish the landing page
+**Requested:** 2026-08-15 | **Agent:** Builder | **Cost:** $0, ~5 minutes
+
+`site/index.html` is built and committed but **not published**. Enabling GitHub Pages requires the
+repo settings, which is a founder action. Free subdomain — no domain purchase, so the $100 stays intact.
+
+Before publishing, fill the footer placeholders: `[Business name]`, `[postal address]`, `[phone]`.
+The page currently carries no fabricated proof of any kind and must stay that way — no testimonials,
+logos, or customer counts until they are real and permission has been given to name them.
+
+- **Unblocks:** a link to include when a prospect asks who we are
+- **Without it:** the sample document is still the stronger proof; nothing is actually blocked
+- **Reversible?:** Yes, entirely — Pages can be disabled at any time
+- **Cost of delay:** minimal until replies start arriving
+
+### A-003 — Founder action: verify NRS 116.31083 before using the Nevada claim
+**Requested:** 2026-08-15 | **Agent:** Scout | **Cost:** $0, ~5 minutes | **Priority: do this first**
+
+The touch-3 Nevada line states that board meetings must be audio recorded under NRS 116. If true it
+removes the largest risk in the business (D-006). It is **search-sourced only** — Justia, the Nevada
+Legislature, and every other primary source are blocked by this environment's egress proxy.
+
+Read the statute: https://law.justia.com/codes/nevada/chapter-116/statute-116-31083/
+
+- **Confirms →** un-hedge the line, rebuild the prospect list Nevada-first, promote D-006 to active
+- **Does not confirm →** delete the Nevada line from touch 3 entirely. **Do not soften it and send.**
+- **Cost of delay:** three Nevada prospects sit at the top of the send order; touch 3 lands day 8
+
 ---
 
 ## Approved

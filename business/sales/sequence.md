@@ -66,14 +66,15 @@ specific number from their own site; the ask is forwarding a file, not booking a
 
 > Hi [First name],
 >
-> Following up with something concrete rather than another email — here's a sample of what comes back:
+> Following up with something concrete rather than another email — here's the format we deliver:
 >
 > [Link to the sample minutes document]
 >
-> That's from a recording, no notes, no interview. Motions and votes captured verbatim, action items
-> pulled out separately so the board packet writes itself.
+> It's a made-up association, so treat it as the structure rather than a work sample: motions with
+> exact wording and vote counts, failed motions kept in the record, executive session handled to the
+> state standard, and action items pulled out separately so the board packet writes itself.
 >
-> Two free meetings still stands if you want to test it on your own recording.
+> The two free meetings are how you see it on a real one — yours.
 >
 > [Your name]
 > [phone] · [postal address]

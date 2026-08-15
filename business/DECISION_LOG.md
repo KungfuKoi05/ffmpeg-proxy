@@ -109,3 +109,100 @@ manual-capable today. The incumbents' own turnaround is 15–20 minutes of machi
 $75/meeting before automation exists.
 
 **Next action** Builder produces a spec only. Code waits for a paying customer.
+
+---
+
+## D-004 — Build the landing page now, ahead of the D-003 trigger
+**2026-08-15** | Owner: Founder (override) | Status: **active**
+
+**Hypothesis**
+Having a page to point at is worth more than the discipline of waiting for the trigger.
+
+**Evidence**
+D-003 set the build trigger at "a prospect asks for a link twice," on the reasoning that the sample
+document is stronger proof than a website and nobody had asked. That reasoning still holds. The
+founder weighed it and decided the page is worth having before the first reply arrives — a cold
+prospect who receives an email from an unknown sender will often look for a website before replying,
+and finding nothing is itself a signal.
+
+**Recorded as an override, not a silently moved goalpost.** The agent recommendation was to hold;
+the founder decided to build. Cost is $0 and roughly an hour, so the downside is bounded.
+
+**Experiment** None. This is a judgment call, not a test.
+
+**Cost** $0. No domain purchased — GitHub Pages free subdomain if published.
+
+**Success criteria** A prospect references the page, or it removes a stall in a reply thread.
+
+**Failure criteria** None meaningful — the page is static and costs nothing to keep. If it goes
+unvisited, we learned the trigger was right and lost an hour.
+
+**Next action** Built at `site/index.html` and committed. **Publishing is deliberately not done** —
+enabling GitHub Pages is a founder action, queued as A-002.
+
+---
+
+## D-005 — Position on state-specific compliance, not generic formatting
+**2026-08-15** | Owner: CEO | Status: **active**
+
+**Hypothesis**
+"Formatted to your state's requirements" beats "formatted to your template" as positioning, and is
+defensible against generic AI transcription tools.
+
+**Evidence**
+Minutes requirements are genuinely non-uniform. Colorado CRS 38-33.3-308(7) requires minutes to state
+that an executive session was held and its general subject matter
+[FACT: https://dre.colorado.gov/hoa-meetings]. Florida §720.303 sets 7-year retention and a
+10-business-day inspection window
+[FACT: https://minutesmith.com/blog/florida-hoa-meeting-minutes-requirements]. Georgia and North
+Carolina are permissive, so bylaws control
+[FACT: https://minutesmith.com/blog/hoa-minutes-requirements-by-state]. A general-purpose summarizer
+gets executive session wrong in exactly the states where it is specified.
+
+**Experiment** Carried inside E-001 — the touch-3 state line varies by state and its effect on reply
+quality is observable.
+
+**Cost** $0. Research complete; encoded in `product/minutes-template.md`.
+
+**Success criteria** Prospects engage with the compliance framing rather than treating us as a
+transcription vendor.
+
+**Failure criteria** Nobody cares, and price becomes the only conversation. Then the differentiator
+is turnaround, not compliance.
+
+**Next action** Encoded in the template and the runbook. Hedged in outreach until verified.
+
+---
+
+## D-006 — Prioritize Nevada, pending verification
+**2026-08-15** | Owner: CEO | Status: **provisional — blocked on verification**
+
+**Hypothesis**
+Nevada is the highest-priority market because the input we depend on may be legally mandatory there.
+
+**Evidence**
+NRS 116.31083 reportedly requires the secretary to "cause each meeting of the executive board to be
+audio recorded," prohibits recording executive session, and requires the audio, the minutes, and a
+summary of the minutes to be available to owners within 30 days
+[FACT: https://law.justia.com/codes/nevada/chapter-116/statute-116-31083/].
+
+If accurate, this removes the single largest risk in the entire business. D-001's kill criterion is
+"≥50% say their boards do not record." In Nevada that objection may not exist, because the recording
+is already required. The statutory "summary of the minutes" is also a second deliverable we can
+produce at no extra cost.
+
+**Why this is provisional.** The finding is search-sourced. Justia, the Nevada Legislature, and every
+other primary source are blocked by this environment's egress proxy — attempted and confirmed. A
+false statement of law to a prospect would be worse than saying nothing.
+
+**Experiment** Founder reads NRS 116.31083 directly. Five minutes.
+
+**Cost** $0.
+
+**Success criteria** Statute confirms mandatory recording → Nevada becomes the lead market, the
+prospect list is rebuilt Nevada-first, and the touch-3 state line is un-hedged.
+
+**Failure criteria** Statute does not say this → delete the Nevada line from touch 3 entirely, revert
+to standard prioritization. **Do not soften and send anyway.**
+
+**Next action** Queued as A-003. The touch-3 Nevada line stays hedged and unsent until then.

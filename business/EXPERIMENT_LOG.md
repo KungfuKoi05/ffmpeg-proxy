@@ -71,6 +71,11 @@ broken model, and a broken model is not misread as a fixable message.
 Determines whether this is a business or an expensive hobby. At 90 minutes the gross margin is 3%
 — the first delivery is bought as information, not as profit.
 
+**Measurement instrument ready (2026-08-15):** the per-step timing table in
+`automation/minutes-runbook.md` breaks the 90-minute budget into nine steps with individual budgets.
+Actuals go to `data/customers.json`. An untimed delivery is a wasted delivery — the timing data is
+worth more than the first few sets of minutes are.
+
 ---
 
 ## Queued, not yet designed

@@ -13,6 +13,19 @@ contacted, or one paid engagement.** Current: 0 prospects contacted.
 Until then this document holds specifications only. That restraint is the point — the failure mode
 this whole system exists to prevent is building before selling.
 
+## The deliverable is now defined
+
+The service itself — what a customer actually receives — is specified and does not depend on any
+code being written:
+
+- [`product/minutes-template.md`](product/minutes-template.md) — the deliverable, with state-specific variations
+- [`product/sample-minutes.md`](product/sample-minutes.md) — a **clearly labeled** format demonstration for a fictional association
+- [`automation/minutes-runbook.md`](automation/minutes-runbook.md) — the fulfillment method, with per-step timing capture for E-003
+- [`research/state-minutes-requirements.md`](research/state-minutes-requirements.md) — FL/AZ/NV/GA/NC/CO requirements
+
+This is the manual rung of the automation ladder, written down. It is not product code and does not
+breach D-003.
+
 ## What already exists, at $0
 
 `server.js` in this repo is a working ffmpeg service with `/extract-audio`, `/transcode`,
@@ -44,7 +57,7 @@ Full spec: [`product/mvp-spec.md`](product/mvp-spec.md). Summary of what gets bu
 
 | Component | Build trigger | Why not sooner |
 |---|---|---|
-| Landing page | A prospect asks for a link twice | Until then the sample document is better proof than a website |
+| ~~Landing page~~ **BUILT** | Founder override, D-004 | `site/index.html` — static, self-contained, no fabricated proof. Committed but **not published**; publishing is A-002 |
 | Intake (form or email) | Customer 1 | Email works fine for one customer |
 | `tools/minutes.js` pipeline | Customer 3 | Needs 5+ manual runs first to know what actually breaks |
 | Template library | Customer 3 | Requires real templates from real customers |
