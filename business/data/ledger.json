@@ -1,0 +1,6 @@
+{
+  "starting_capital": 100.00,
+  "currency": "USD",
+  "spend_policy": "$0 authorized until the first paying customer. Every purchase queues in business/APPROVALS.md and waits for explicit founder approval.",
+  "entries": []
+}

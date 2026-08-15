@@ -1,0 +1,21 @@
+send_order,company,city,state,website,owner_name,email,associations,detail_confirmed,notes
+1,Desert Living,Henderson,NV,https://desertlivinginc.com/,,,,,Lisa McKenzie listed as President/CEO - confirm spelling and current role
+2,SMG,Las Vegas,NV,https://smghoa.com/,,,,,
+3,ACCU Inc,Denver,CO,https://accuinc.com/,,,,,
+4,City Property Management,Phoenix,AZ,https://cityproperty.com/,,,,,
+5,All-In-One Community Management,Atlanta,GA,https://www.allinonemgmt.com/,,,,,
+6,Cusick Company,Charlotte,NC,https://cusickcompany.com/,,,,,
+7,Douglas Property Management,Atlanta,GA,https://dpm-re.com/,,,,,
+8,HOA Community Management,Marietta,GA,https://www.hoacomm.com/,,,,,Tim Murphy named in search results - confirm
+9,Access Management Group,Atlanta,GA,https://accessmgt.com/,,,,,
+10,Wise Property Management,St. Petersburg,FL,https://wisepropertymanagement.com/,,,,,
+11,Ocean Blue Community Management,Tampa,FL,https://www.oceanbluecommunities.com/,,,,,
+12,National Property Services,Scottsdale,AZ,https://npsphx.com/,,,,,
+13,Association Management Group,Charlotte,NC,https://www.amgworld.com/charlotte,,,,,
+14,Heywood Community Management,Phoenix,AZ,https://heywoodmanagement.com/,,,,,
+15,CAP Management,Denver,CO,https://capmanagement.com/,,,,,
+16,Association Management Solutions,Charlotte,NC,https://amshoa.com/,,,,,NEEDS a specific detail from their site
+17,Homeside Properties,Atlanta,GA,https://www.homesideproperties.com/,,,,,NEEDS a specific detail from their site
+18,Atlanta Community Services,Atlanta,GA,https://www.atlantacommunityservices.com/,,,,,NEEDS a specific detail from their site
+19,Silverleaf Management Group,Atlanta,GA,https://silverleafmanagement.com/,,,,,NEEDS a specific detail from their site
+20,Las Vegas Community Management Group,Las Vegas,NV,https://lasvegascommunitymanagementgroup.com/,,,,,NEEDS a specific detail from their site

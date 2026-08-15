@@ -1,0 +1,585 @@
+{
+  "rubric_version": "1.0",
+  "generated": "2026-08-13",
+  "weights": {
+    "pain": 15,
+    "recurrence": 10,
+    "willingness_to_pay": 15,
+    "deal_size": 10,
+    "reachability": 10,
+    "automation": 10,
+    "speed_to_revenue": 10,
+    "zero_cost_feasibility": 5,
+    "whitespace": 10,
+    "low_regulatory_risk": 5
+  },
+  "opportunities": [
+    {
+      "id": "OPP-01",
+      "name": "Certified payroll / prevailing wage weekly reporting",
+      "industry": "Trades & construction",
+      "buyer": "Subcontractors on public-works projects, 5-40 field employees",
+      "price_hypothesis": "$400-800/mo",
+      "status": "shortlist",
+      "scores": {
+        "pain": { "raw": 0.85, "tag": "FACT", "source": "https://quickbooks.intuit.com/r/payroll/what-is-certified-payroll/", "note": "Weekly WH-347 filing is legally mandatory on federally funded jobs; errors withhold payment" },
+        "recurrence": { "raw": 1.0, "tag": "FACT", "source": "https://onpay.com/insights/certified-payroll-reporting-prevailing-wages/", "note": "Weekly, for the life of every public project" },
+        "willingness_to_pay": { "raw": 0.95, "tag": "FACT", "source": "https://www.certifiedpayrollpro.com/certified-payroll-services", "note": "Fully managed certified payroll services run $1,000-$5,000/mo for mid-sized contractors; software tier is $50-175/mo" },
+        "deal_size": { "raw": 0.9, "tag": "FACT", "source": "https://www.certifiedpayrollpro.com/certified-payroll-services", "note": "Managed pricing of $1,000+/mo means $10K needs only 10 customers" },
+        "reachability": { "raw": 0.9, "tag": "FACT", "source": "https://sam.gov/", "note": "Public bid awards and state contractor license boards list them for free" },
+        "automation": { "raw": 0.75, "tag": "ESTIMATE", "note": "Form assembly + wage-determination cross-check from a payroll export; deterministic, checkable" },
+        "speed_to_revenue": { "raw": 0.7, "tag": "ESTIMATE", "note": "Deliverable from a spreadsheet they email - no integration needed" },
+        "zero_cost_feasibility": { "raw": 1.0, "tag": "ESTIMATE", "note": "Spreadsheet in, PDF out" },
+        "whitespace": { "raw": 0.5, "tag": "FACT", "source": "https://contractorsprevailingwage.com/certified-payroll-reporting/certified-payroll-how-we-help/", "note": "Managed providers already exist - Points North, eBacon managed tier, CPWIS, regional construction bookkeepers" },
+        "low_regulatory_risk": { "raw": 0.4, "tag": "ESTIMATE", "note": "No license needed to prepare, but a filing error withholds the customer's payment and can trigger DOL penalties; we would also hold employee SSNs and wage data" }
+      },
+      "kill_flags": [],
+      "notes": "Upgraded after research: the managed-service tier is a proven $1,000-5,000/mo purchase, which fixes the deal-size weakness. Remaining risks are liability on errors, weekly rather than monthly cadence, and a steep prevailing-wage learning curve. Designated fallback if OPP-08 fails."
+    },
+    {
+      "id": "OPP-02",
+      "name": "Lien waiver + AIA pay application preparation",
+      "industry": "Trades & construction",
+      "buyer": "Specialty subcontractors billing on commercial projects",
+      "price_hypothesis": "$500-1200/mo",
+      "status": "live",
+      "scores": {
+        "pain": { "raw": 0.8, "tag": "ASSUMPTION", "note": "Monthly billing packages are notoriously fiddly and delay payment when wrong" },
+        "recurrence": { "raw": 0.9, "tag": "ASSUMPTION", "note": "Monthly billing cycle per project" },
+        "willingness_to_pay": { "raw": 0.6, "tag": "ASSUMPTION", "note": "Construction billing software exists; direct service pricing not verified" },
+        "deal_size": { "raw": 0.7, "tag": "ESTIMATE", "note": "$500-1200/mo means 9-20 customers" },
+        "reachability": { "raw": 0.9, "tag": "FACT", "source": "https://www.cslb.ca.gov/onlineservices/checklicenseII/checklicense.aspx", "note": "State license boards publish searchable contractor registries" },
+        "automation": { "raw": 0.6, "tag": "ASSUMPTION", "note": "Document assembly is automatable; chasing lower-tier waivers is human coordination" },
+        "speed_to_revenue": { "raw": 0.6, "tag": "ESTIMATE", "note": "Requires learning each GC's billing conventions" },
+        "zero_cost_feasibility": { "raw": 0.9, "tag": "ESTIMATE", "note": "Documents in, documents out" },
+        "whitespace": { "raw": 0.7, "tag": "ASSUMPTION", "note": "Incumbents are ERP modules priced for larger contractors" },
+        "low_regulatory_risk": { "raw": 0.5, "tag": "ASSUMPTION", "note": "Lien waivers are legal instruments; preparation is clerical but consequential" }
+      },
+      "kill_flags": [],
+      "notes": "Assumption-heavy. Needs pricing evidence before it can outrank the researched options."
+    },
+    {
+      "id": "OPP-03",
+      "name": "Permit application prep & tracking",
+      "industry": "Trades & construction",
+      "buyer": "HVAC, electrical, plumbing contractors doing 20+ permits/month",
+      "price_hypothesis": "$500-1500/mo",
+      "status": "live",
+      "scores": {
+        "pain": { "raw": 0.75, "tag": "ASSUMPTION", "note": "Every jurisdiction differs; rejections delay revenue" },
+        "recurrence": { "raw": 0.9, "tag": "ASSUMPTION", "note": "Per job, continuously" },
+        "willingness_to_pay": { "raw": 0.65, "tag": "ASSUMPTION", "note": "Permit expediters exist as a local service category; pricing not verified" },
+        "deal_size": { "raw": 0.7, "tag": "ESTIMATE", "note": "9-20 customers at hypothesized price" },
+        "reachability": { "raw": 0.9, "tag": "FACT", "source": "https://www.cslb.ca.gov/onlineservices/checklicenseII/checklicense.aspx", "note": "License registries are public" },
+        "automation": { "raw": 0.5, "tag": "ASSUMPTION", "note": "Many jurisdictions require portal submission under the contractor's own account" },
+        "speed_to_revenue": { "raw": 0.5, "tag": "ESTIMATE", "note": "Jurisdiction knowledge takes time to build" },
+        "zero_cost_feasibility": { "raw": 0.8, "tag": "ESTIMATE" },
+        "whitespace": { "raw": 0.7, "tag": "ASSUMPTION", "note": "Fragmented local expediters, little software" },
+        "low_regulatory_risk": { "raw": 0.6, "tag": "ASSUMPTION", "note": "Some jurisdictions restrict who may pull permits" }
+      },
+      "kill_flags": [],
+      "notes": "Portal-submission requirement is the likely blocker - needs the contractor's credentials."
+    },
+    {
+      "id": "OPP-04",
+      "name": "COI / subcontractor insurance compliance tracking",
+      "industry": "Trades & construction",
+      "buyer": "General contractors and property owners managing 50-500 vendors",
+      "price_hypothesis": "$300-900/mo",
+      "status": "live",
+      "scores": {
+        "pain": { "raw": 0.7, "tag": "FACT", "source": "https://www.vertikalrms.com/article/how-much-does-coi-tracking-software-cost-2026-pricing-guide/", "note": "An expired COI on a claim is an uninsured loss" },
+        "recurrence": { "raw": 0.85, "tag": "ESTIMATE", "note": "Certificates expire annually, chased continuously" },
+        "willingness_to_pay": { "raw": 0.9, "tag": "FACT", "source": "https://www.vertikalrms.com/article/how-much-does-coi-tracking-software-cost-2026-pricing-guide/", "note": "$3-10/vendor/yr self-service, $10-30 full-service; Certificial starts $99/mo" },
+        "deal_size": { "raw": 0.5, "tag": "ESTIMATE", "note": "$300-900/mo means 11-33 customers" },
+        "reachability": { "raw": 0.8, "tag": "ESTIMATE", "note": "GCs are listed publicly, but the buyer is a risk manager behind a gatekeeper" },
+        "automation": { "raw": 0.8, "tag": "ESTIMATE", "note": "Extraction from certificates and expiry chasing is highly automatable" },
+        "speed_to_revenue": { "raw": 0.6, "tag": "ESTIMATE" },
+        "zero_cost_feasibility": { "raw": 0.8, "tag": "ESTIMATE" },
+        "whitespace": { "raw": 0.3, "tag": "FACT", "source": "https://www.certificial.com/blog-post/we-compared-7-best-coi-tracking-software-in-depth-feedback-and-review", "note": "At least seven established platforms compete directly" },
+        "low_regulatory_risk": { "raw": 0.7, "tag": "ESTIMATE", "note": "Insurance adjacent; we track, we do not advise" }
+      },
+      "kill_flags": [],
+      "notes": "Demand proven by pricing, but the category is mature and crowded. Whitespace is the weak factor."
+    },
+    {
+      "id": "OPP-05",
+      "name": "Government bid monitoring + proposal drafting",
+      "industry": "Trades & construction",
+      "buyer": "SMB contractors and service firms pursuing public contracts",
+      "price_hypothesis": "$750-2000/mo",
+      "status": "shortlist",
+      "scores": {
+        "pain": { "raw": 0.7, "tag": "FACT", "source": "https://usfcr.com/services/federal-proposal-writing-consulting/", "note": "An established consulting category exists precisely because this is painful" },
+        "recurrence": { "raw": 0.8, "tag": "ESTIMATE", "note": "Continuous monitoring plus per-bid response work" },
+        "willingness_to_pay": { "raw": 0.75, "tag": "FACT", "source": "https://therfpfirm.com/services/", "note": "Multiple firms sell proposal writing to small business; retainer pricing not published" },
+        "deal_size": { "raw": 0.9, "tag": "ESTIMATE", "note": "$750-2000/mo means only 5-13 customers for $10K" },
+        "reachability": { "raw": 0.85, "tag": "FACT", "source": "https://sam.gov/", "note": "SAM.gov registrants and past bidders are public and free" },
+        "automation": { "raw": 0.7, "tag": "ESTIMATE", "note": "Monitoring automates cleanly; proposal drafting needs heavy human review" },
+        "speed_to_revenue": { "raw": 0.6, "tag": "ESTIMATE" },
+        "zero_cost_feasibility": { "raw": 0.9, "tag": "FACT", "source": "https://sam.gov/", "note": "Federal opportunity data is free" },
+        "whitespace": { "raw": 0.6, "tag": "ESTIMATE", "note": "Incumbents price for larger firms; SMB tier underserved" },
+        "low_regulatory_risk": { "raw": 0.8, "tag": "ESTIMATE" }
+      },
+      "kill_flags": [],
+      "notes": "Best deal size in the set. Weakness: value is speculative to the buyer - they pay now to maybe win later - and QA on long proposals is expensive in founder hours."
+    },
+    {
+      "id": "OPP-06",
+      "name": "OSHA safety documentation & toolbox talk program",
+      "industry": "Trades & construction",
+      "buyer": "Contractors with 10-100 field staff",
+      "price_hypothesis": "$300-600/mo",
+      "status": "live",
+      "scores": {
+        "pain": { "raw": 0.5, "tag": "ASSUMPTION", "note": "Painful only after an incident or an audit" },
+        "recurrence": { "raw": 0.8, "tag": "ASSUMPTION", "note": "Weekly talks, ongoing logs" },
+        "willingness_to_pay": { "raw": 0.4, "tag": "ASSUMPTION", "note": "Free templates are everywhere" },
+        "deal_size": { "raw": 0.4, "tag": "ESTIMATE", "note": "17-33 customers needed" },
+        "reachability": { "raw": 0.9, "tag": "FACT", "source": "https://www.cslb.ca.gov/onlineservices/checklicenseII/checklicense.aspx" },
+        "automation": { "raw": 0.8, "tag": "ESTIMATE" },
+        "speed_to_revenue": { "raw": 0.7, "tag": "ESTIMATE" },
+        "zero_cost_feasibility": { "raw": 1.0, "tag": "ESTIMATE" },
+        "whitespace": { "raw": 0.4, "tag": "ASSUMPTION", "note": "Commoditized content" },
+        "low_regulatory_risk": { "raw": 0.5, "tag": "ASSUMPTION", "note": "Safety advice carries liability" }
+      },
+      "kill_flags": [],
+      "notes": "Low willingness to pay - the problem is only urgent after it is too late."
+    },
+    {
+      "id": "OPP-07",
+      "name": "Missed-call / speed-to-lead answering for home services",
+      "industry": "Trades & construction",
+      "buyer": "Residential HVAC, plumbing, electrical",
+      "price_hypothesis": "$500-1500/mo",
+      "status": "killed",
+      "scores": {
+        "pain": { "raw": 0.9, "tag": "ESTIMATE", "note": "A missed call is a lost job - the pain is obvious and quantifiable" },
+        "recurrence": { "raw": 1.0, "tag": "ESTIMATE" },
+        "willingness_to_pay": { "raw": 0.8, "tag": "ESTIMATE", "note": "Answering services are an established purchase" },
+        "deal_size": { "raw": 0.7, "tag": "ESTIMATE" },
+        "reachability": { "raw": 0.9, "tag": "ESTIMATE" },
+        "automation": { "raw": 0.6, "tag": "ESTIMATE" },
+        "speed_to_revenue": { "raw": 0.4, "tag": "ESTIMATE" },
+        "zero_cost_feasibility": { "raw": 0.1, "tag": "ESTIMATE", "note": "Telephony infrastructure and 24/7 coverage both cost money from day one" },
+        "whitespace": { "raw": 0.2, "tag": "ESTIMATE", "note": "Saturated with funded AI-receptionist companies" },
+        "low_regulatory_risk": { "raw": 0.6, "tag": "ESTIMATE", "note": "Call recording consent laws vary by state" }
+      },
+      "kill_flags": [
+        "Requires paid telephony infrastructure before the first dollar - violates the $0 constraint",
+        "Requires 24/7 real-time coverage - cannot be QA'd inside 6-10 founder hours/week"
+      ],
+      "notes": "Real pain, wrong constraints. Killed on the $0 and capacity disqualifiers, not on demand."
+    },
+    {
+      "id": "OPP-08",
+      "name": "HOA board meeting minutes + post-meeting action package",
+      "industry": "Real estate / property / HOA",
+      "buyer": "Community association management companies (portfolio managers)",
+      "price_hypothesis": "$1200-2500/mo per management company",
+      "status": "shortlist",
+      "scores": {
+        "pain": { "raw": 0.9, "tag": "FACT", "source": "https://appboardbreeze.com/blog/hoa-meeting-minutes-guide", "note": "Minutes are a statutory record; managers write them after hours, unpaid, days later" },
+        "recurrence": { "raw": 1.0, "tag": "FACT", "source": "https://www.hoamanagement.com/board-meeting-minutes/", "note": "Every association holds board meetings on a fixed monthly or quarterly cycle" },
+        "willingness_to_pay": { "raw": 0.85, "tag": "FACT", "source": "https://minutesmith.com/blog/board-meeting-minutes-software", "note": "MinuteSmith $149-699/mo by portfolio size, Enterprise from $12,000/yr; BoardBreeze $29.99-499/mo" },
+        "deal_size": { "raw": 1.0, "tag": "ESTIMATE", "note": "Portfolio managers carry 8-12 associations each, so a mid-size firm runs 25-50 board meetings/month; at $75/meeting that is $1,875-3,750/mo - $10K needs only 4-6 customers" },
+        "reachability": { "raw": 0.85, "tag": "FACT", "source": "https://www.avidxchange.com/blog/2026-community-manager-trends/", "note": "8,000-9,000 management companies manage 60-70% of ~377,000 US associations; managers are state-licensed and publicly searchable in FL, NV, and others" },
+        "automation": { "raw": 0.9, "tag": "ESTIMATE", "note": "Audio to structured minutes is language work end to end; motions/votes/actions are template-shaped" },
+        "speed_to_revenue": { "raw": 0.9, "tag": "ESTIMATE", "note": "Deliverable on day one from a recording they already have - no integration, no credentials" },
+        "zero_cost_feasibility": { "raw": 1.0, "tag": "FACT", "source": "https://github.com/kungfukoi05/ffmpeg-proxy", "note": "This repo already contains a working audio-extraction pipeline; delivery is a document" },
+        "whitespace": { "raw": 0.6, "tag": "FACT", "source": "https://appboardbreeze.com/hoa", "note": "Incumbents sell self-serve software to the manager who still does the work; done-for-you at portfolio level is a different wedge" },
+        "low_regulatory_risk": { "raw": 0.7, "tag": "FACT", "source": "https://thehoahandbook.com/is-it-legal-to-record-hoa-meetings-state-laws-explained/", "note": "No license to draft minutes, but CA/FL/PA are two-party consent states - the board must announce recording. Industry-standard mitigation is announce, transcribe, then delete the audio" }
+      },
+      "kill_flags": [],
+      "notes": "Best deal-size-to-effort ratio in the set, and the only opportunity where we can deliver a complete free sample within 24 hours at zero cost. Chief unknown, and the first thing outreach must test: what share of associations already record their meetings."
+    },
+    {
+      "id": "OPP-09",
+      "name": "Municipal / public board meeting minutes",
+      "industry": "Real estate / property / public sector",
+      "buyer": "Cities, towns, school districts, water and fire districts",
+      "price_hypothesis": "$600-2000/mo",
+      "status": "live",
+      "scores": {
+        "pain": { "raw": 0.8, "tag": "ESTIMATE", "note": "Open-meeting laws mandate minutes; clerks are stretched" },
+        "recurrence": { "raw": 0.95, "tag": "ESTIMATE", "note": "Statutory meeting calendars" },
+        "willingness_to_pay": { "raw": 0.7, "tag": "ESTIMATE", "note": "Public bodies budget for clerk services and transcription" },
+        "deal_size": { "raw": 0.7, "tag": "ESTIMATE" },
+        "reachability": { "raw": 0.9, "tag": "ESTIMATE", "note": "Every public body publishes its contacts by law" },
+        "automation": { "raw": 0.9, "tag": "ESTIMATE", "note": "Meetings are already recorded and often streamed publicly" },
+        "speed_to_revenue": { "raw": 0.2, "tag": "ESTIMATE", "note": "Public procurement, budget cycles, and possible RFP requirements" },
+        "zero_cost_feasibility": { "raw": 1.0, "tag": "ESTIMATE" },
+        "whitespace": { "raw": 0.6, "tag": "ESTIMATE" },
+        "low_regulatory_risk": { "raw": 0.7, "tag": "ESTIMATE", "note": "Public records law raises the accuracy bar" }
+      },
+      "kill_flags": [],
+      "notes": "Same delivery engine as OPP-08 with a far slower sales cycle. A phase-two market, not a launch market."
+    },
+    {
+      "id": "OPP-10",
+      "name": "Real estate transaction coordination",
+      "industry": "Real estate / property / HOA",
+      "buyer": "Individual agents and small brokerages",
+      "price_hypothesis": "$300-500/file",
+      "status": "live",
+      "scores": {
+        "pain": { "raw": 0.8, "tag": "FACT", "source": "https://www.agentup.com/blog/real-estate-transaction-coordinator-pricing", "note": "In-house TC costs $45,000-65,000/yr before benefits" },
+        "recurrence": { "raw": 0.6, "tag": "ESTIMATE", "note": "Per transaction, and agent volume is lumpy" },
+        "willingness_to_pay": { "raw": 0.95, "tag": "FACT", "source": "https://www.agentup.com/blog/real-estate-transaction-coordinator-pricing", "note": "$250-600/file, averaging $350-450; a fully established purchase" },
+        "deal_size": { "raw": 0.5, "tag": "ESTIMATE", "note": "An agent doing 3 files/mo is ~$1,200; but most agents do far fewer" },
+        "reachability": { "raw": 0.9, "tag": "ESTIMATE", "note": "Licensed agents are publicly listed everywhere" },
+        "automation": { "raw": 0.3, "tag": "ESTIMATE", "note": "The job is chasing humans for signatures and deadlines - phone work, not document work" },
+        "speed_to_revenue": { "raw": 0.8, "tag": "ESTIMATE" },
+        "zero_cost_feasibility": { "raw": 0.8, "tag": "ESTIMATE" },
+        "whitespace": { "raw": 0.25, "tag": "FACT", "source": "https://rebillion.ai/blog/2026/04/13/transaction-coordinator-cost/", "note": "Thousands of independent TCs plus several funded AI entrants" },
+        "low_regulatory_risk": { "raw": 0.6, "tag": "ESTIMATE", "note": "Unlicensed assistants are restricted from some activities in some states" }
+      },
+      "kill_flags": [],
+      "notes": "Proven demand, but the work is real-time human coordination - the opposite of what AI leverage is good at."
+    },
+    {
+      "id": "OPP-11",
+      "name": "Property maintenance ticket triage & vendor dispatch",
+      "industry": "Real estate / property / HOA",
+      "buyer": "Residential property management firms",
+      "price_hypothesis": "$800-2000/mo",
+      "status": "killed",
+      "scores": {
+        "pain": { "raw": 0.85, "tag": "ESTIMATE" },
+        "recurrence": { "raw": 1.0, "tag": "ESTIMATE" },
+        "willingness_to_pay": { "raw": 0.7, "tag": "ESTIMATE" },
+        "deal_size": { "raw": 0.8, "tag": "ESTIMATE" },
+        "reachability": { "raw": 0.85, "tag": "ESTIMATE" },
+        "automation": { "raw": 0.5, "tag": "ESTIMATE" },
+        "speed_to_revenue": { "raw": 0.4, "tag": "ESTIMATE" },
+        "zero_cost_feasibility": { "raw": 0.4, "tag": "ESTIMATE" },
+        "whitespace": { "raw": 0.5, "tag": "ESTIMATE" },
+        "low_regulatory_risk": { "raw": 0.7, "tag": "ESTIMATE" }
+      },
+      "kill_flags": [
+        "Requires real-time response during business hours - cannot be delivered inside 6-10 founder hours/week",
+        "Requires write access to the customer's property management system"
+      ],
+      "notes": "Genuinely painful, structurally incompatible with a part-time founder."
+    },
+    {
+      "id": "OPP-12",
+      "name": "HOA violation & architectural review letter production",
+      "industry": "Real estate / property / HOA",
+      "buyer": "Community association management companies",
+      "price_hypothesis": "$400-1000/mo",
+      "status": "live",
+      "scores": {
+        "pain": { "raw": 0.7, "tag": "ASSUMPTION", "note": "High volume, templated, and legally sensitive" },
+        "recurrence": { "raw": 0.95, "tag": "ASSUMPTION", "note": "Continuous, tied to inspection cycles" },
+        "willingness_to_pay": { "raw": 0.5, "tag": "ASSUMPTION", "note": "Often bundled into existing management software" },
+        "deal_size": { "raw": 0.5, "tag": "ESTIMATE" },
+        "reachability": { "raw": 0.85, "tag": "FACT", "source": "https://www.myfloridalicense.com/wl11.asp", "note": "Same buyer as OPP-08, publicly licensed" },
+        "automation": { "raw": 0.85, "tag": "ESTIMATE", "note": "Template letters from inspection notes" },
+        "speed_to_revenue": { "raw": 0.7, "tag": "ESTIMATE" },
+        "zero_cost_feasibility": { "raw": 1.0, "tag": "ESTIMATE" },
+        "whitespace": { "raw": 0.4, "tag": "ASSUMPTION", "note": "Management platforms already generate these" },
+        "low_regulatory_risk": { "raw": 0.5, "tag": "ASSUMPTION", "note": "Enforcement letters have due-process requirements that vary by state" }
+      },
+      "kill_flags": [],
+      "notes": "Best value as an expansion offer to OPP-08 customers, not as a standalone wedge."
+    },
+    {
+      "id": "OPP-13",
+      "name": "Lease abstraction for small commercial owners",
+      "industry": "Real estate / property / HOA",
+      "buyer": "Small commercial landlords and brokers",
+      "price_hypothesis": "$50-150/lease",
+      "status": "live",
+      "scores": {
+        "pain": { "raw": 0.6, "tag": "ASSUMPTION" },
+        "recurrence": { "raw": 0.3, "tag": "ESTIMATE", "note": "Mostly one-off at acquisition or refinance" },
+        "willingness_to_pay": { "raw": 0.6, "tag": "ASSUMPTION" },
+        "deal_size": { "raw": 0.3, "tag": "ESTIMATE", "note": "Project work, not recurring revenue" },
+        "reachability": { "raw": 0.5, "tag": "ASSUMPTION" },
+        "automation": { "raw": 0.9, "tag": "ESTIMATE", "note": "Pure document extraction" },
+        "speed_to_revenue": { "raw": 0.7, "tag": "ESTIMATE" },
+        "zero_cost_feasibility": { "raw": 1.0, "tag": "ESTIMATE" },
+        "whitespace": { "raw": 0.4, "tag": "ASSUMPTION" },
+        "low_regulatory_risk": { "raw": 0.9, "tag": "ESTIMATE" }
+      },
+      "kill_flags": [],
+      "notes": "Fails the recurrence test. Lumpy project revenue cannot be reverse-engineered to a reliable $10K/mo."
+    },
+    {
+      "id": "OPP-14",
+      "name": "Monthly board financial packet assembly",
+      "industry": "Real estate / property / HOA",
+      "buyer": "Community association management companies",
+      "price_hypothesis": "$600-1500/mo",
+      "status": "live",
+      "scores": {
+        "pain": { "raw": 0.7, "tag": "ASSUMPTION", "note": "Monthly packets are a known crunch for portfolio managers" },
+        "recurrence": { "raw": 1.0, "tag": "ASSUMPTION", "note": "Monthly, per association" },
+        "willingness_to_pay": { "raw": 0.55, "tag": "ASSUMPTION" },
+        "deal_size": { "raw": 0.7, "tag": "ESTIMATE" },
+        "reachability": { "raw": 0.85, "tag": "FACT", "source": "https://www.myfloridalicense.com/wl11.asp" },
+        "automation": { "raw": 0.6, "tag": "ASSUMPTION", "note": "Requires accounting data from their system" },
+        "speed_to_revenue": { "raw": 0.5, "tag": "ESTIMATE" },
+        "zero_cost_feasibility": { "raw": 0.9, "tag": "ESTIMATE" },
+        "whitespace": { "raw": 0.5, "tag": "ASSUMPTION" },
+        "low_regulatory_risk": { "raw": 0.7, "tag": "ESTIMATE" }
+      },
+      "kill_flags": [],
+      "notes": "Another natural expansion offer for the OPP-08 buyer. Needs their accounting exports."
+    },
+    {
+      "id": "OPP-15",
+      "name": "Dental insurance verification (eligibility & breakdowns)",
+      "industry": "Healthcare / dental",
+      "buyer": "Dental practices, 1-5 locations",
+      "price_hypothesis": "$300-800/mo",
+      "status": "killed",
+      "scores": {
+        "pain": { "raw": 0.9, "tag": "FACT", "source": "https://www.cecomputech.com/guides/dental-billing-services-costs/", "note": "In-house verification staff costs roughly $3,600/mo fully loaded" },
+        "recurrence": { "raw": 1.0, "tag": "ESTIMATE", "note": "Every scheduled patient, every day" },
+        "willingness_to_pay": { "raw": 0.95, "tag": "FACT", "source": "https://dentalbilling.com/pricing-dental-insurance-verification/", "note": "$3-10 per verification, or $300-800/mo flat" },
+        "deal_size": { "raw": 0.5, "tag": "ESTIMATE" },
+        "reachability": { "raw": 0.9, "tag": "ESTIMATE", "note": "State dental boards publish licensee rosters" },
+        "automation": { "raw": 0.4, "tag": "ESTIMATE", "note": "Requires logging into payer portals and the practice management system" },
+        "speed_to_revenue": { "raw": 0.5, "tag": "ESTIMATE" },
+        "zero_cost_feasibility": { "raw": 0.6, "tag": "ESTIMATE" },
+        "whitespace": { "raw": 0.3, "tag": "FACT", "source": "https://savvyagents.ai/blog/best-dental-insurance-verification-companies-2026", "note": "Established outsourcing firms compete directly on price" },
+        "low_regulatory_risk": { "raw": 0.1, "tag": "ESTIMATE", "note": "PHI throughout; requires a HIPAA business associate agreement" }
+      },
+      "kill_flags": [
+        "Requires the customer's payer-portal and practice-management credentials - a system we cannot access on our own terms",
+        "PHI handling requires a HIPAA business associate agreement before the first delivery"
+      ],
+      "notes": "The clearest ROI story in the entire set, and still correctly killed: the constraints, not the demand, make it wrong for us right now."
+    },
+    {
+      "id": "OPP-16",
+      "name": "Dental/medical claim denial follow-up (AR recovery)",
+      "industry": "Healthcare / dental",
+      "buyer": "Practices with aging AR over 90 days",
+      "price_hypothesis": "Percentage of recovered AR",
+      "status": "killed",
+      "scores": {
+        "pain": { "raw": 0.95, "tag": "ESTIMATE", "note": "Unrecovered AR is money already earned and not collected" },
+        "recurrence": { "raw": 0.9, "tag": "ESTIMATE" },
+        "willingness_to_pay": { "raw": 0.9, "tag": "ESTIMATE", "note": "Contingency pricing removes the buying objection entirely" },
+        "deal_size": { "raw": 0.8, "tag": "ESTIMATE" },
+        "reachability": { "raw": 0.9, "tag": "ESTIMATE" },
+        "automation": { "raw": 0.3, "tag": "ESTIMATE", "note": "Payer phone queues and portal work" },
+        "speed_to_revenue": { "raw": 0.3, "tag": "ESTIMATE", "note": "Contingency means getting paid only after recovery lands" },
+        "zero_cost_feasibility": { "raw": 0.5, "tag": "ESTIMATE" },
+        "whitespace": { "raw": 0.4, "tag": "ESTIMATE" },
+        "low_regulatory_risk": { "raw": 0.1, "tag": "ESTIMATE" }
+      },
+      "kill_flags": [
+        "PHI and practice-management system access required",
+        "Delivery is phone work with payers - not compatible with 6-10 founder hours/week"
+      ],
+      "notes": "Excellent economics, incompatible constraints."
+    },
+    {
+      "id": "OPP-17",
+      "name": "Patient recall & reactivation campaigns",
+      "industry": "Healthcare / dental",
+      "buyer": "Dental practices with lapsed hygiene patients",
+      "price_hypothesis": "$500-1200/mo",
+      "status": "live",
+      "scores": {
+        "pain": { "raw": 0.6, "tag": "ASSUMPTION", "note": "Lost revenue, but invisible day to day" },
+        "recurrence": { "raw": 0.8, "tag": "ESTIMATE" },
+        "willingness_to_pay": { "raw": 0.6, "tag": "ASSUMPTION" },
+        "deal_size": { "raw": 0.6, "tag": "ESTIMATE" },
+        "reachability": { "raw": 0.9, "tag": "ESTIMATE" },
+        "automation": { "raw": 0.7, "tag": "ESTIMATE" },
+        "speed_to_revenue": { "raw": 0.5, "tag": "ESTIMATE" },
+        "zero_cost_feasibility": { "raw": 0.4, "tag": "ESTIMATE", "note": "Messaging infrastructure costs money" },
+        "whitespace": { "raw": 0.3, "tag": "ASSUMPTION", "note": "Every practice management vendor ships this" },
+        "low_regulatory_risk": { "raw": 0.2, "tag": "ESTIMATE", "note": "Patient lists are PHI; TCPA applies to texting" }
+      },
+      "kill_flags": [],
+      "notes": "Bundled free into software the practice already owns. Weak wedge."
+    },
+    {
+      "id": "OPP-18",
+      "name": "Provider credentialing & re-credentialing paperwork",
+      "industry": "Healthcare / dental",
+      "buyer": "Small practices and staffing firms onboarding clinicians",
+      "price_hypothesis": "$200-500/provider",
+      "status": "live",
+      "scores": {
+        "pain": { "raw": 0.8, "tag": "ASSUMPTION", "note": "Delays directly block billing" },
+        "recurrence": { "raw": 0.5, "tag": "ESTIMATE", "note": "Per hire, plus periodic renewal" },
+        "willingness_to_pay": { "raw": 0.7, "tag": "ASSUMPTION" },
+        "deal_size": { "raw": 0.4, "tag": "ESTIMATE" },
+        "reachability": { "raw": 0.8, "tag": "ESTIMATE" },
+        "automation": { "raw": 0.6, "tag": "ESTIMATE" },
+        "speed_to_revenue": { "raw": 0.4, "tag": "ESTIMATE", "note": "Long domain learning curve" },
+        "zero_cost_feasibility": { "raw": 0.8, "tag": "ESTIMATE" },
+        "whitespace": { "raw": 0.5, "tag": "ASSUMPTION" },
+        "low_regulatory_risk": { "raw": 0.4, "tag": "ESTIMATE", "note": "Provider PII and licensure attestations" }
+      },
+      "kill_flags": [],
+      "notes": "No PHI, which saves it from the healthcare kill list - but the domain learning curve is steep and revenue is per-hire, not recurring."
+    },
+    {
+      "id": "OPP-19",
+      "name": "Prior authorization packet assembly",
+      "industry": "Healthcare / dental",
+      "buyer": "Specialty practices",
+      "price_hypothesis": "$50-150/auth",
+      "status": "killed",
+      "scores": {
+        "pain": { "raw": 0.95, "tag": "ESTIMATE" },
+        "recurrence": { "raw": 0.9, "tag": "ESTIMATE" },
+        "willingness_to_pay": { "raw": 0.8, "tag": "ESTIMATE" },
+        "deal_size": { "raw": 0.6, "tag": "ESTIMATE" },
+        "reachability": { "raw": 0.8, "tag": "ESTIMATE" },
+        "automation": { "raw": 0.4, "tag": "ESTIMATE" },
+        "speed_to_revenue": { "raw": 0.3, "tag": "ESTIMATE" },
+        "zero_cost_feasibility": { "raw": 0.5, "tag": "ESTIMATE" },
+        "whitespace": { "raw": 0.5, "tag": "ESTIMATE" },
+        "low_regulatory_risk": { "raw": 0.05, "tag": "ESTIMATE" }
+      },
+      "kill_flags": [
+        "Clinical documentation and PHI at the core of every deliverable",
+        "Requires clinical judgment the founder cannot quality-check"
+      ],
+      "notes": "Highest pain in the healthcare set and the least appropriate for us to touch."
+    },
+    {
+      "id": "OPP-20",
+      "name": "Medical record chronology for personal injury firms",
+      "industry": "Professional services",
+      "buyer": "Plaintiff-side personal injury law firms",
+      "price_hypothesis": "$150-400/chronology",
+      "status": "live",
+      "scores": {
+        "pain": { "raw": 0.9, "tag": "FACT", "source": "https://medicalrecordsreviewforattorneys.com/medical-record-review-cost-attorneys/", "note": "A 1,200-page file takes ~40 paralegal hours at ~$85/hr loaded, about $3,400 in-house" },
+        "recurrence": { "raw": 0.7, "tag": "ESTIMATE", "note": "Per case; firms run continuous caseloads" },
+        "willingness_to_pay": { "raw": 0.9, "tag": "FACT", "source": "https://medicalrecordsreviewforattorneys.com/medical-record-review-cost-attorneys/", "note": "Outsourced review of that file runs about $4,500; AI chronologies $28-125" },
+        "deal_size": { "raw": 0.6, "tag": "ESTIMATE" },
+        "reachability": { "raw": 0.9, "tag": "ESTIMATE", "note": "Bar directories and firm websites are public" },
+        "automation": { "raw": 0.85, "tag": "ESTIMATE", "note": "Pure document summarization" },
+        "speed_to_revenue": { "raw": 0.7, "tag": "ESTIMATE" },
+        "zero_cost_feasibility": { "raw": 0.8, "tag": "ESTIMATE" },
+        "whitespace": { "raw": 0.15, "tag": "FACT", "source": "https://www.tavrn.ai/blog/medical-chronology-software", "note": "At least eight AI chronology products compete, with prices already down to $28" },
+        "low_regulatory_risk": { "raw": 0.2, "tag": "ESTIMATE", "note": "PHI under a HIPAA business associate agreement, plus legal work product" }
+      },
+      "kill_flags": [],
+      "notes": "Textbook pain, and the price is already collapsing under funded AI entrants. Arriving late to a commoditizing market with $0 is the wrong fight."
+    },
+    {
+      "id": "OPP-21",
+      "name": "Inbound sales order / PO entry for SMB distributors",
+      "industry": "Professional services",
+      "buyer": "Wholesale distributors receiving orders by email and PDF",
+      "price_hypothesis": "$800-2000/mo",
+      "status": "live",
+      "scores": {
+        "pain": { "raw": 0.9, "tag": "FACT", "source": "https://blog.stackcube.io/ai-order-entry-software-for-distributors", "note": "Manual entry runs 6-15 minutes per order; at 100 orders/day that is multiple full-time roles" },
+        "recurrence": { "raw": 1.0, "tag": "ESTIMATE", "note": "Every order, every day" },
+        "willingness_to_pay": { "raw": 0.85, "tag": "FACT", "source": "https://www.ycombinator.com/companies/comena", "note": "Multiple funded startups sell into this exact workflow" },
+        "deal_size": { "raw": 0.9, "tag": "ESTIMATE" },
+        "reachability": { "raw": 0.6, "tag": "ESTIMATE", "note": "Distributors are listable, but the buyer is an operations director behind a gatekeeper" },
+        "automation": { "raw": 0.5, "tag": "ESTIMATE", "note": "Extraction is easy; writing into their ERP is the whole job" },
+        "speed_to_revenue": { "raw": 0.3, "tag": "ESTIMATE", "note": "Item-master matching must be built per customer before any value lands" },
+        "zero_cost_feasibility": { "raw": 0.5, "tag": "ESTIMATE" },
+        "whitespace": { "raw": 0.25, "tag": "FACT", "source": "https://www.ycombinator.com/companies/patika", "note": "Several venture-funded companies own this wedge" },
+        "low_regulatory_risk": { "raw": 0.9, "tag": "ESTIMATE" }
+      },
+      "kill_flags": [],
+      "notes": "Demand is beyond doubt. ERP write-access is the moat, and it is a moat against us, not for us."
+    },
+    {
+      "id": "OPP-22",
+      "name": "Bookkeeping cleanup & month-end close prep",
+      "industry": "Professional services",
+      "buyer": "Small accounting and bookkeeping firms",
+      "price_hypothesis": "$500-1500/mo",
+      "status": "live",
+      "scores": {
+        "pain": { "raw": 0.7, "tag": "ASSUMPTION" },
+        "recurrence": { "raw": 0.9, "tag": "ESTIMATE", "note": "Monthly close" },
+        "willingness_to_pay": { "raw": 0.7, "tag": "ASSUMPTION", "note": "Offshore bookkeeping outsourcing is well established" },
+        "deal_size": { "raw": 0.7, "tag": "ESTIMATE" },
+        "reachability": { "raw": 0.8, "tag": "ESTIMATE" },
+        "automation": { "raw": 0.6, "tag": "ASSUMPTION" },
+        "speed_to_revenue": { "raw": 0.5, "tag": "ESTIMATE" },
+        "zero_cost_feasibility": { "raw": 0.7, "tag": "ESTIMATE" },
+        "whitespace": { "raw": 0.3, "tag": "ASSUMPTION", "note": "Mature offshore outsourcing market at low prices" },
+        "low_regulatory_risk": { "raw": 0.5, "tag": "ESTIMATE", "note": "Financial data custody" }
+      },
+      "kill_flags": [],
+      "notes": "Competing against established offshore labor at rates we cannot beat with a US-priced service."
+    },
+    {
+      "id": "OPP-23",
+      "name": "Insurance agency renewal processing & COI issuance",
+      "industry": "Professional services",
+      "buyer": "Independent P&C insurance agencies",
+      "price_hypothesis": "$600-1500/mo",
+      "status": "live",
+      "scores": {
+        "pain": { "raw": 0.75, "tag": "ASSUMPTION", "note": "Renewal season is a known crunch" },
+        "recurrence": { "raw": 0.9, "tag": "ESTIMATE" },
+        "willingness_to_pay": { "raw": 0.7, "tag": "ASSUMPTION" },
+        "deal_size": { "raw": 0.7, "tag": "ESTIMATE" },
+        "reachability": { "raw": 0.85, "tag": "ESTIMATE", "note": "State insurance departments publish licensed agency lists" },
+        "automation": { "raw": 0.6, "tag": "ASSUMPTION", "note": "Agency management system access likely required" },
+        "speed_to_revenue": { "raw": 0.5, "tag": "ESTIMATE" },
+        "zero_cost_feasibility": { "raw": 0.7, "tag": "ESTIMATE" },
+        "whitespace": { "raw": 0.5, "tag": "ASSUMPTION" },
+        "low_regulatory_risk": { "raw": 0.3, "tag": "ESTIMATE", "note": "Issuing certificates may require a licensed producer" }
+      },
+      "kill_flags": [],
+      "notes": "Licensing question needs answering before this could be pursued."
+    },
+    {
+      "id": "OPP-24",
+      "name": "RFP response library & drafting for staffing/IT firms",
+      "industry": "Professional services",
+      "buyer": "Staffing, MSP, and IT services firms bidding regularly",
+      "price_hypothesis": "$1000-2500/mo",
+      "status": "live",
+      "scores": {
+        "pain": { "raw": 0.75, "tag": "ASSUMPTION" },
+        "recurrence": { "raw": 0.7, "tag": "ESTIMATE", "note": "Bid-driven and lumpy" },
+        "willingness_to_pay": { "raw": 0.7, "tag": "ASSUMPTION" },
+        "deal_size": { "raw": 0.95, "tag": "ESTIMATE", "note": "Only 4-10 customers needed" },
+        "reachability": { "raw": 0.7, "tag": "ESTIMATE" },
+        "automation": { "raw": 0.7, "tag": "ESTIMATE" },
+        "speed_to_revenue": { "raw": 0.5, "tag": "ESTIMATE" },
+        "zero_cost_feasibility": { "raw": 0.9, "tag": "ESTIMATE" },
+        "whitespace": { "raw": 0.5, "tag": "ASSUMPTION" },
+        "low_regulatory_risk": { "raw": 0.9, "tag": "ESTIMATE" }
+      },
+      "kill_flags": [],
+      "notes": "Great deal size. Unpredictable workload spikes are a poor match for a fixed 6-10 hour week."
+    },
+    {
+      "id": "OPP-25",
+      "name": "Delivery-platform reconciliation & chargeback recovery",
+      "industry": "Professional services",
+      "buyer": "Multi-location restaurants on third-party delivery platforms",
+      "price_hypothesis": "Percentage of recovered fees",
+      "status": "killed",
+      "scores": {
+        "pain": { "raw": 0.8, "tag": "ASSUMPTION" },
+        "recurrence": { "raw": 1.0, "tag": "ESTIMATE" },
+        "willingness_to_pay": { "raw": 0.8, "tag": "ASSUMPTION", "note": "Contingency pricing sells itself" },
+        "deal_size": { "raw": 0.6, "tag": "ESTIMATE" },
+        "reachability": { "raw": 0.8, "tag": "ESTIMATE" },
+        "automation": { "raw": 0.6, "tag": "ESTIMATE" },
+        "speed_to_revenue": { "raw": 0.4, "tag": "ESTIMATE" },
+        "zero_cost_feasibility": { "raw": 0.6, "tag": "ESTIMATE" },
+        "whitespace": { "raw": 0.5, "tag": "ASSUMPTION" },
+        "low_regulatory_risk": { "raw": 0.7, "tag": "ESTIMATE" }
+      },
+      "kill_flags": [
+        "Requires merchant-portal credentials for platforms whose terms of service restrict third-party access"
+      ],
+      "notes": "Killed on the terms-of-service constraint. We do not build a business on access we are not permitted to have."
+    }
+  ]
+}
