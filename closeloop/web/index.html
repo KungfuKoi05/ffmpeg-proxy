@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Closeloop - Recover the jobs your follow-up is losing</title>
+<meta name="description" content="Closeloop follows up on missed calls and unsold estimates for HVAC, roofing and remodeling contractors - and reports exactly how much revenue it recovered.">
+<link rel="stylesheet" href="/site/site.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#128260;</text></svg>">
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="#top">Close<span>loop</span></a>
+    <nav>
+      <a href="#problem">The problem</a>
+      <a href="#how">How it works</a>
+      <a href="#calculator">Calculator</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <a class="btn small" href="#calculator">See what you're losing</a>
+  </div>
+</header>
+
+<section id="top" class="hero">
+  <div class="wrap">
+    <p class="eyebrow">For HVAC, roofing, and remodeling contractors</p>
+    <h1>Your best leads aren't lost.<br>They're just never followed up.</h1>
+    <p class="lede">
+      84% of contractors never follow up an estimate the same day. Most callers who
+      don't reach a person never call back. Closeloop works those leads for you -
+      and shows you exactly which jobs it brought back.
+    </p>
+    <div class="cta-row">
+      <a class="btn" href="#calculator">See how much revenue you're losing</a>
+      <a class="btn ghost" href="#demo">Book a free revenue recovery audit</a>
+    </div>
+    <p class="fineprint">
+      No contract to try it. We run in review-only mode until you've read every
+      message we'd send.
+    </p>
+  </div>
+</section>
+
+<section id="problem" class="band">
+  <div class="wrap">
+    <h2>Where the money actually leaks</h2>
+    <p class="section-lede">
+      You're not short on leads. You're short on follow-through - and it's the
+      expensive end of your pipeline that goes cold.
+    </p>
+    <div class="cards">
+      <article class="card">
+        <h3>The unsold estimate</h3>
+        <p>
+          You quoted $14,000 and heard nothing. Industry surveys put same-day
+          follow-up on unsold estimates at around 16% of contractors. The other
+          84% leave the close to chance.
+        </p>
+        <p class="stat">A 4-touch, 7-day cadence is what separates top closers from everyone else.</p>
+      </article>
+      <article class="card">
+        <h3>The missed call</h3>
+        <p>
+          When the owner or a tech is the one answering the phone, a large share
+          of inbound calls go unanswered - and most of those callers never ring
+          back. They call the next contractor on the list.
+        </p>
+        <p class="stat">Speed matters more than polish. A text in 60 seconds beats a callback in 3 hours.</p>
+      </article>
+      <article class="card">
+        <h3>The customer you already had</h3>
+        <p>
+          The install you did three years ago needs service. Nobody reaches out,
+          so they search, and they find someone else.
+        </p>
+        <p class="stat">The cheapest job you'll ever win is one from a customer who already trusts you.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="wrap">
+    <h2>How it works</h2>
+    <ol class="steps">
+      <li><h3>We connect to where your leads land</h3>
+        <p>Missed calls, web form, or a simple CSV. No new software for your team to learn.</p></li>
+      <li><h3>Every lead gets classified and worked</h3>
+        <p>Urgent, estimate request, service call, existing customer. Each one enters
+           the right follow-up cadence, written in your voice - not ours.</p></li>
+      <li><h3>You read everything before it sends</h3>
+        <p>We start in review-only mode. Then a mode where you approve each message.
+           Automatic sending is the last step, and only when you say so.</p></li>
+      <li><h3>You get a report you can audit</h3>
+        <p>Every job we claim credit for shows the message we sent, the customer's
+           reply, and the date it closed. Jobs we can't trace, we don't claim.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section id="calculator" class="band">
+  <div class="wrap">
+    <h2>What's your follow-up gap costing you?</h2>
+    <p class="section-lede">
+      Your numbers, industry benchmarks, no email required. Every figure is an
+      estimate - we'll show you the assumptions.
+    </p>
+    <div class="calc">
+      <form id="calc-form" class="calc-inputs">
+        <div class="field">
+          <label for="monthly_calls">Inbound calls per month</label>
+          <input id="monthly_calls" name="monthly_calls" type="number" min="0" value="220">
+        </div>
+        <div class="field">
+          <label for="missed_call_pct">Roughly what % go unanswered</label>
+          <input id="missed_call_pct" name="missed_call_pct" type="number" min="0" max="100" value="25">
+        </div>
+        <div class="field">
+          <label for="avg_job_value">Average job value ($)</label>
+          <input id="avg_job_value" name="avg_job_value" type="number" min="0" value="9500">
+        </div>
+        <div class="field">
+          <label for="close_rate">Close rate on leads you do reach (%)</label>
+          <input id="close_rate" name="close_rate" type="number" min="0" max="100" value="30">
+        </div>
+        <div class="field">
+          <label for="estimates_per_month">Estimates you send per month</label>
+          <input id="estimates_per_month" name="estimates_per_month" type="number" min="0" value="20">
+        </div>
+        <div class="field">
+          <label for="estimate_close_rate">Of those, what % close (%)</label>
+          <input id="estimate_close_rate" name="estimate_close_rate" type="number" min="0" max="100" value="27">
+        </div>
+        <p class="fineprint" id="calc-status">Updating as you type.</p>
+      </form>
+
+      <div class="calc-output" id="calc-output" aria-live="polite">
+        <div class="headline">
+          <span class="label">Potential recovered revenue</span>
+          <span class="big" id="out-monthly">--</span>
+          <span class="label">per month, estimated</span>
+        </div>
+        <dl class="out-rows">
+          <div><dt>From missed calls</dt><dd id="out-calls">--</dd></div>
+          <div><dt>From unsold estimates</dt><dd id="out-estimates">--</dd></div>
+          <div><dt>Annualised</dt><dd id="out-annual">--</dd></div>
+          <div><dt>Missed calls per month</dt><dd id="out-missed">--</dd></div>
+          <div><dt>Of those, real job opportunities</dt><dd id="out-opps">--</dd></div>
+          <div><dt>Unsold estimates per month</dt><dd id="out-unsold">--</dd></div>
+        </dl>
+        <div id="calc-warnings"></div>
+        <details class="assumptions">
+          <summary>Show the assumptions behind this</summary>
+          <ul id="out-assumptions"></ul>
+        </details>
+        <p class="fineprint" id="out-disclaimer"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="features">
+  <div class="wrap">
+    <h2>What you get</h2>
+    <div class="feature-grid">
+      <div><h3>Missed call recovery</h3><p>An immediate text back, then a considered cadence - not a robot pestering people.</p></div>
+      <div><h3>Unsold estimate follow-up</h3><p>Four touches across two weeks, editable, in your voice, stopping the moment they reply.</p></div>
+      <div><h3>Lead classification</h3><p>Urgent jobs surface immediately instead of sitting behind a pricing question.</p></div>
+      <div><h3>Appointment reminders</h3><p>Confirmations before the visit, so you stop eating no-shows.</p></div>
+      <div><h3>Past customer reactivation</h3><p>Off by default. Turned on only when you decide, on a list you approve.</p></div>
+      <div><h3>Review requests</h3><p>A neutral ask after a completed job. We never filter by sentiment or offer anything for a review.</p></div>
+      <div><h3>Auditable ROI reporting</h3><p>Every claimed job shows its evidence trail. Jobs we can't trace, we don't claim.</p></div>
+      <div><h3>Human approval built in</h3><p>Four automation modes. You choose how much rope we get, and you can pull it any time.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="industries" class="band">
+  <div class="wrap">
+    <h2>Who this is for</h2>
+    <p class="section-lede">
+      We focus on trades where a single recovered job pays for the service many
+      times over. If your average job is under about $2,000, we'll tell you
+      honestly that the maths is harder - and we'd rather say so now.
+    </p>
+    <div class="pills">
+      <span>HVAC replacement &amp; install</span><span>Roofing</span>
+      <span>Remodeling &amp; additions</span><span>Plumbing repipe &amp; water heaters</span>
+      <span>Electrical panel &amp; service upgrades</span><span>Foundation &amp; concrete</span>
+    </div>
+  </div>
+</section>
+
+<section id="results">
+  <div class="wrap">
+    <h2>Results</h2>
+    <div class="honest-box">
+      <h3>We don't have case studies yet.</h3>
+      <p>
+        Closeloop is new. We could dress up an industry benchmark as a client
+        result - plenty of people in this category do - but you'd find out, and
+        we'd rather earn the reference properly.
+      </p>
+      <p>
+        What we can show you is the working system, your own numbers running
+        through it, and every message it would send on your behalf. That's the
+        audit, and it's free.
+      </p>
+      <p>
+        Our first few clients get founding pricing in exchange for a candid
+        reference once we've actually produced a result worth referencing.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section id="pricing" class="band">
+  <div class="wrap">
+    <h2>Pricing</h2>
+    <p class="section-lede">
+      One flat monthly fee. No per-message billing, no setup fee, no annual contract.
+      Message costs from the phone carrier are passed through at cost.
+    </p>
+    <div class="tiers">
+      <article class="tier">
+        <h3>Recovery</h3>
+        <p class="price">$750<span>/mo</span></p>
+        <ul>
+          <li>Missed call recovery</li>
+          <li>New lead response</li>
+          <li>Lead classification &amp; dashboard</li>
+          <li>Monthly ROI report</li>
+          <li>Up to 150 leads/month</li>
+        </ul>
+      </article>
+      <article class="tier featured">
+        <p class="tag">Most contractors start here</p>
+        <h3>Recovery + Estimates</h3>
+        <p class="price">$1,500<span>/mo</span></p>
+        <ul>
+          <li>Everything in Recovery</li>
+          <li><strong>Unsold estimate follow-up</strong></li>
+          <li>Appointment reminders</li>
+          <li>Review requests</li>
+          <li>Custom copy in your voice</li>
+          <li>Up to 400 leads/month</li>
+        </ul>
+      </article>
+      <article class="tier">
+        <h3>Full pipeline</h3>
+        <p class="price">$2,500<span>/mo</span></p>
+        <ul>
+          <li>Everything above</li>
+          <li>Past customer reactivation campaigns</li>
+          <li>Multi-location support</li>
+          <li>Custom integrations</li>
+          <li>Direct line to the founder</li>
+        </ul>
+      </article>
+    </div>
+    <p class="fineprint centered">
+      Pricing is under active review as we learn what the work is actually worth.
+      If your numbers don't support the fee, we'll tell you before you sign.
+    </p>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <h2>Straight answers</h2>
+    <div class="faq">
+      <details><summary>Isn't this just a missed-call text-back tool?</summary>
+        <p>Those exist and cost $50 to $200 a month. If missed-call text-back is all
+        you need, buy one of those - we'll even name a few. What they don't do is
+        work your unsold estimates, and that's where the $14,000 jobs are sitting.
+        That's what we're built for.</p></details>
+      <details><summary>Will this text my customers without me knowing?</summary>
+        <p>No. Every account starts in review-only mode, where messages are written
+        and logged but never sent. The next mode requires you to approve each message
+        before it goes out. Automatic sending is a deliberate switch you flip, and
+        you can flip it back in one click.</p></details>
+      <details><summary>How do I know the results are real?</summary>
+        <p>Every job we claim shows the message we sent, the customer's reply, and the
+        date it closed. If we can't trace that chain, we don't claim it - and the
+        report shows those jobs too, in a separate column, so you can see what we
+        left on the table.</p></details>
+      <details><summary>What about consent and STOP requests?</summary>
+        <p>We don't send marketing texts to anyone without a consent record, STOP is
+        honoured immediately and permanently, and every marketing sequence carries an
+        opt-out in its first message. Quiet hours are enforced in your local timezone.</p></details>
+      <details><summary>Do I have to replace my CRM?</summary>
+        <p>No. We sit alongside whatever you use. If you want the data back in your
+        system, we'll wire that up.</p></details>
+      <details><summary>What if it doesn't work?</summary>
+        <p>Cancel with 30 days' notice. If after 60 days we haven't produced traceable
+        revenue worth more than what you paid, we'd rather you left than kept paying
+        for something that isn't working.</p></details>
+    </div>
+  </div>
+</section>
+
+<section id="demo" class="band">
+  <div class="wrap narrow">
+    <h2>Book a free revenue recovery audit</h2>
+    <p class="section-lede">
+      30 minutes. We look at your actual call handling and estimate follow-up, and
+      show you the gap with your own numbers. No obligation, and no pitch if it's
+      not a fit.
+    </p>
+    <form id="demo-form" class="demo-form">
+      <div class="field"><label for="d-business">Business name *</label>
+        <input id="d-business" name="business_name" required></div>
+      <div class="field"><label for="d-name">Your name</label>
+        <input id="d-name" name="name"></div>
+      <div class="field"><label for="d-email">Email *</label>
+        <input id="d-email" name="email" type="email" required></div>
+      <div class="field"><label for="d-phone">Phone</label>
+        <input id="d-phone" name="phone" type="tel"></div>
+      <div class="field wide"><label for="d-industry">Trade</label>
+        <input id="d-industry" name="industry" placeholder="HVAC, roofing, remodeling..."></div>
+      <div class="field wide"><label for="d-message">What's your biggest follow-up headache?</label>
+        <textarea id="d-message" name="message" rows="3"></textarea></div>
+      <button class="btn" type="submit">Request my audit</button>
+      <p class="fineprint">We'll only use these details to contact you about the audit.</p>
+    </form>
+    <div id="demo-result" class="hidden"></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p><strong>Closeloop</strong> - follow-up and revenue recovery for high-ticket trades.</p>
+    <p class="fineprint">
+      All revenue figures on this page are estimates derived from your inputs and
+      published industry benchmarks. They are not predictions or guarantees.
+    </p>
+  </div>
+</footer>
+
+<script src="/site/site.js"></script>
+</body>
+</html>
