@@ -49,3 +49,10 @@ await reviewConversation(businessId, conversationId);
 ```
 
 Nothing schedules them yet — see the scheduling note in ARCHITECTURE.md.
+
+## Running them offline
+
+`AI_PROVIDER=mock` makes every agent runnable with no API key: the mock adapter
+synthesises a response matching the agent's declared output schema. That is what
+`tests/agents.test.ts` exercises. The stub values are shape-correct placeholders,
+not plausible analysis — use it to verify wiring, never to evaluate quality.

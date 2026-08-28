@@ -3,7 +3,7 @@
 Multi-tenant SaaS that answers missed calls for HVAC companies, qualifies the
 caller, books the job, and shows the owner what it recovered.
 
-**Status: builds, typechecks, lints clean, 62 tests pass. Not yet run against
+**Status: builds, typechecks, lints clean, 72 tests pass. Not yet run against
 live Twilio, Stripe, Supabase or Anthropic credentials** — see
 [Remaining blockers](#remaining-blockers).
 

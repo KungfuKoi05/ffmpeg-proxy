@@ -27,6 +27,47 @@ function lastUserText(req: GenerateRequest): string {
   return "";
 }
 
+/**
+ * Builds a value satisfying a JSON Schema fragment.
+ *
+ * The agents (agents/base.ts) force a `record_result` tool whose schema is the
+ * agent's output contract, then validate the response with Zod. Returning `{}`
+ * here made every agent fail schema validation, so none of them could run
+ * offline or under test. This synthesises a shape-correct stub instead.
+ */
+type JsonSchema = {
+  type?: string;
+  enum?: unknown[];
+  properties?: Record<string, JsonSchema>;
+  required?: string[];
+  items?: JsonSchema;
+};
+
+function synthesizeFromSchema(schema: JsonSchema, key = ""): unknown {
+  if (Array.isArray(schema.enum) && schema.enum.length) return schema.enum[0];
+
+  switch (schema.type) {
+    case "string":
+      return `mock ${key || "value"}`;
+    case "number":
+    case "integer":
+      return 0;
+    case "boolean":
+      return false;
+    case "array":
+      return schema.items ? [synthesizeFromSchema(schema.items, key)] : [];
+    case "object": {
+      const out: Record<string, unknown> = {};
+      for (const [name, child] of Object.entries(schema.properties ?? {})) {
+        out[name] = synthesizeFromSchema(child, name);
+      }
+      return out;
+    }
+    default:
+      return null;
+  }
+}
+
 function usage(model: string) {
   return {
     inputTokens: 400,
@@ -45,8 +86,14 @@ export class MockProvider implements AIProvider {
     let reply = "Thanks for calling. How can I help you today?";
 
     if (req.forceTool && req.tools?.length) {
-      // Forced-tool path (classify/extract) is handled by those methods.
-      toolCalls.push({ id: "mock_forced", name: req.forceTool, input: {} });
+      // Forced-tool path: agents call through here. Synthesise a value matching
+      // the tool's declared schema so the caller's validation can succeed.
+      const forced = req.tools.find((t) => t.name === req.forceTool);
+      toolCalls.push({
+        id: "mock_forced",
+        name: req.forceTool,
+        input: forced ? synthesizeFromSchema(forced.input_schema as JsonSchema) : {},
+      });
     } else if (req.tools?.length) {
       const names = new Set(req.tools.map((t) => t.name));
       // Mirrors the real receptionist flow: capture, then offer booking.

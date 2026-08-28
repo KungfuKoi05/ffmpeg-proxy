@@ -24,15 +24,21 @@ export async function recordUsage(input: {
   estimatedCost: number;
   metadata?: Record<string, unknown>;
 }): Promise<void> {
-  const { error } = await supabaseAdmin().from("usage_events").insert({
-    business_id: input.businessId,
-    event_type: input.eventType,
-    quantity: input.quantity,
-    estimated_cost: input.estimatedCost,
-    metadata: input.metadata ?? {},
-  });
-  // Metering must never take down the customer-facing path; log and continue.
-  if (error) console.error("[usage] insert failed", error.message);
+  // Metering must never take down the customer-facing path. This swallows
+  // client construction too, not just the insert -- supabaseAdmin() reads env
+  // and throws when it is absent.
+  try {
+    const { error } = await supabaseAdmin().from("usage_events").insert({
+      business_id: input.businessId,
+      event_type: input.eventType,
+      quantity: input.quantity,
+      estimated_cost: input.estimatedCost,
+      metadata: input.metadata ?? {},
+    });
+    if (error) console.error("[usage] insert failed", error.message);
+  } catch (err) {
+    console.error("[usage] unavailable", err instanceof Error ? err.message : err);
+  }
 }
 
 export async function recordAiUsage(

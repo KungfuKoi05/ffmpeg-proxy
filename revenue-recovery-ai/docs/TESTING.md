@@ -1,13 +1,13 @@
 # Testing
 
 ```bash
-npm test          # 62 tests
+npm test          # 72 tests
 npm run typecheck
 npm run lint
 npm run build
 ```
 
-## What is covered (62 tests, 5 files)
+## What is covered (72 tests, 6 files)
 
 **`revenue.test.ts` (9)** — job-value matching (exact, partial, HVAC defaults,
 unknown returns 0), estimated vs actual revenue kept separate, spam excluded
@@ -27,6 +27,13 @@ awarded carries a reason.
 throw), timeouts, retry with and without a retry predicate, rate-limit
 enforcement and key scoping, and five Twilio signature cases: valid, missing,
 forged, tampered params, swapped host.
+
+**`agents.test.ts` (10)** — every one of the five agents runs end to end through
+the shared runner and its output is validated against its own Zod contract;
+Atlas returns exactly the five documented keys. Also: invalid input is rejected
+without calling the model, a schema-mismatched response is rejected, a refusal
+becomes a failure rather than output, Mercury's score is proven to come from
+code, and a telemetry outage returns a result instead of throwing.
 
 **`ai.test.ts` (19)** — the receptionist prompt forbids invented pricing,
 availability and policy; forbids claiming an unbooked appointment; forbids
@@ -52,9 +59,27 @@ Honest gaps, in rough order of risk:
 - **Stripe webhook handling is untested** — construct-event with a fixture and
   assert the subscription row would be a good next test.
 - **The receptionist engine's tool loop is untested end to end.** The pieces
-  (prompt, tools, mock) are covered; the loop that joins them needs a mocked
-  Supabase to test properly.
+  (prompt, tools, mock) are covered, and the agent runner's equivalent loop now
+  is, but the receptionist's own loop needs a mocked Supabase to test properly.
 - **No load testing.**
+
+## Two bugs these tests caught
+
+Worth recording, because both were invisible until an agent was actually run:
+
+1. **`runAgent`'s error handler could itself throw.** Its catch block called
+   `logAiAction`, which constructs a Supabase client, which reads env and throws
+   when it is absent. The logging failure escaped the function and replaced the
+   real error. Telemetry (`lib/logging.ts`, `lib/usage.ts`) now swallows client
+   construction as well as insert errors -- it is called from error handlers and
+   from live calls, and must never be the thing that fails.
+
+2. **The mock provider returned `{}` for forced tools,** so no agent could ever
+   produce schema-valid output offline. It now synthesises a value from the
+   tool's declared JSON Schema, which is what makes the suite above possible.
+
+Both existed because section 8 asked for per-agent tests and the first pass
+shipped without them.
 
 ## Adding the RLS test
 
