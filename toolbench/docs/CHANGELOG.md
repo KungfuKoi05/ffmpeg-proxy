@@ -1,5 +1,31 @@
 # Changelog
 
+## 0.2.0 — image and PDF tools, admin auth
+
+**Added**
+- Image tools (5), Canvas-based, client-side: compressor, resizer, JPG→PNG,
+  PNG→JPG, WebP converter. Batch capable, with drag-and-drop.
+- PDF tools (4), `pdf-lib` loaded on demand: merge (with reordering), split /
+  extract pages, delete pages, rotate. Page ranges accept `1-3, 5, 8-`.
+- `/admin` protected by HTTP Basic auth (`middleware.ts`) with a constant-time
+  comparison. **Fails closed:** 503 when `ADMIN_PASSWORD` is unset.
+- 59 new tests (180 total).
+
+**Fixed**
+- PDF downloads silently never arrived. The download was triggered after several
+  `await`s, by which point the browser's user activation had lapsed, so it was
+  dropped with no error. Both PDF tools now return a result with its own
+  Download button — the same pattern the image tools already used. Found by
+  driving the merge tool with real PDFs; no unit test would have caught it.
+
+**Verified in a browser with real files**
+- Compressor: 577 KB → 64 KB (89% smaller), valid JPEG bytes on disk
+- Resizer: 200×150 from a width-only input, ratio preserved
+- Merge: 3-page + 2-page PDFs → one 5-page PDF, valid header
+- Split: 2 pages extracted from a 3-page document
+- Bad page range rejected with "Page 99 doesn't exist — the document has 3."
+- Admin auth: 503 unset · 401 no credentials · 401 wrong · 200 correct
+
 ## 0.1.0 — initial build
 
 **Added**
@@ -35,4 +61,4 @@
 
 **Not done**
 - Not deployed · no domain · no accounts · no billing · `/admin` unauthenticated
-- No image or PDF tools yet
+- No image or PDF tools yet (both added in 0.2.0)

@@ -40,7 +40,7 @@ What we *can* assess honestly is everything else. Tools were scored on:
 | Repeat usage | Would the same person come back weekly? |
 | Category breadth | Does it open a category we can expand into? |
 
-### What we launched with (25 tools)
+### The launch set (25 tools, now 34)
 
 **Text (11)** — word counter, character counter, case converter, remove
 duplicate lines, remove empty lines, remove extra spaces, sort lines, reverse
@@ -74,9 +74,11 @@ Honesty about the hard cases matters more than a longer tool list:
 | **OCR** | Needs Tesseract WASM (several MB). Viable later behind an explicit "loading the engine" state; not for launch. |
 | **HEIC → JPG** | Needs a heavy WASM decoder. High demand, real work, sequenced next. |
 | **Invoice / receipt generators** | Not hard — but they want saved history and templates, which means accounts. That is the *second* phase, when there is a reason to sign up. |
-| **Image compressor / resizer** | Straightforward with Canvas and the obvious next build. Left out only so the launch set was fully verified rather than broad and shaky. |
+| ~~Image compressor / resizer~~ | **Built in 0.2.0.** Canvas-based, verified on a real image at 89% reduction. |
 
-Building 15 tools we can prove correct beats 40 we cannot.
+Building tools we can prove correct beats a longer list we cannot. The five
+image and four PDF tools added in 0.2.0 cleared that bar — each was driven with
+a real file in a real browser before being called done.
 
 ## Monetisation
 

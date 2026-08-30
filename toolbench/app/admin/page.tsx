@@ -8,10 +8,9 @@ export const dynamic = "force-dynamic";
 /**
  * Operations dashboard.
  *
- * NOT PROTECTED YET. There is no auth system, so gating this behind a password
- * would be theatre. It is excluded from robots.txt and shows no user content,
- * only aggregate counts. See docs/ARCHITECTURE.md -- adding auth is the first
- * task before this deploys anywhere public.
+ * Protected by middleware.ts (HTTP Basic against ADMIN_PASSWORD), which fails
+ * closed with a 503 when that variable is unset. Shows aggregate counts only --
+ * never user content, which does not exist here in the first place.
  */
 export default async function AdminPage() {
   const snap = await snapshot();
@@ -19,12 +18,6 @@ export default async function AdminPage() {
 
   return (
     <div className="mx-auto max-w-5xl px-5 py-10">
-      <div className="mb-4 rounded-lg bg-[var(--warn)]/10 px-4 py-3 text-[13px] text-[var(--warn)]">
-        <strong>Unprotected.</strong> This page has no authentication yet. Do not expose
-        it publicly until auth is added — it is disallowed in robots.txt, which is not a
-        security control.
-      </div>
-
       <h1 className="text-[26px] font-semibold tracking-tight">Operations</h1>
       <p className="mt-1 text-[14px] text-[var(--ink-2)]">
         Storage backend: <strong>{snap.backend}</strong>

@@ -2,24 +2,33 @@
 
 Ordered by `Impact × Confidence ÷ Effort`, not by what is interesting.
 
+## Done since launch set
+
+- ~~Auth on `/admin`~~ — HTTP Basic via `ADMIN_PASSWORD`, fails closed with 503
+  when unset. Verified across all four states.
+- ~~Image tools~~ — compressor, resizer, JPG↔PNG, WebP converter. Verified on a
+  real image: 577 KB → 64 KB.
+- ~~PDF tools~~ — merge, split, delete pages, rotate. Verified on real PDFs:
+  3 + 2 pages merged to 5.
+
 ## Now — before any public deploy
 
 | Task | Why it blocks |
 |---|---|
-| **Auth on `/admin`** | Currently unprotected. Aggregate data only, but it must not be public. |
-| **Decide the domain** | Needs your approval — it is the only spend. |
+| **Set `ADMIN_PASSWORD`** | `/admin` returns 503 until it exists. |
 | **Set `NEXT_PUBLIC_SITE_URL`** | Canonicals and the sitemap point at a placeholder until this is real. |
+| **Point the domain at the deployment** | In progress on your side. |
 
 ## Next — highest expected return
 
-1. **Image tools** (compressor, resize, JPG↔PNG, WebP).
-   Canvas API, fully client-side, no new dependency. Broadest demand of anything
-   not yet built, and it opens a whole category. **Build this first.**
-2. **PDF tools** (merge, split, rotate, delete/extract pages).
-   `pdf-lib` is already a dependency and works in-browser. High commercial
-   intent; the natural next category.
-3. **Search Console + real measurement.** Everything after this should be driven
-   by impression data rather than judgment.
+1. **Deploy, then Search Console.** 34 tools is well past the 10–15 launch bar.
+   Everything after this should be driven by impression data rather than
+   judgment — that is the single biggest change in decision quality available.
+2. **PDF compress and PDF → JPG.** The two most-wanted PDF tools we do not have.
+   Compression is feasible via image re-encoding inside the PDF; page rendering
+   needs `pdf.js`, a real but justified dependency.
+3. **Image crop, and image → PDF.** Both Canvas-only, both natural companions to
+   what now exists.
 
 ## Then
 

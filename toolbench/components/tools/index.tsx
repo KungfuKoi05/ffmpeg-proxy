@@ -11,6 +11,8 @@ import {
   PercentageCalculator, DiscountCalculator, MarginCalculator, LoanCalculator,
   CompoundInterestCalculator, SalaryCalculator, PaintCalculator, ConcreteCalculator,
 } from "./calc-tools";
+import { ImageTool } from "./image-tools";
+import { PdfMerge, PdfPageTool } from "./pdf-tools";
 
 /**
  * Slug -> component. The registry decides which tools exist and how they are
@@ -46,6 +48,17 @@ export const TOOL_COMPONENTS: Record<string, React.ComponentType> = {
   "hourly-to-salary-calculator": SalaryCalculator,
   "paint-calculator": PaintCalculator,
   "concrete-calculator": ConcreteCalculator,
+  // image
+  "image-compressor": () => <ImageTool mode="compress" />,
+  "image-resizer": () => <ImageTool mode="resize" />,
+  "jpg-to-png": () => <ImageTool mode="convert" fixedFormat="png" />,
+  "png-to-jpg": () => <ImageTool mode="convert" fixedFormat="jpeg" />,
+  "webp-converter": () => <ImageTool mode="convert" fixedFormat="webp" />,
+  // pdf
+  "merge-pdf": PdfMerge,
+  "split-pdf": () => <PdfPageTool mode="extract" />,
+  "delete-pdf-pages": () => <PdfPageTool mode="delete" />,
+  "rotate-pdf": () => <PdfPageTool mode="rotate" />,
 };
 
 export function ToolRenderer({ slug }: { slug: string }) {

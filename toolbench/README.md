@@ -1,10 +1,12 @@
 # Toolbench
 
-Free browser-based utilities. 25 tools across text, developer and calculator
-categories — every one runs on your own device, so nothing is uploaded.
+Free browser-based utilities. 34 tools across PDF, image, text, developer and
+calculator categories — every one runs on your own device, so nothing is
+uploaded.
 
-**Status:** builds, typechecks, lints clean, 121 tests pass, verified working in
-a real browser. **Not deployed. No domain purchased. No revenue.**
+**Status:** builds, typechecks, lints clean, 180 tests pass, verified working in
+a real browser with real files. **Not deployed. No domain purchased. No
+revenue.**
 
 ```bash
 npm install
@@ -32,9 +34,10 @@ drift apart.
 
 ## Before deploying
 
-- [ ] Add auth to `/admin` — it is currently unprotected (aggregate data only)
+- [x] Auth on `/admin` — HTTP Basic via `ADMIN_PASSWORD`, fails closed when unset
+- [ ] Set `ADMIN_PASSWORD` in the production environment
 - [ ] Set `NEXT_PUBLIC_SITE_URL` to the real host
-- [ ] Decide on a domain (~$12/yr — needs your approval)
+- [ ] Point the domain at the deployment
 
 ## Docs
 

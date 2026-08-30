@@ -40,12 +40,24 @@ zero denominator — all normal paths that produce a message, not a stack trace.
 pattern cannot lock the tab. UUID batches cap at 500. The event queue caps and
 the ingest endpoint rejects oversized bodies.
 
+**`/admin` fails closed.** `middleware.ts` gates it with HTTP Basic against
+`ADMIN_PASSWORD` using a constant-time comparison. If the variable is unset the
+route returns 503 — a missing config must never be the thing that exposes the
+dashboard.
+
 **Analytics cannot carry content.** `lib/analytics.ts` strips any prop key
 matching `text|content|value|input|output|body|email|url|file|name` before
 sending. The ingest route independently allow-lists event names. Two
 independent barriers, because "we promise not to log it" is not a control.
 Verified by a browser test that types identifiable text and asserts it never
 appears in any outbound payload.
+
+**Downloads are never triggered after async work.** A browser only honours a
+programmatic download while the user's click is still "active", and that lapses
+across the awaits needed to parse and rebuild a PDF — the file silently never
+arrives. Every tool that does real work hands back a result with its own
+Download button instead. This was a real bug, found by driving the merge tool
+with actual PDFs.
 
 **Storage degrades instead of blocking.** `lib/storage.ts` counts in memory when
 `DATABASE_URL` is absent, so the app is deployable today at $0. The Postgres
@@ -55,14 +67,13 @@ bugs.
 
 ## Known gaps
 
-- **`/admin` has no authentication.** It is `Disallow`ed in robots.txt, which is
-  not a security control. It exposes only aggregate counts and no user content,
-  but it must be gated before any public deploy. This is stated on the page
-  itself, in red.
 - **No accounts, no billing.** Plans exist in the schema only.
 - **Analytics counts reset on restart** until a database is attached.
 - **Rate limiting on `/api/events` is per-instance**, so effective capacity
   scales with instance count. Fine for flood protection, not for a determined
   attacker.
-- **No image or PDF tools yet.** Both are browser-feasible (Canvas, pdf-lib) and
-  are the next build; the launch set was kept to what could be fully verified.
+- **No OCR or PDF→Word.** Both need heavy WASM or are not reliably solvable
+  client-side. Deliberately deferred — see BUSINESS.md.
+- **PDF tools skip document-level features.** Page content, text and images copy
+  faithfully; bookmarks, form fields and annotations may not survive a
+  split or merge. Stated in the tools' own FAQs.

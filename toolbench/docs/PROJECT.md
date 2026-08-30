@@ -1,9 +1,10 @@
 # Toolbench
 
-A multi-tool utility platform. 25 tools live, all running in the browser.
+A multi-tool utility platform. 34 tools live, all running in the browser.
 
-**State:** builds, typechecks, lints clean, 121 tests pass, verified working in
-a real browser. **Not deployed. No domain. No revenue.**
+**State:** builds, typechecks, lints clean, 180 tests pass, verified in a real
+browser against real image and PDF files. **Not deployed. No domain. No
+revenue.**
 
 ## Run it
 
@@ -21,11 +22,11 @@ npm run typecheck && npm run lint && npm test && npm run build
 
 | Area | State |
 |---|---|
-| 25 tools across text, developer, calculators | Working, browser-side, tested |
+| 34 tools across PDF, image, text, developer, calculators | Working, browser-side, tested |
 | Tool registry driving pages/sitemap/linking | Working |
 | SEO: metadata, canonicals, JSON-LD, sitemap, robots | Working, verified in rendered HTML |
 | Analytics (privacy-first, no cookies) | Working; in-memory storage |
-| Admin dashboard | Working; **no auth yet** |
+| Admin dashboard | Working; HTTP Basic auth, fails closed |
 | Database schema | Written, **not applied** |
 | Billing | **Not built** |
 | Accounts | **Not built** |
@@ -38,7 +39,7 @@ lib/tools/      pure logic (text, dev, calc) + the registry
 lib/            analytics, storage, site config
 components/     UI primitives and the tool components
 db/schema.sql   Postgres schema (not applied)
-tests/          121 tests
+tests/          180 tests
 docs/           this
 ```
 
