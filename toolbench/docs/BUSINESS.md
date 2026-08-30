@@ -40,7 +40,7 @@ What we *can* assess honestly is everything else. Tools were scored on:
 | Repeat usage | Would the same person come back weekly? |
 | Category breadth | Does it open a category we can expand into? |
 
-### The launch set (25 tools, now 34)
+### The launch set (25 tools, now 36)
 
 **Text (11)** — word counter, character counter, case converter, remove
 duplicate lines, remove empty lines, remove extra spaces, sort lines, reverse

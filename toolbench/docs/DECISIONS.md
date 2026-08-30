@@ -69,3 +69,51 @@ of the funnel. There is nobody to convert.
 The page shows only aggregate counts and no user content, and it warns in red
 that it is unprotected.
 **Reverses:** immediately, when auth exists. This is the first pre-deploy task.
+
+## D10 — PDF compression rasterises, warns first, and refuses a worse result
+**Decided:** `compress-pdf` renders every page to a JPEG and rebuilds the
+document. It assesses the input *before* the click and blocks the download when
+the output came out bigger.
+
+**Why:** measured, not assumed. A spike (`/spike`, since deleted) ran three
+approaches against real files in Chromium:
+
+| Input | Structural re-save | Rasterise |
+|---|---|---|
+| `real-scan.pdf` — 4,411,610 B, 4 pages of 300 dpi images | 0.0% | @2.0×/q0.75 → 595,644 B (**86.5% smaller**)<br>@1.5×/q0.70 → 430,444 B (**90.2%**)<br>@1.0×/q0.60 → 259,157 B (**94.1%**)<br>@0.75×/q0.50 → 166,610 B (**96.2%**) |
+| `text-heavy.pdf` — 4,025 B, 6 pages of vector text | 4.5% | @1.5×/q0.70 → 910,766 B (**22,527% LARGER**) |
+| `scanned.pdf` — 315,668 B, one JPEG ×8 | 0.0% | −207% (bigger) |
+
+Structural re-save — dropping metadata and using object streams, which is all
+pdf-lib can do — is worthless: 0.0% on the file people actually want to shrink.
+Rasterisation is the only thing that works, and it is catastrophic on the wrong
+input. So the tool cannot just be "a compressor"; it has to know which kind of
+document it is looking at.
+
+Hence two guards, both in `lib/tools/pdf-render.ts` and unit-tested against
+these exact numbers:
+- **Before:** `assessDocument()` samples up to 10 pages of `getTextContent()`.
+  Above 40 text items per page it warns that the file will probably get larger;
+  a scan yields 0.0 items per page and gets no warning. Measured on the
+  fixtures: scan 0.0/page, text document 79.0/page.
+- **After:** `judgeResult()` treats output ≥ input as a failure. That result is
+  not offered as a download; the panel explains what happened, with the file
+  still reachable behind a second explicit click. Other sites hand the larger
+  file over silently.
+
+**Reverses if:** a browser-side path to true PDF image re-encoding (recompress
+the embedded images, keep the text layer) becomes practical. That would be
+strictly better and is the natural v2.
+
+## D11 — pdfjs-dist pinned to v4, not v5
+**Decided:** `pdfjs-dist@4.10.38`.
+**Why:** 5.7.284 throws `this[#rP].getOrInsertComputed is not a function` on
+every render in Chromium 141. `Map.prototype.getOrInsertComputed` is a stage-3
+proposal that is still `undefined` there, so v5 simply does not run on a
+current browser. Found by driving the spike in a real browser; the package
+installs and typechecks cleanly either way.
+**Reverses if:** `getOrInsertComputed` ships in stable Chrome and Safari. Until
+then v5 is unshippable regardless of what its release notes say.
+**Cost:** pdf.js is ~344 KB plus a 1,343 KB worker, so it is dynamically
+imported. Only the two rasterising tools pay for it; the first-load JS of every
+other page is unchanged at ~103 KB.

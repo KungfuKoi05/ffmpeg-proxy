@@ -1,5 +1,38 @@
 # Changelog
 
+## 0.3.0 — PDF compression and PDF→JPG
+
+**Added**
+- **Compress PDF.** Rasterises each page to JPEG and rebuilds the document, at
+  three quality levels. Warns *before* you commit when the input is a text
+  document rather than a scan, and refuses to present a result that came out
+  bigger than the input.
+- **PDF to JPG.** One JPEG per page at screen (150 dpi) or print (300 dpi), with
+  thumbnails, per-page downloads and a download-all. Capped at 200 pages.
+- `lib/tools/pdf-render.ts` — presets, the text-density assessment and the
+  size verdict, with 20 tests asserting the measured numbers directly.
+- 36 tools live (was 34). 200 tests (was 180).
+
+**Changed**
+- `pdfjs-dist` pinned to 4.10.38. v5.7.284 throws
+  `this[#rP].getOrInsertComputed is not a function` on every render in
+  Chromium 141 — see docs/DECISIONS.md D11.
+- Both new tools dynamically import pdf.js, so first-load JS elsewhere is
+  unchanged (~103 KB shared).
+
+**Removed**
+- The temporary `/spike` measurement route. Its findings are in DECISIONS D10.
+
+**Verified in a browser with real files** (Chromium, production build)
+- `real-scan.pdf` 4.2 MB → 420 KB, **90.2% smaller** at Balanced
+- Same file → 253 KB, **94.1% smaller** at Smallest file
+- Output keeps 4 pages at 612×792 pt, identical to the input
+- `text-heavy.pdf` (6 pages of vector text): warning shown before the click;
+  result was 226× bigger, so no download was offered — only the explanation
+  and an explicit "download the larger file anyway"
+- PDF→JPG: 4 valid JPEGs at 1224×1584 (screen), 6 at 2448×3168 (print)
+- No console errors or page errors on any run
+
 ## 0.2.0 — image and PDF tools, admin auth
 
 **Added**

@@ -13,6 +13,7 @@ import {
 } from "./calc-tools";
 import { ImageTool } from "./image-tools";
 import { PdfMerge, PdfPageTool } from "./pdf-tools";
+import { PdfCompress, PdfToJpg } from "./pdf-render-tools";
 
 /**
  * Slug -> component. The registry decides which tools exist and how they are
@@ -59,6 +60,8 @@ export const TOOL_COMPONENTS: Record<string, React.ComponentType> = {
   "split-pdf": () => <PdfPageTool mode="extract" />,
   "delete-pdf-pages": () => <PdfPageTool mode="delete" />,
   "rotate-pdf": () => <PdfPageTool mode="rotate" />,
+  "compress-pdf": PdfCompress,
+  "pdf-to-jpg": PdfToJpg,
 };
 
 export function ToolRenderer({ slug }: { slug: string }) {

@@ -1,6 +1,6 @@
 # Toolbench
 
-A multi-tool utility platform. 34 tools live, all running in the browser.
+A multi-tool utility platform. 36 tools live, all running in the browser.
 
 **State:** builds, typechecks, lints clean, 180 tests pass, verified in a real
 browser against real image and PDF files. **Not deployed. No domain. No
@@ -22,7 +22,7 @@ npm run typecheck && npm run lint && npm test && npm run build
 
 | Area | State |
 |---|---|
-| 34 tools across PDF, image, text, developer, calculators | Working, browser-side, tested |
+| 36 tools across PDF, image, text, developer, calculators | Working, browser-side, tested |
 | Tool registry driving pages/sitemap/linking | Working |
 | SEO: metadata, canonicals, JSON-LD, sitemap, robots | Working, verified in rendered HTML |
 | Analytics (privacy-first, no cookies) | Working; in-memory storage |

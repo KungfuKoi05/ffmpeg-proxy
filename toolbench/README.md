@@ -1,6 +1,6 @@
 # Toolbench
 
-Free browser-based utilities. 34 tools across PDF, image, text, developer and
+Free browser-based utilities. 36 tools across PDF, image, text, developer and
 calculator categories — every one runs on your own device, so nothing is
 uploaded.
 

@@ -2,6 +2,11 @@
 
 Ordered by `Impact × Confidence ÷ Effort`, not by what is interesting.
 
+**On ranking:** with no analytics and no Search Console yet, the ordering below
+is informed judgment, not measured demand. Nothing here rests on a search-volume
+figure, because we do not have one. Item 1 exists to replace this whole section
+with data.
+
 ## Done since launch set
 
 - ~~Auth on `/admin`~~ — HTTP Basic via `ADMIN_PASSWORD`, fails closed with 503
@@ -10,6 +15,10 @@ Ordered by `Impact × Confidence ÷ Effort`, not by what is interesting.
   real image: 577 KB → 64 KB.
 - ~~PDF tools~~ — merge, split, delete pages, rotate. Verified on real PDFs:
   3 + 2 pages merged to 5.
+- ~~PDF compress and PDF → JPG~~ — built on `pdf.js` after a spike measured
+  what actually works. Compression is 90.2% on a real 4.2 MB scan and warns
+  (then refuses) on text documents, where rasterising made a file 226× bigger.
+  See DECISIONS D10.
 
 ## Now — before any public deploy
 
@@ -21,14 +30,16 @@ Ordered by `Impact × Confidence ÷ Effort`, not by what is interesting.
 
 ## Next — highest expected return
 
-1. **Deploy, then Search Console.** 34 tools is well past the 10–15 launch bar.
+1. **Deploy, then Search Console.** 36 tools is well past the 10–15 launch bar.
    Everything after this should be driven by impression data rather than
    judgment — that is the single biggest change in decision quality available.
-2. **PDF compress and PDF → JPG.** The two most-wanted PDF tools we do not have.
-   Compression is feasible via image re-encoding inside the PDF; page rendering
-   needs `pdf.js`, a real but justified dependency.
-3. **Image crop, and image → PDF.** Both Canvas-only, both natural companions to
+2. **Image crop, and image → PDF.** Both Canvas-only, both natural companions to
    what now exists.
+3. **PDF compress v2 — keep the text layer.** Today's compressor rasterises, so
+   it only helps scans and says so. Re-encoding only the *embedded images* while
+   leaving the text layer intact would make it work on mixed documents too. That
+   needs image-stream surgery pdf-lib does not expose, so it is a real project
+   rather than a tweak.
 
 ## Then
 

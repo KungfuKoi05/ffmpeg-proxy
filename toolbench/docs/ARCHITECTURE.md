@@ -59,6 +59,18 @@ arrives. Every tool that does real work hands back a result with its own
 Download button instead. This was a real bug, found by driving the merge tool
 with actual PDFs.
 
+**Heavy libraries are dynamically imported.** `pdf-lib` (document surgery) and
+`pdfjs-dist` (page rendering, ~344 KB plus a 1,343 KB worker) load only when a
+tool that needs them is used. A visitor who came for the word counter downloads
+neither; shared first-load JS stays at ~103 KB.
+
+**A tool that cannot help says so.** `compress-pdf` samples the input's text
+density before doing any work and warns when rasterising will make the file
+bigger, then checks the output and withholds a result that grew. Both rules are
+pure functions in `lib/tools/pdf-render.ts`, unit-tested against the byte counts
+actually measured in a browser. The general principle: where a tool has a known
+failure mode, encode it as logic rather than leaving the user to discover it.
+
 **Storage degrades instead of blocking.** `lib/storage.ts` counts in memory when
 `DATABASE_URL` is absent, so the app is deployable today at $0. The Postgres
 schema exists; the driver is deliberately not wired up, because writing an
@@ -77,3 +89,10 @@ bugs.
 - **PDF tools skip document-level features.** Page content, text and images copy
   faithfully; bookmarks, form fields and annotations may not survive a
   split or merge. Stated in the tools' own FAQs.
+- **PDF compression only helps scans.** It works by rasterising, so a document
+  with a real text layer loses that layer and usually grows. The tool detects
+  this and refuses rather than pretending otherwise, but the underlying
+  limitation stands — see DECISIONS D10 for what a v2 would need.
+- **`pdfjs-dist` is held at v4.** v5 calls `Map.prototype.getOrInsertComputed`,
+  which does not exist in current Chromium, so it throws on every render.
+  DECISIONS D11.
