@@ -1,0 +1,697 @@
+// BuildSight — firearm component configuration & visualization platform.
+//
+// Unit conventions (enforced by src/lib/units.ts):
+//   * mass      -> grams        (`*Grams`)
+//   * length    -> millimetres  (`*Mm`)
+//   * money     -> minor units  (`*Cents`) + ISO-4217 `currency`
+// Storing canonical integer units keeps arithmetic exact and lets the UI
+// render imperial or metric without lossy round-tripping in the database.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ---------------------------------------------------------------------------
+// Enums
+// ---------------------------------------------------------------------------
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum Plan {
+  FREE
+  PRO
+  PRO_PLUS
+  BUSINESS
+}
+
+/// Provenance of a specification. Only VERIFIED_MANUFACTURER is authoritative.
+enum VerificationStatus {
+  VERIFIED_MANUFACTURER
+  VERIFIED_DISTRIBUTOR
+  SECONDARY_SOURCE
+  USER_SUBMITTED
+  UNVERIFIED
+}
+
+enum PublishState {
+  DRAFT
+  PENDING_REVIEW
+  PUBLISHED
+  REJECTED
+  ARCHIVED
+}
+
+/// Result of the deterministic compatibility engine. UNKNOWN is never
+/// presented as compatible anywhere in the product.
+enum CompatibilityState {
+  COMPATIBLE
+  INCOMPATIBLE
+  CONDITIONAL
+  UNKNOWN
+}
+
+enum RuleKind {
+  INTERFACE_MATCH
+  THREAD_MATCH
+  PLATFORM_MATCH
+  CALIBER_MATCH
+  GAS_SYSTEM_MATCH
+  DIMENSIONAL_CONSTRAINT
+  EXPLICIT_PAIR
+  REQUIRES_COMPONENT
+  MUTUALLY_EXCLUSIVE
+}
+
+enum AttachmentRole {
+  /// The product exposes this interface for something else to mount onto.
+  PROVIDES
+  /// The product must be mounted onto a host offering this interface.
+  CONSUMES
+}
+
+enum Availability {
+  IN_STOCK
+  LOW_STOCK
+  BACKORDER
+  OUT_OF_STOCK
+  DISCONTINUED
+  UNKNOWN
+}
+
+/// Drives the purchasing boundary: regulated items always route to the
+/// manufacturer's or retailer's own purchase flow, never automated checkout.
+enum RegulatoryClass {
+  UNREGULATED_ACCESSORY
+  SERIALIZED_COMPONENT
+  NFA_ITEM
+  RESTRICTED_OTHER
+  UNCLASSIFIED
+}
+
+enum SourceKind {
+  MANUFACTURER_SITE
+  DISTRIBUTOR
+  RETAILER
+  MANUAL_ENTRY
+  IMPORT_FILE
+  USER_SUBMISSION
+  DEMO_FIXTURE
+}
+
+enum ImportRecordState {
+  PENDING
+  NEEDS_REVIEW
+  DUPLICATE
+  APPROVED
+  REJECTED
+}
+
+enum ImportBatchState {
+  DRAFT
+  VALIDATING
+  READY_FOR_REVIEW
+  PARTIALLY_APPLIED
+  APPLIED
+  CANCELLED
+}
+
+enum AssetKind {
+  GLB
+  GLTF
+  PLACEHOLDER_PRIMITIVE
+}
+
+enum NotificationKind {
+  PRICE_DROP
+  PRICE_RISE
+  BACK_IN_STOCK
+  CATALOG_UPDATE
+  SYSTEM
+}
+
+// ---------------------------------------------------------------------------
+// Accounts
+// ---------------------------------------------------------------------------
+
+model User {
+  id               String    @id @default(cuid())
+  email            String    @unique
+  name             String?
+  passwordHash     String
+  role             Role      @default(USER)
+  plan             Plan      @default(FREE)
+  planRenewsAt     DateTime?
+  stripeCustomerId String?   @unique
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  builds         Build[]
+  watchlist      WatchlistItem[]
+  savedSearches  SavedSearch[]
+  comparisons    SavedComparison[]
+  recentlyViewed RecentlyViewedProduct[]
+  notifications  Notification[]
+  auditLogs      AuditLog[]
+  importBatches  ImportBatch[]
+
+  @@index([plan])
+}
+
+// ---------------------------------------------------------------------------
+// Catalog
+// ---------------------------------------------------------------------------
+
+model Manufacturer {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  name        String
+  website     String?
+  logoUrl     String?
+  description String?
+  country     String?
+  supportUrl  String?
+  /// True for synthetic demo data so the UI can label it unmistakably.
+  isDemo      Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  products Product[]
+
+  @@index([name])
+}
+
+model Category {
+  id          String  @id @default(cuid())
+  slug        String  @unique
+  name        String
+  description String?
+  /// Ordering hint for the Build Studio component library.
+  sortOrder   Int     @default(100)
+  parentId    String?
+
+  parent   Category?  @relation("CategoryTree", fields: [parentId], references: [id], onDelete: SetNull)
+  children Category[] @relation("CategoryTree")
+  products Product[]
+
+  @@index([parentId])
+}
+
+model Product {
+  id                     String @id @default(cuid())
+  slug                   String @unique
+  manufacturerId         String
+  manufacturerPartNumber String
+  productName            String
+  categoryId             String
+
+  caliber  String?
+  platform String?
+
+  // Pricing — MSRP as published by the manufacturer.
+  msrpCents Int?
+  currency  String @default("USD")
+
+  // Canonical physical properties.
+  weightGrams     Int?
+  lengthMm        Decimal? @db.Decimal(10, 3)
+  widthMm         Decimal? @db.Decimal(10, 3)
+  heightMm        Decimal? @db.Decimal(10, 3)
+  diameterMm      Decimal? @db.Decimal(10, 3)
+  innerDiameterMm Decimal? @db.Decimal(10, 3)
+
+  material String?
+  finish   String?
+
+  // Interface vocabulary (see src/lib/catalog/vocabulary.ts).
+  mountingInterface       String?
+  threadSpecification     String?
+  gasSystemCompatibility  String?
+  handguardInterface      String?
+  receiverInterface       String?
+  opticInterface          String?
+  suppressorCompatibility String?
+  barrelCompatibility     String?
+
+  description         String?
+  manufacturerUrl     String?
+  productUrl          String?
+  imageUrl            String?
+  cadAssetUrl         String?
+  technicalDrawingUrl String?
+  manualUrl           String?
+
+  dataSourceId       String?
+  sourceUrl          String?
+  lastVerified       DateTime?
+  verificationStatus VerificationStatus @default(UNVERIFIED)
+
+  regulatoryClass RegulatoryClass @default(UNCLASSIFIED)
+  availability    Availability    @default(UNKNOWN)
+  publishState    PublishState    @default(DRAFT)
+  isDemo          Boolean         @default(false)
+
+  dataQualityScore  Int?
+  dataQualityIssues Json?
+
+  /// Denormalised haystack maintained by src/lib/catalog/search-text.ts and
+  /// indexed with a GIN index over to_tsvector (see migration).
+  searchText String @default("")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  manufacturer Manufacturer @relation(fields: [manufacturerId], references: [id], onDelete: Cascade)
+  category     Category     @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  dataSource   DataSource?  @relation(fields: [dataSourceId], references: [id], onDelete: SetNull)
+
+  variants         ProductVariant[]
+  specifications   Specification[]
+  dimensions       Dimension[]
+  images           ProductImage[]
+  attachmentPoints AttachmentPoint[]
+  assets           ThreeDAsset[]
+  prices           Price[]
+  buildComponents  BuildComponent[]
+  watchlistItems   WatchlistItem[]
+  recentlyViewed   RecentlyViewedProduct[]
+  rulesAsSubject   CompatibilityRule[]     @relation("RuleSubject")
+  rulesAsTarget    CompatibilityRule[]     @relation("RuleTarget")
+
+  @@unique([manufacturerId, manufacturerPartNumber])
+  @@index([categoryId, publishState])
+  @@index([platform])
+  @@index([caliber])
+  @@index([verificationStatus])
+  @@index([msrpCents])
+  @@index([weightGrams])
+  @@index([publishState, updatedAt])
+}
+
+model ProductVariant {
+  id           String       @id @default(cuid())
+  productId    String
+  sku          String
+  name         String
+  finish       String?
+  msrpCents    Int?
+  weightGrams  Int?
+  availability Availability @default(UNKNOWN)
+  imageUrl     String?
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([productId, sku])
+  @@index([sku])
+}
+
+/// Free-form manufacturer specification with mandatory provenance.
+model Specification {
+  id                 String             @id @default(cuid())
+  productId          String
+  key                String
+  label              String
+  value              String
+  unit               String?
+  numericValue       Decimal?           @db.Decimal(14, 4)
+  verificationStatus VerificationStatus @default(UNVERIFIED)
+  dataSourceId       String?
+  sourceUrl          String?
+  lastVerified       DateTime?
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+
+  product    Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
+  dataSource DataSource? @relation(fields: [dataSourceId], references: [id], onDelete: SetNull)
+
+  @@unique([productId, key])
+  @@index([key])
+}
+
+/// Structured geometry used by the dimensional clearance engine.
+model Dimension {
+  id                 String             @id @default(cuid())
+  productId          String
+  kind               String
+  label              String
+  valueMm            Decimal            @db.Decimal(10, 3)
+  toleranceMm        Decimal?           @db.Decimal(10, 3)
+  axis               String?
+  verificationStatus VerificationStatus @default(UNVERIFIED)
+  sourceUrl          String?
+  notes              String?
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([productId, kind])
+  @@index([kind])
+}
+
+/// Explicit, human-authored compatibility rule. The engine only ever reasons
+/// from these rows — never from model inference.
+model CompatibilityRule {
+  id                  String             @id @default(cuid())
+  kind                RuleKind
+  name                String
+  /// Categories the rule applies between, e.g. "barrel" -> "muzzle-device".
+  subjectCategorySlug String?
+  targetCategorySlug  String?
+  /// Optional pinning to specific products for EXPLICIT_PAIR rules.
+  subjectProductId    String?
+  targetProductId     String?
+  /// Field names compared for interface/thread/platform style rules.
+  subjectField        String?
+  targetField         String?
+  /// Structured payload for dimensional constraints and conditions.
+  parameters          Json?
+  result              CompatibilityState
+  explanation         String
+  /// Human-readable condition shown for CONDITIONAL results.
+  condition           String?
+  sourceUrl           String?
+  verificationStatus  VerificationStatus @default(UNVERIFIED)
+  priority            Int                @default(100)
+  isActive            Boolean            @default(true)
+  isDemo              Boolean            @default(false)
+  createdAt           DateTime           @default(now())
+  updatedAt           DateTime           @updatedAt
+
+  subjectProduct Product? @relation("RuleSubject", fields: [subjectProductId], references: [id], onDelete: Cascade)
+  targetProduct  Product? @relation("RuleTarget", fields: [targetProductId], references: [id], onDelete: Cascade)
+
+  @@index([kind, isActive])
+  @@index([subjectCategorySlug, targetCategorySlug])
+}
+
+/// Mount points used for 3D snapping and clearance math.
+model AttachmentPoint {
+  id        String         @id @default(cuid())
+  productId String
+  slug      String
+  label     String
+  role      AttachmentRole
+  interface String
+  /// Local-space offset from the product origin, in millimetres.
+  offsetXMm Decimal        @default(0) @db.Decimal(10, 3)
+  offsetYMm Decimal        @default(0) @db.Decimal(10, 3)
+  offsetZMm Decimal        @default(0) @db.Decimal(10, 3)
+  rotXDeg   Decimal        @default(0) @db.Decimal(8, 3)
+  rotYDeg   Decimal        @default(0) @db.Decimal(8, 3)
+  rotZDeg   Decimal        @default(0) @db.Decimal(8, 3)
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([productId, slug])
+  @@index([interface])
+}
+
+model ThreeDAsset {
+  id            String    @id @default(cuid())
+  productId     String
+  kind          AssetKind @default(PLACEHOLDER_PRIMITIVE)
+  url           String?
+  /// Placeholder primitives are generated from verified dimensions and must be
+  /// labelled "VISUAL APPROXIMATION" wherever they are rendered.
+  isApproximate Boolean   @default(true)
+  lodLevel      Int       @default(0)
+  fileSizeBytes Int?
+  boundingBox   Json?
+  createdAt     DateTime  @default(now())
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId, lodLevel])
+}
+
+model ProductImage {
+  id        String  @id @default(cuid())
+  productId String
+  url       String
+  alt       String?
+  isPrimary Boolean @default(false)
+  sortOrder Int     @default(0)
+  sourceUrl String?
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId, sortOrder])
+}
+
+// ---------------------------------------------------------------------------
+// Commerce
+// ---------------------------------------------------------------------------
+
+model Retailer {
+  id           String   @id @default(cuid())
+  slug         String   @unique
+  name         String
+  website      String?
+  logoUrl      String?
+  /// Affiliate handling is opt-in per retailer and always disclosed in the UI.
+  affiliateTag String?
+  isDemo       Boolean  @default(false)
+  createdAt    DateTime @default(now())
+
+  prices Price[]
+}
+
+model Price {
+  id             String       @id @default(cuid())
+  productId      String
+  retailerId     String?
+  amountCents    Int
+  currency       String       @default("USD")
+  salePriceCents Int?
+  availability   Availability @default(UNKNOWN)
+  productUrl     String?
+  observedAt     DateTime     @default(now())
+  checkedAt      DateTime     @default(now())
+  isCurrent      Boolean      @default(true)
+  sourceUrl      String?
+
+  product  Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+  retailer Retailer? @relation(fields: [retailerId], references: [id], onDelete: SetNull)
+
+  @@index([productId, observedAt])
+  @@index([productId, isCurrent])
+  @@index([retailerId])
+}
+
+// ---------------------------------------------------------------------------
+// Builds
+// ---------------------------------------------------------------------------
+
+model Build {
+  id            String   @id @default(cuid())
+  ownerId       String
+  name          String
+  description   String?
+  platform      String?
+  caliber       String?
+  isArchived    Boolean  @default(false)
+  isPublic      Boolean  @default(false)
+  /// Cached engine output; recomputed on every read-through in the API layer.
+  cachedSummary Json?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  owner             User              @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  components        BuildComponent[]
+  comparisonEntries ComparisonEntry[]
+
+  @@index([ownerId, isArchived, updatedAt])
+}
+
+model BuildComponent {
+  id                 String   @id @default(cuid())
+  buildId            String
+  productId          String
+  /// Assembly slot key from src/lib/assembly/slots.ts, e.g. "barrel".
+  slotKey            String
+  quantity           Int      @default(1)
+  /// Price captured when the component was added, for stable build sheets.
+  priceSnapshotCents Int?
+  notes              String?
+  /// Optional per-build transform overrides for the 3D viewer.
+  transform          Json?
+  createdAt          DateTime @default(now())
+
+  build   Build   @relation(fields: [buildId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Restrict)
+
+  @@unique([buildId, slotKey, productId])
+  @@index([buildId])
+  @@index([productId])
+}
+
+model SavedComparison {
+  id        String   @id @default(cuid())
+  ownerId   String
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  owner   User              @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  entries ComparisonEntry[]
+
+  @@index([ownerId, updatedAt])
+}
+
+model ComparisonEntry {
+  id           String @id @default(cuid())
+  comparisonId String
+  buildId      String
+  sortOrder    Int    @default(0)
+
+  comparison SavedComparison @relation(fields: [comparisonId], references: [id], onDelete: Cascade)
+  build      Build           @relation(fields: [buildId], references: [id], onDelete: Cascade)
+
+  @@unique([comparisonId, buildId])
+}
+
+model SavedSearch {
+  id        String   @id @default(cuid())
+  ownerId   String
+  name      String
+  query     String?
+  filters   Json
+  createdAt DateTime @default(now())
+
+  owner User @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+
+  @@index([ownerId])
+}
+
+model WatchlistItem {
+  id                 String   @id @default(cuid())
+  ownerId            String
+  productId          String
+  targetPriceCents   Int?
+  /// Price observed when the item was added, used for change detection.
+  lastSeenPriceCents Int?
+  notifyByEmail      Boolean  @default(true)
+  notifyInApp        Boolean  @default(true)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  owner   User    @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([ownerId, productId])
+  @@index([productId])
+}
+
+model RecentlyViewedProduct {
+  id        String   @id @default(cuid())
+  ownerId   String
+  productId String
+  viewedAt  DateTime @default(now())
+
+  owner   User    @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([ownerId, productId])
+  @@index([ownerId, viewedAt])
+}
+
+model Notification {
+  id            String           @id @default(cuid())
+  userId        String
+  kind          NotificationKind
+  title         String
+  body          String
+  href          String?
+  readAt        DateTime?
+  /// Mirrors the email that would be dispatched by the delivery adapter.
+  emailQueuedAt DateTime?
+  createdAt     DateTime         @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, readAt, createdAt])
+}
+
+// ---------------------------------------------------------------------------
+// Data governance
+// ---------------------------------------------------------------------------
+
+model DataSource {
+  id          String     @id @default(cuid())
+  slug        String     @unique
+  name        String
+  kind        SourceKind
+  url         String?
+  /// 0-100 confidence weight applied by the data-quality engine.
+  trustWeight Int        @default(50)
+  notes       String?
+  createdAt   DateTime   @default(now())
+
+  products       Product[]
+  specifications Specification[]
+  importBatches  ImportBatch[]
+}
+
+model ImportBatch {
+  id           String           @id @default(cuid())
+  name         String
+  dataSourceId String?
+  createdById  String?
+  state        ImportBatchState @default(DRAFT)
+  notes        String?
+  stats        Json?
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+
+  dataSource DataSource?    @relation(fields: [dataSourceId], references: [id], onDelete: SetNull)
+  createdBy  User?          @relation(fields: [createdById], references: [id], onDelete: SetNull)
+  records    ImportRecord[]
+
+  @@index([state, createdAt])
+}
+
+model ImportRecord {
+  id                   String            @id @default(cuid())
+  batchId              String
+  state                ImportRecordState @default(PENDING)
+  /// Raw incoming payload, retained verbatim for auditability.
+  rawPayload           Json
+  /// Payload after unit normalisation and field mapping.
+  normalized           Json?
+  /// Validation findings: missing specs, unit problems, duplicates.
+  issues               Json?
+  duplicateOfProductId String?
+  createdProductId     String?
+  reviewedAt           DateTime?
+  reviewNote           String?
+  createdAt            DateTime          @default(now())
+
+  batch ImportBatch @relation(fields: [batchId], references: [id], onDelete: Cascade)
+
+  @@index([batchId, state])
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  actorId    String?
+  action     String
+  entityType String
+  entityId   String?
+  before     Json?
+  after      Json?
+  ip         String?
+  createdAt  DateTime @default(now())
+
+  actor User? @relation(fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([entityType, entityId])
+  @@index([actorId, createdAt])
+}
