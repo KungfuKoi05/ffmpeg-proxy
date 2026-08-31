@@ -92,6 +92,12 @@ export function PriceHistory({ productId }: { productId: string }) {
               tickLine={false}
               axisLine={false}
               width={52}
+              // Anchoring at zero would flatten the series; the axis is
+              // labelled, so a windowed domain is not misleading.
+              domain={[
+                (min: number) => Math.floor((min * 0.97) / 5) * 5,
+                (max: number) => Math.ceil((max * 1.03) / 5) * 5,
+              ]}
               tickFormatter={(value) => `$${Number(value ?? 0).toFixed(0)}`}
             />
             <Tooltip

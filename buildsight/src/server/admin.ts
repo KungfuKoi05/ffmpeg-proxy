@@ -11,7 +11,8 @@ export interface CatalogHealth {
   manufacturers: number;
   rules: number;
   retailers: number;
-  unverified: number;
+  /** Records whose specifications are not manufacturer-verified. */
+  notManufacturerVerified: number;
   missingDimensions: number;
   missingPrices: number;
   duplicateSkus: number;
@@ -31,7 +32,7 @@ export async function catalogHealth(now = new Date()): Promise<CatalogHealth> {
     manufacturers,
     rules,
     retailers,
-    unverified,
+    notManufacturerVerified,
     missingDimensions,
     withPrices,
     expiredPrices,
@@ -45,7 +46,9 @@ export async function catalogHealth(now = new Date()): Promise<CatalogHealth> {
     prisma.manufacturer.count(),
     prisma.compatibilityRule.count({ where: { isActive: true } }),
     prisma.retailer.count(),
-    prisma.product.count({ where: { verificationStatus: "UNVERIFIED" } }),
+    prisma.product.count({
+      where: { verificationStatus: { not: "VERIFIED_MANUFACTURER" } },
+    }),
     prisma.product.count({ where: { lengthMm: null } }),
     prisma.product.count({ where: { OR: [{ msrpCents: { not: null } }, { prices: { some: {} } }] } }),
     prisma.price.count({ where: { isCurrent: true, checkedAt: { lt: staleBefore } } }),
@@ -65,7 +68,7 @@ export async function catalogHealth(now = new Date()): Promise<CatalogHealth> {
     manufacturers,
     rules,
     retailers,
-    unverified,
+    notManufacturerVerified,
     missingDimensions,
     missingPrices: products - withPrices,
     duplicateSkus: duplicates.length,

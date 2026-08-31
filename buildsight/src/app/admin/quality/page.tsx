@@ -35,7 +35,7 @@ export default async function AdminQualityPage() {
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <Check label="Missing source URL" count={missingSource} />
-        <Check label="Unverified records" count={health.unverified} />
+        <Check label="Not manufacturer-verified" count={health.notManufacturerVerified} />
         <Check label="Missing dimensions" count={health.missingDimensions} />
         <Check label="Missing pricing" count={health.missingPrices} />
         <Check label="Duplicate SKUs" count={duplicates.length} />

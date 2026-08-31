@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Meter } from "@/components/ui/misc";
 import { formatRelative } from "@/lib/utils";
+import { PriceCheckRunner } from "@/components/admin/job-runner";
 
 export const metadata: Metadata = { title: "Admin" };
 
@@ -63,7 +64,11 @@ export default async function AdminOverviewPage() {
               }
             />
             <ul className="mt-4 space-y-1.5 text-xs">
-              <Issue label="Unverified products" count={health.unverified} href="/admin/quality" />
+              <Issue
+                label="Not manufacturer-verified"
+                count={health.notManufacturerVerified}
+                href="/admin/quality"
+              />
               <Issue label="Missing dimensions" count={health.missingDimensions} href="/admin/quality" />
               <Issue label="Missing pricing" count={health.missingPrices} href="/admin/quality" />
               <Issue label="Duplicate SKUs" count={health.duplicateSkus} href="/admin/quality" />
@@ -89,6 +94,15 @@ export default async function AdminOverviewPage() {
             >
               Open the ingestion queue
             </Link>
+
+            <div className="mt-4 border-t border-line pt-3">
+              <p className="label-micro mb-2">Scheduled jobs</p>
+              <PriceCheckRunner />
+              <p className="mt-1.5 text-[11px] text-ink-faint">
+                Compares watched products against their last-seen observation and raises
+                notifications. A scheduler can call the same endpoint with a job token.
+              </p>
+            </div>
           </CardContent>
         </Card>
       </div>

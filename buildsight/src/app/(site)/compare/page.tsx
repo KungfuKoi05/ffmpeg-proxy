@@ -15,6 +15,8 @@ import { slotLabel, SLOTS } from "@/lib/assembly/slots";
 import { platformName } from "@/lib/catalog/vocabulary";
 import { entitlements } from "@/lib/plans";
 import { placeAssembly } from "@/lib/assembly/geometry";
+import { saveComparisonAction } from "@/server/actions/comparisons";
+import { Input } from "@/components/ui/input";
 
 export const metadata: Metadata = { title: "Compare configurations" };
 
@@ -251,10 +253,27 @@ export default async function ComparePage({
             </table>
           </div>
 
-          <div className="mt-4 flex flex-wrap gap-2">
+          <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
             <Badge tone="neutral">
               Differences are computed from published specifications only
             </Badge>
+            <form action={saveComparisonAction} className="flex items-center gap-2">
+              <input
+                type="hidden"
+                name="buildIds"
+                value={columns.map((column) => column.id).join(",")}
+              />
+              <Input
+                name="name"
+                placeholder="Name this comparison"
+                className="h-8 w-56 text-xs"
+                maxLength={80}
+                aria-label="Comparison name"
+              />
+              <Button type="submit" size="sm" variant="secondary">
+                Save comparison
+              </Button>
+            </form>
           </div>
         </>
       )}

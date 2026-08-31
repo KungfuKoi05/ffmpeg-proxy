@@ -29,7 +29,10 @@ export function MobileNav({ isAdmin }: { isAdmin?: boolean }) {
         {open ? <X /> : <Menu />}
       </Button>
       {open ? (
-        <div className="fixed inset-x-0 top-14 z-50 border-b border-line bg-surface p-3 shadow-xl">
+        <div
+          data-testid="mobile-nav"
+          className="fixed inset-x-0 top-14 z-50 border-b border-line bg-surface p-3 shadow-xl"
+        >
           <nav className="grid gap-1">
             {[...ITEMS, ...(isAdmin ? [{ href: "/admin", label: "Admin" }] : [])].map((item) => (
               <Link

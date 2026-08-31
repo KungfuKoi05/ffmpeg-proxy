@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import { formatLength } from "@/lib/units";
 import type { SerializedProduct } from "@/server/serializers";
 
 /**
@@ -74,7 +75,7 @@ export function PartSilhouette({
           stroke="none"
           className="font-mono"
         >
-          {known ? `${(length / 25.4).toFixed(2)} in` : "length not published"}
+          {known ? formatLength(length) : "length not published"}
         </text>
       </g>
     </svg>

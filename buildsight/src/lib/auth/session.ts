@@ -8,7 +8,7 @@
  * `tokenVersion`-style check against the user row on every read.
  */
 
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { SignJWT, jwtVerify } from "jose";
 import { cache } from "react";
 import { prisma } from "@/lib/db";
@@ -57,13 +57,31 @@ export async function verifySessionToken(token: string): Promise<string | null> 
   }
 }
 
+/**
+ * Decide whether to mark the session cookie Secure.
+ *
+ * Keyed off the actual request scheme rather than NODE_ENV: a production build
+ * served over plain http on a loopback address (local verification, container
+ * health checks, API clients in tests) would otherwise set a cookie the client
+ * immediately discards, and sessions would silently never work.
+ */
+async function shouldUseSecureCookie(): Promise<boolean> {
+  const headerList = await headers();
+  const forwardedProto = headerList.get("x-forwarded-proto")?.split(",")[0]?.trim();
+  if (forwardedProto) return forwardedProto === "https";
+
+  const host = headerList.get("host") ?? "";
+  const isLoopback = /^(localhost|127\.0\.0\.1|\[::1\])(:\d+)?$/i.test(host);
+  return process.env.NODE_ENV === "production" && !isLoopback;
+}
+
 export async function startSession(userId: string): Promise<void> {
   const token = await createSessionToken(userId);
   const store = await cookies();
   store.set(SESSION_COOKIE, token, {
     httpOnly: true,
     sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
+    secure: await shouldUseSecureCookie(),
     path: "/",
     maxAge: SESSION_TTL_SECONDS,
   });

@@ -40,6 +40,7 @@ export function SummaryBar({
       )}
     >
       <Metric
+        testId="metric-cost"
         label="Estimated cost"
         value={cost === null ? "No pricing" : formatMoney(cost, summary.currency, { showCents: false })}
         hint={
@@ -51,6 +52,7 @@ export function SummaryBar({
         }
       />
       <Metric
+        testId="metric-weight"
         label="Unloaded weight"
         value={summary.weight.totalGrams === null ? "—" : formatMass(summary.weight.totalGrams)}
         hint={
@@ -60,6 +62,7 @@ export function SummaryBar({
         }
       />
       <Metric
+        testId="metric-length"
         label="Overall length"
         value={
           summary.dimensions.overallLengthMm === null
@@ -68,8 +71,13 @@ export function SummaryBar({
         }
         hint={summary.dimensions.overallLengthMm === null ? "A component on the axis has no published length" : undefined}
       />
-      <Metric label="Components" value={String(summary.componentCount)} />
       <Metric
+        testId="metric-components"
+        label="Components"
+        value={String(summary.componentCount)}
+      />
+      <Metric
+        testId="metric-confidence"
         label="Confidence"
         value={summary.score.overall === null ? "—" : `${summary.score.overall}/100`}
       />
@@ -119,9 +127,19 @@ export function SummaryBar({
   );
 }
 
-function Metric({ label, value, hint }: { label: string; value: string; hint?: string }) {
+function Metric({
+  label,
+  value,
+  hint,
+  testId,
+}: {
+  label: string;
+  value: string;
+  hint?: string;
+  testId?: string;
+}) {
   return (
-    <div title={hint}>
+    <div title={hint} data-testid={testId}>
       <p className="label-micro">{label}</p>
       <p className="font-mono text-sm text-ink">{value}</p>
       {hint ? <p className="text-[10px] text-ink-faint">{hint}</p> : null}

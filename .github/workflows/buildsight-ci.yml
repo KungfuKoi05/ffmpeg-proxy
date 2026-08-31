@@ -1,0 +1,69 @@
+name: BuildSight CI
+
+on:
+  push:
+    paths:
+      - "buildsight/**"
+      - ".github/workflows/buildsight-ci.yml"
+  pull_request:
+    paths:
+      - "buildsight/**"
+      - ".github/workflows/buildsight-ci.yml"
+
+defaults:
+  run:
+    working-directory: buildsight
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: buildsight
+          POSTGRES_PASSWORD: buildsight
+          POSTGRES_DB: buildsight
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      DATABASE_URL: postgresql://buildsight:buildsight@localhost:5432/buildsight?schema=public
+      TEST_DATABASE_URL: postgresql://buildsight:buildsight@localhost:5432/buildsight_test?schema=public
+      AUTH_SECRET: ci-secret-value-that-is-at-least-32-characters-long
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: buildsight/package-lock.json
+
+      - run: npm ci
+
+      - name: Apply migrations
+        run: |
+          npm run db:deploy
+          DATABASE_URL="$TEST_DATABASE_URL" npx prisma migrate deploy
+
+      - name: Seed the demo catalog
+        run: npm run db:seed
+
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+
+      - name: End-to-end tests
+        run: npm run test:e2e
