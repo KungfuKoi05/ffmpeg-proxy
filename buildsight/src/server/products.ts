@@ -8,6 +8,7 @@ export const productInclude = {
   manufacturer: { select: { id: true, name: true, slug: true, website: true, logoUrl: true } },
   category: { select: { id: true, slug: true, name: true, parentId: true } },
   dimensions: true,
+  specifications: { orderBy: { key: "asc" } },
   images: { orderBy: { sortOrder: "asc" } },
   prices: {
     where: { isCurrent: true },
