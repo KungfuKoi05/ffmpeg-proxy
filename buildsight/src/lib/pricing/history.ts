@@ -62,3 +62,8 @@ export function describePriceVsAverage(
   const direction = statistics.changeVsAveragePercent < 0 ? "below" : "above";
   return `Current price is ${magnitude.toFixed(1)}% ${direction} the ${windowDays}-day average.`;
 }
+
+/** A date `days` before now. Wrapped so callers stay free of clock reads. */
+export function daysAgo(days: number): Date {
+  return new Date(Date.now() - days * 86_400_000);
+}
