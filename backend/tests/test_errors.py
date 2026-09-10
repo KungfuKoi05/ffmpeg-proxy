@@ -47,3 +47,27 @@ def test_messages_are_complete_sentences():
         message = to_user_error(RuntimeError(raw)).message
         assert message[0].isupper()
         assert message.endswith((".", "!"))
+
+
+@pytest.mark.parametrize(
+    "raw",
+    [
+        # yt-dlp wraps a blocked proxy in its generic download wording. The
+        # connection is the problem, and "try again" is unhelpful advice.
+        "ERROR: [youtube] abc: Unable to download API page: <urlopen error "
+        "Tunnel connection failed: 403 Forbidden> (caused by ProxyError(...))",
+        "ERROR: Unable to download webpage: <urlopen error [Errno -2] Name or service not known>",
+        "ERROR: Unable to download webpage: <urlopen error [Errno 111] Connection refused>",
+    ],
+)
+def test_connection_failures_are_not_mistaken_for_download_failures(raw):
+    error = to_user_error(RuntimeError(raw))
+    assert error.code == "network_error"
+    assert "network" in error.message.lower()
+    assert "proxy" in error.hint.lower()
+
+
+def test_a_genuine_mid_download_http_error_is_still_a_download_failure():
+    """Reordering must not swallow a real server-side failure."""
+    assert to_user_error(RuntimeError("ERROR: fragment 3 not found; HTTP Error 404")).code == "download_failed"
+    assert to_user_error(RuntimeError("unable to download video data: HTTP Error 500")).code == "download_failed"

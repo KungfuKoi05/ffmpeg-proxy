@@ -64,16 +64,25 @@ _PATTERNS: tuple[tuple[re.Pattern, str, str, str], ...] = (
         "Wait a few minutes and try again.",
     ),
     (
+        # Connection-level failures. Checked before download_failed because
+        # yt-dlp reports a blocked proxy as "Unable to download API page:
+        # <urlopen error Tunnel connection failed>" - telling someone to
+        # retry that would waste their time; the network is the problem.
+        re.compile(
+            r"urlopen error|tunnel connection failed|proxyerror|proxy error|"
+            r"name or service not known|temporary failure in name resolution|"
+            r"connection reset|connection refused|connection aborted|timed out|ssl",
+            re.I,
+        ),
+        "network_error",
+        "We couldn't reach YouTube. This looks like a network problem on this machine.",
+        "Check your internet connection or proxy settings, then try again.",
+    ),
+    (
         re.compile(r"unable to download|http error 4\d\d|http error 5\d\d|fragment.*not found", re.I),
         "download_failed",
         "The download failed partway through.",
         "Check your internet connection and try again.",
-    ),
-    (
-        re.compile(r"urlopen error|name or service not known|temporary failure in name resolution|connection reset|connection refused|timed out|ssl", re.I),
-        "network_error",
-        "We couldn't reach YouTube. This looks like a network problem on this machine.",
-        "Check your internet connection or proxy settings, then try again.",
     ),
     (
         re.compile(r"no space left on device|errno 28", re.I),
