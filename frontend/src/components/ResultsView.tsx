@@ -10,6 +10,7 @@ interface Props {
 
 const TRANSCRIPT_LABELS: Record<string, string> = {
   youtube_subtitles: "the video's own captions",
+  embedded_subtitles: 'the subtitle track inside the file',
   whisper: 'audio transcribed on this machine',
   none: 'audio analysis (no transcript was available)',
 }

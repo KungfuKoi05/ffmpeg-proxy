@@ -130,10 +130,18 @@ def _execute(job_id: str, reporter: ProgressReporter) -> PipelineOutcome:
                 message="The uploaded file is no longer available.",
                 hint="Upload it again.",
             )
+        # A sidecar the user placed beside the file, or a track carried inside
+        # the container - either beats falling back to audio-only segmentation.
         subtitle_paths = sorted(
             p for p in source_path.parent.iterdir()
             if p.is_file() and p.suffix.lower() in {".srt", ".vtt", ".json3", ".ass"}
         )
+        if not subtitle_paths:
+            reporter.stage_progress(
+                low=P_DOWNLOAD[0], high=P_DOWNLOAD[1], fraction=0.6,
+                message="Looking for subtitles in the file…",
+            )
+            subtitle_paths = media.extract_embedded_subtitles(source_path, scratch)
         result = youtube.DownloadResult(video_path=source_path, subtitle_paths=subtitle_paths)
         reporter.stage_progress(
             low=P_DOWNLOAD[0], high=P_DOWNLOAD[1], fraction=1.0, message="Reading your video file…"
@@ -196,6 +204,9 @@ def _execute(job_id: str, reporter: ProgressReporter) -> PipelineOutcome:
         source_path,
         result.subtitle_paths,
         duration=info.duration,
+        subtitle_source=(
+            "embedded_subtitles" if source_kind == "upload" else "youtube_subtitles"
+        ),
         on_progress=transcript_progress,
     )
     log.info(

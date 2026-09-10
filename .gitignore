@@ -18,5 +18,8 @@ temp/
 *.db
 *.sqlite3
 
+# Generated demo sample - rebuilt by scripts/demo.sh, not worth committing
+demo/
+
 # OS
 .DS_Store

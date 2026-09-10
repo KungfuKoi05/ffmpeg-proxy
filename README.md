@@ -76,6 +76,17 @@ tool was absent.
 git clone <this repo>
 cd ffmpeg-proxy
 
+./scripts/demo.sh         # sets up, builds a sample video, starts the app
+```
+
+That is the whole thing. It installs what's missing, generates a five-minute
+sample talk with real speech timing and subtitles, starts the server, and
+tells you what to click. **No YouTube account, no video of your own, no
+network required.** About a minute from a cold start to five finished clips.
+
+For normal use:
+
+```bash
 ./scripts/setup.sh        # checks tools, installs deps, builds the UI
 ./scripts/doctor.sh       # confirms it can actually run — including YouTube
 ./scripts/start.sh        # starts the app
@@ -168,9 +179,13 @@ same selection, same output. This path has no dependency on YouTube, which
 makes it the reliable way to demo the app and the answer whenever the download
 route is blocked.
 
-Videos with no captions still work: the app falls back to transcribing locally
-with Whisper if you installed it, and to pause-aligned audio segmentation if
-you didn't.
+**Subtitles inside the file are used automatically.** Most exports from an
+editor carry a subtitle track, and reading it gives clip selection a real
+transcript. A `.srt` or `.vtt` sitting next to the file works too.
+
+Videos with no subtitles at all still work: the app falls back to transcribing
+locally with Whisper if you installed it, and to pause-aligned audio
+segmentation if you didn't.
 
 ---
 
@@ -323,5 +338,6 @@ Everything for the clip generator lives in `backend/`, `frontend/` and
 
 ## Documentation
 
+* `./scripts/demo.sh` — the fastest way to see it work
 * [SETUP.md](SETUP.md) — step-by-step installation for each platform
 * [ARCHITECTURE.md](ARCHITECTURE.md) — how the pipeline works, module by module

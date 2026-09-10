@@ -286,6 +286,86 @@ def run_with_progress(
         raise RuntimeError(f"ffmpeg failed ({proc.returncode}): {' | '.join(tail)}")
 
 
+def subtitle_streams(path: Path) -> list[dict]:
+    """List subtitle tracks carried inside a container."""
+    try:
+        proc = run(
+            [
+                FFPROBE, "-v", "error", "-print_format", "json",
+                "-select_streams", "s", "-show_streams", str(path),
+            ],
+            timeout=120,
+            check=False,
+        )
+        return json.loads(proc.stdout or "{}").get("streams", []) or []
+    except (RuntimeError, TimeoutError, json.JSONDecodeError) as exc:
+        log.debug("could not list subtitle streams: %s", exc)
+        return []
+
+
+# Image-based subtitles cannot be turned back into text.
+_BITMAP_SUBTITLE_CODECS = {"dvd_subtitle", "dvb_subtitle", "hdmv_pgs_subtitle", "xsub"}
+
+
+def extract_embedded_subtitles(path: Path, dest_dir: Path) -> list[Path]:
+    """Pull text subtitle tracks out of a container into .srt files.
+
+    Plenty of video files carry their own subtitles. Using them costs one cheap
+    ffmpeg call and gives clip selection a real transcript instead of falling
+    back to audio-only segmentation.
+    """
+    streams = subtitle_streams(path)
+    if not streams:
+        return []
+
+    def rank(stream: dict) -> tuple[int, int]:
+        language = str((stream.get("tags") or {}).get("language") or "").lower()
+        disposition = stream.get("disposition") or {}
+        return (
+            0 if language.startswith("en") else 1,
+            0 if disposition.get("default") else 1,
+        )
+
+    dest_dir.mkdir(parents=True, exist_ok=True)
+    written: list[Path] = []
+
+    for stream in sorted(streams, key=rank):
+        codec = str(stream.get("codec_name") or "").lower()
+        if codec in _BITMAP_SUBTITLE_CODECS:
+            log.debug("skipping image-based subtitle track (%s)", codec)
+            continue
+        index = stream.get("index")
+        if index is None:
+            continue
+
+        language = str((stream.get("tags") or {}).get("language") or "und").lower()[:8]
+        language = "".join(ch for ch in language if ch.isalnum() or ch == "-") or "und"
+        destination = dest_dir / f"embedded.{language}.srt"
+
+        try:
+            run(
+                [
+                    FFMPEG, "-hide_banner", "-loglevel", "error", "-y",
+                    "-i", str(path),
+                    "-map", f"0:{int(index)}",
+                    "-c:s", "srt",
+                    str(destination),
+                ],
+                timeout=600,
+            )
+        except (RuntimeError, TimeoutError) as exc:
+            log.debug("could not extract subtitle stream %s: %s", index, exc)
+            continue
+
+        if destination.exists() and destination.stat().st_size > 40:
+            log.info("extracted embedded subtitles (%s) from %s", language, path.name)
+            written.append(destination)
+            break  # one usable track is enough
+        destination.unlink(missing_ok=True)
+
+    return written
+
+
 def extract_thumbnail(source: Path, dest: Path, *, at_seconds: float, width: int = 640) -> bool:
     dest.parent.mkdir(parents=True, exist_ok=True)
     try:

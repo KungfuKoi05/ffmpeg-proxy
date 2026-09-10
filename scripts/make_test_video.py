@@ -215,34 +215,194 @@ def write_json3(entries: list[dict], dest: Path) -> None:
     dest.write_text(json.dumps({"wireMagic": "pb3", "events": events}), encoding="utf-8")
 
 
-def render_video(audio: Path, dest: Path, duration: float) -> None:
-    """1080p video with detailed, moving content offset to the left of frame.
+# Everything visible is kept inside this column so it survives a 9:16 crop.
+# The column sits left of frame centre on purpose, giving the content-aware
+# reframer something real to find instead of defaulting to the middle.
+COLUMN_LEFT = 180
+COLUMN_RIGHT = 780
+COLUMN_CENTRE = (COLUMN_LEFT + COLUMN_RIGHT) // 2
+# Text sits in a narrower box than the column so a 9:16 crop, which lands
+# wherever the content-aware reframer puts it, never shaves the first and
+# last character off a line.
+TEXT_LEFT = COLUMN_LEFT + 70
+TEXT_RIGHT = COLUMN_RIGHT - 70
+FEED_SIZE = 420
+FONT = "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"
+
+TOPIC_TITLES = [
+    "Learning a language", "Running", "Baking bread", "A business failure",
+    "Venice", "Sleep", "Investing", "Architecture",
+    "The first computer bug", "Knowing when to quit", "Salt", "My grandfather",
+]
+
+
+def _ass_clock(seconds: float) -> str:
+    seconds = max(0.0, seconds)
+    hours, rem = divmod(int(seconds), 3600)
+    minutes, secs = divmod(rem, 60)
+    centis = int(round((seconds - int(seconds)) * 100))
+    if centis >= 100:
+        centis, secs = 0, secs + 1
+    return f"{hours:d}:{minutes:02d}:{secs:02d}.{centis:02d}"
+
+
+def _wrap(text: str, width: int = 28) -> str:
+    words, lines, current = text.split(), [], ""
+    for word in words:
+        candidate = f"{current} {word}".strip()
+        if len(candidate) <= width or not current:
+            current = candidate
+        else:
+            lines.append(current)
+            current = word
+    if current:
+        lines.append(current)
+    return "\\N".join(lines[:4])
+
+
+def write_overlay_ass(entries: list[dict], dest: Path, width: int, height: int) -> None:
+    """On-screen text so a viewer can see what is being said, and when.
+
+    This is what makes the demo self-evident: play any generated clip and you
+    can read that it starts at the beginning of a thought and ends at the end
+    of one.
+    """
+    margin_l = TEXT_LEFT
+    margin_r = width - TEXT_RIGHT
+
+    header = f"""[Script Info]
+ScriptType: v4.00+
+PlayResX: {width}
+PlayResY: {height}
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Topic,DejaVu Sans,46,&H00E8C88A,&H00E8C88A,&H00201810,&H00000000,-1,0,0,0,100,100,2,0,1,2.5,0,8,{margin_l},{margin_r},70,1
+Style: Line,DejaVu Sans,40,&H00FFFFFF,&H00FFFFFF,&H00101010,&H00000000,0,0,0,0,100,100,0,0,1,2.5,1,8,{margin_l},{margin_r},760,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+"""
+
+    lines = [header]
+
+    # One topic caption spanning each topic's whole run.
+    spans: dict[int, list[float]] = {}
+    for entry in entries:
+        span = spans.setdefault(entry["topic"], [entry["start"], entry["end"]])
+        span[1] = entry["end"]
+    for topic_id, (start, end) in spans.items():
+        title = TOPIC_TITLES[topic_id % len(TOPIC_TITLES)]
+        lines.append(
+            f"Dialogue: 0,{_ass_clock(start - 0.6)},{_ass_clock(end + 0.4)},Topic,,0,0,0,,{title}"
+        )
+
+    # The sentence currently being spoken.
+    for entry in entries:
+        lines.append(
+            f"Dialogue: 1,{_ass_clock(entry['start'])},{_ass_clock(entry['end'] + 0.35)},"
+            f"Line,,0,0,0,,{_wrap(entry['text'])}"
+        )
+
+    dest.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
+def _srt_clock(seconds: float) -> str:
+    seconds = max(0.0, seconds)
+    hours, rem = divmod(int(seconds), 3600)
+    minutes, secs = divmod(rem, 60)
+    millis = int(round((seconds - int(seconds)) * 1000))
+    return f"{hours:02d}:{minutes:02d}:{secs:02d},{millis:03d}"
+
+
+def write_srt(entries: list[dict], dest: Path) -> None:
+    """A plain subtitle file, for muxing into the sample as a real track."""
+    blocks = []
+    for i, entry in enumerate(entries, start=1):
+        blocks.append(
+            f"{i}\n{_srt_clock(entry['start'])} --> {_srt_clock(entry['end'])}\n{entry['text']}\n"
+        )
+    dest.write_text("\n".join(blocks), encoding="utf-8")
+
+
+def render_video(
+    audio: Path,
+    dest: Path,
+    duration: float,
+    overlay: Path | None = None,
+    subtitles: Path | None = None,
+) -> None:
+    """1080p source with its content held in an off-centre column.
 
     Off-centre on purpose: it gives the content-aware reframer something real
-    to find instead of landing on the middle by default.
+    to find instead of landing on the middle by default, and keeping
+    everything inside one column means a 9:16 crop loses nothing.
     """
+    feed_x = COLUMN_CENTRE - FEED_SIZE // 2
+    chain = (
+        f"[1:v]scale={FEED_SIZE}:{FEED_SIZE}[fg];"
+        f"[0:v][fg]overlay=x={feed_x}:y=250:shortest=1[bg]"
+    )
+    if overlay is not None:
+        # cwd is set to the overlay's directory so the path needs no escaping.
+        chain += f";[bg]ass={overlay.name}[v]"
+    else:
+        chain += ";[bg]null[v]"
+
     args = [
         "ffmpeg", "-hide_banner", "-loglevel", "error", "-y",
-        "-f", "lavfi", "-i", f"color=c=0x14161f:s=1920x1080:r=30:d={duration:.2f}",
-        "-f", "lavfi", "-i", f"testsrc2=s=560x560:r=30:d={duration:.2f}",
+        "-f", "lavfi", "-i", f"color=c=0x11151f:s=1920x1080:r=30:d={duration:.2f}",
+        # An animated gradient rather than a test pattern: it still gives the
+        # reframer edges and motion to find, without looking like a fault.
+        "-f", "lavfi", "-i",
+        (
+            f"gradients=s={FEED_SIZE}x{FEED_SIZE}:r=30:d={duration:.2f}"
+            ":c0=0x2b55d8:c1=0x7c3aed:c2=0x0ea5e9:c3=0x1e293b:n=4:speed=0.012"
+        ),
         "-i", str(audio),
-        "-filter_complex",
-        "[1:v]scale=560:560[fg];[0:v][fg]overlay=x=200:y=260:shortest=1[v]",
+    ]
+    if subtitles is not None:
+        args += ["-i", str(subtitles)]
+
+    args += [
+        "-filter_complex", chain,
         "-map", "[v]", "-map", "2:a",
-        "-c:v", "libx264", "-preset", "veryfast", "-crf", "26",
+    ]
+    if subtitles is not None:
+        # A real subtitle track inside the container, exactly as a normal
+        # export from an editor would carry it.
+        args += ["-map", "3:s", "-c:s", "mov_text", "-metadata:s:s:0", "language=eng"]
+
+    args += [
+        "-c:v", "libx264", "-preset", "veryfast", "-crf", "24",
         "-pix_fmt", "yuv420p",
         "-c:a", "aac", "-b:a", "128k", "-ar", "48000",
         "-t", f"{duration:.2f}",
         "-movflags", "+faststart",
         str(dest),
     ]
-    subprocess.run(args, check=True, capture_output=True, timeout=1800)
+    subprocess.run(
+        args, check=True, capture_output=True, timeout=1800,
+        cwd=str(overlay.parent) if overlay else None,
+    )
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--out", required=True, type=Path)
     parser.add_argument("--minutes", type=float, default=8.0)
+    parser.add_argument(
+        "--on-screen-text",
+        action="store_true",
+        help="Draw the spoken sentence on screen (used for the demo sample).",
+    )
+    parser.add_argument(
+        "--embed-subtitles",
+        action="store_true",
+        help="Mux a subtitle track into the MP4, as a real export would carry.",
+    )
     args = parser.parse_args()
 
     out: Path = args.out
@@ -258,8 +418,24 @@ def main() -> int:
     write_json3(entries, out / "source.en.json3")
     print(f"captions: {out / 'source.en.json3'}")
 
-    render_video(wav, out / "source.mp4", duration)
+    overlay = None
+    if args.on_screen_text:
+        overlay = out / "overlay.ass"
+        write_overlay_ass(entries, overlay, 1920, 1080)
+        print(f"overlay: {overlay}")
+
+    subtitles = None
+    if args.embed_subtitles:
+        subtitles = out / "subtitles.srt"
+        write_srt(entries, subtitles)
+        print(f"subtitles: {subtitles}")
+
+    render_video(wav, out / "source.mp4", duration, overlay=overlay, subtitles=subtitles)
     wav.unlink(missing_ok=True)
+    if overlay is not None:
+        overlay.unlink(missing_ok=True)
+    if subtitles is not None:
+        subtitles.unlink(missing_ok=True)
     print(f"video:  {out / 'source.mp4'} ({(out / 'source.mp4').stat().st_size/1e6:.1f} MB)")
 
     (out / "script.json").write_text(

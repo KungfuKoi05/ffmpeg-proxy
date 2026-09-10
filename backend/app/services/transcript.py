@@ -249,7 +249,9 @@ def _rank_subtitle(path: Path) -> tuple[int, int]:
     return (fmt_rank, auto_rank)
 
 
-def transcript_from_subtitles(paths: list[Path]) -> Transcript:
+def transcript_from_subtitles(
+    paths: list[Path], *, source: str = "youtube_subtitles"
+) -> Transcript:
     for path in sorted(paths, key=_rank_subtitle):
         suffix = path.suffix.lower()
         if suffix in {".json3", ".srv3"}:
@@ -260,7 +262,7 @@ def transcript_from_subtitles(paths: list[Path]) -> Transcript:
             continue
         if len(words) >= 25:
             log.info("using subtitle track %s (%d words)", path.name, len(words))
-            return segment_words(words, source="youtube_subtitles")
+            return segment_words(words, source=source)
     return Transcript()
 
 
@@ -270,13 +272,14 @@ def build_transcript(
     *,
     duration: float,
     allow_whisper: bool = True,
+    subtitle_source: str = "youtube_subtitles",
     on_progress: Callable[[float, str], None] | None = None,
 ) -> Transcript:
     """Best available transcript, with the source recorded for the UI."""
     if subtitle_paths:
         if on_progress:
             on_progress(0.1, "Reading video captions…")
-        transcript = transcript_from_subtitles(subtitle_paths)
+        transcript = transcript_from_subtitles(subtitle_paths, source=subtitle_source)
         if transcript.available:
             if on_progress:
                 on_progress(1.0, "Captions loaded")

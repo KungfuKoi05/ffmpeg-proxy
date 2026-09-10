@@ -1,7 +1,10 @@
 # Setup
 
-Step-by-step installation. If you just want the short version, run
-`./scripts/setup.sh` and skip to [Running it](#running-it).
+Step-by-step installation.
+
+**Just want to see it work?** Run `./scripts/demo.sh`. It handles setup,
+builds a sample video and starts the app — no YouTube and no video of your own
+needed. The rest of this document is for a normal install.
 
 ---
 

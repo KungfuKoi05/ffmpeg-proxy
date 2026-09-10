@@ -50,7 +50,11 @@ A job's `source_kind` is either `youtube` or `upload`:
   directory under a byte cap enforced on bytes *written* (never a declared
   Content-Length), and is accepted only if ffprobe can read a real video track
   of a usable duration. The declared filename, extension and content type are
-  all ignored; ffprobe decides.
+  all ignored; ffprobe decides. Subtitle tracks carried inside the container
+  are extracted (`media.extract_embedded_subtitles`), so an ordinary export
+  from an editor gets transcript-driven selection rather than the audio-only
+  fallback; image-based subtitle codecs are skipped, English and default
+  tracks preferred.
 
 The pipeline branches once, at the source stage, and is identical afterwards.
 That matters practically: the upload route has no network dependency, so it
@@ -244,7 +248,7 @@ backend/app/
   workers/          job_worker · pipeline · progress · cleanup
   utils/            urls · files · errors · logging
 frontend/src/       App · api · components
-scripts/            setup · doctor · start · dev · make_test_video
+scripts/            demo · setup · doctor · start · dev · make_test_video
 ```
 
 ---
