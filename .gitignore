@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+
+# Node
+node_modules/
+frontend/dist/
+frontend/.vite/
+
+# App data
+.env
+storage/
+temp/
+*.db
+*.sqlite3
+
+# Generated demo sample - rebuilt by scripts/demo.sh, not worth committing
+demo/
+
+# OS
+.DS_Store

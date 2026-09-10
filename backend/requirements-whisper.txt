@@ -1,0 +1,4 @@
+# Optional: local speech-to-text fallback for videos with no YouTube subtitles.
+# Install with:  pip install -r requirements-whisper.txt
+# Downloads a ~150 MB model on first use (cached in ~/.cache/huggingface).
+faster-whisper==1.1.1
