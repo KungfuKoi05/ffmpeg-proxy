@@ -1,10 +1,11 @@
 # YouTube Clip Generator
 
-Paste a YouTube link, get 5–8 share-ready short clips. Runs entirely on your
-own machine — no account, no upload, no watermark.
+Paste a YouTube link — **or drop in a video file you already have** — and get
+5–8 share-ready short clips. Runs entirely on your own machine: no account, no
+cloud, no watermark.
 
 ```
-Paste  →  Generate  →  Preview  →  Download
+Paste (or drop a file)  →  Generate  →  Preview  →  Download
 ```
 
 ---
@@ -76,10 +77,16 @@ git clone <this repo>
 cd ffmpeg-proxy
 
 ./scripts/setup.sh        # checks tools, installs deps, builds the UI
+./scripts/doctor.sh       # confirms it can actually run — including YouTube
 ./scripts/start.sh        # starts the app
 ```
 
 Then open **http://127.0.0.1:8000**.
+
+`doctor.sh` is the one to run when something isn't working. It checks every
+dependency, your disk, the built UI, and then asks YouTube for the metadata of
+a Creative Commons video — so you find out in ten seconds whether downloads
+work from your machine, and get the exact fix if they don't.
 
 <details>
 <summary>Manual setup, if you prefer</summary>
@@ -120,6 +127,50 @@ WITH_WHISPER=1 ./scripts/setup.sh
 This adds `faster-whisper`, which downloads a ~150 MB model the first time it
 runs and transcribes locally. Without it, captionless videos fall back to
 audio-only segmentation — still pause-aligned, but noticeably less smart.
+
+---
+
+## When YouTube blocks the download
+
+This is the most likely thing to go wrong, and it is not a bug in the app.
+YouTube throttles and challenges automated downloads, especially from
+datacenter, VPN and CI addresses. Run `./scripts/doctor.sh` to find out which
+of these you're hitting.
+
+**"YouTube is temporarily refusing our requests"** — it wants a signed-in
+session. Point yt-dlp at a browser you're already logged into:
+
+```bash
+# in .env
+YTDLP_COOKIES_FROM_BROWSER=chrome     # or firefox, safari, edge, brave…
+```
+
+This presents *your own* session. It does not circumvent any access control —
+a video you can't watch while signed in is still refused. You can also export
+a `cookies.txt` and set `YTDLP_COOKIES_FILE`, or route through a proxy with
+`YTDLP_PROXY`.
+
+**yt-dlp errors on a video that plays fine in a browser** — YouTube changed
+something. Update: `./.venv/bin/pip install -U yt-dlp`.
+
+**Nothing works, or the video isn't on YouTube at all** — use the file route
+below. It needs no network whatsoever.
+
+---
+
+## Using a video file instead
+
+Click **"or use a video file"** on the home screen, or drag a file anywhere
+onto the form. MP4, MOV, MKV, WebM, AVI and friends all work.
+
+Everything after that is identical — same transcript handling, same scoring,
+same selection, same output. This path has no dependency on YouTube, which
+makes it the reliable way to demo the app and the answer whenever the download
+route is blocked.
+
+Videos with no captions still work: the app falls back to transcribing locally
+with Whisper if you installed it, and to pause-aligned audio segmentation if
+you didn't.
 
 ---
 
@@ -176,6 +227,10 @@ Copy `.env.example` to `.env` and edit. Every value is optional.
 | `PREFER_HARDWARE_ENCODER` | `0` | use NVENC/QSV/VideoToolbox if present |
 | `WHISPER_MODEL` | `base` | `tiny`…`medium` |
 | `LLM_RANKING_ENABLED` | `0` | optional AI re-ranking (needs a key) |
+| `YTDLP_COOKIES_FROM_BROWSER` | — | use a signed-in browser session (`chrome`, `firefox`…) |
+| `YTDLP_COOKIES_FILE` | — | path to an exported `cookies.txt` |
+| `YTDLP_PROXY` | — | route yt-dlp through a proxy |
+| `MAX_UPLOAD_MB` | `2048` | largest accepted video file |
 
 Never commit `.env` — it's already in `.gitignore`.
 
@@ -199,6 +254,9 @@ isolation and temp-file cleanup.
 
 ## Troubleshooting
 
+**Start here:** `./scripts/doctor.sh` diagnoses almost everything below and
+prints the exact fix.
+
 **"ffmpeg is not installed"** — install it (see above) and restart the app. The
 banner in the UI shows the exact command for your platform.
 
@@ -221,7 +279,11 @@ deliberate: fewer good clips beat a padded set.
 your machine has NVENC, Quick Sync or VideoToolbox.
 
 **yt-dlp errors on a video that works in a browser** — YouTube changes things
-often. Update it: `./.venv/bin/pip install -U yt-dlp`.
+often. Update it: `./.venv/bin/pip install -U yt-dlp`. See
+[When YouTube blocks the download](#when-youtube-blocks-the-download).
+
+**Nothing about YouTube works** — use a video file instead; that route needs no
+network at all.
 
 ---
 

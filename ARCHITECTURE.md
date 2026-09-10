@@ -38,6 +38,26 @@ legacy `server.js` FFmpeg proxy at the repo root is untouched and unrelated.
 
 ---
 
+## Two ways in, one pipeline
+
+A job's `source_kind` is either `youtube` or `upload`:
+
+* **`youtube`** — yt-dlp fetches one copy of the source plus any caption
+  tracks. Optional cookie and proxy settings (`_access_opts` in
+  `services/youtube.py`) let it present a session the user is already signed
+  into; nothing is circumvented.
+* **`upload`** — the file arrives over multipart, is streamed to a staging
+  directory under a byte cap enforced on bytes *written* (never a declared
+  Content-Length), and is accepted only if ffprobe can read a real video track
+  of a usable duration. The declared filename, extension and content type are
+  all ignored; ffprobe decides.
+
+The pipeline branches once, at the source stage, and is identical afterwards.
+That matters practically: the upload route has no network dependency, so it
+still works when YouTube throttles a machine.
+
+---
+
 ## The pipeline
 
 `backend/app/workers/pipeline.py` runs five stages. The percentages are the
@@ -81,8 +101,13 @@ Every window of consecutive segments whose duration lands in [30 s, 60 s].
 Because windows are built *from* segments, a candidate can never start or end
 mid-sentence — that constraint is structural, not a scoring penalty.
 
-For a video with no transcript at all, a separate generator lays out cuts on
-detected silences instead, so even the fallback avoids blind equal slicing.
+For a video with no transcript at all, the silence map does the job sentences
+normally do: each run of speech between two pauses becomes a segment, and the
+same windowing code runs over those. This must produce *sliding* windows rather
+than a contiguous partition — the selector requires separation between chosen
+clips, so tiled candidates would let it take only every other one and silently
+halve the clip count. Only when there are no usable pauses at all (continuous
+music, say) does it fall back to an even split, with a gap left between pieces.
 
 ### 3. Scoring — `analyzers/candidate_scorer.py`
 
@@ -201,6 +226,7 @@ size, paths, score and full score breakdown, and its transcript excerpt.
 | Runaway jobs | Timeouts on every subprocess, a max source duration, a max concurrent job count, and a free-disk check before work starts. |
 | Information leaks | `utils/errors.py` maps every exception to a vetted sentence. Stack traces, paths and command lines never reach the browser. |
 | Unbounded storage | Every job expires (`JOB_TTL_HOURS`); a daemon sweeps expired jobs and orphaned directories. |
+| Hostile uploads | Size capped on bytes written, not on a claimed length; partial writes deleted on rejection; the file is accepted only if ffprobe reads a real video track; extension and title are derived by us, never taken from the upload. |
 
 ---
 
@@ -212,13 +238,13 @@ backend/app/
   config.py         env-driven settings
   models.py         Job, Clip
   api/              jobs · clips · system · deps (ownership, range serving)
-  services/         youtube (yt-dlp) · transcript · media (ffmpeg) · storage
+  services/         youtube (yt-dlp) · uploads · transcript · media · storage
   analyzers/        segmentation · candidates · scorer · selector · titles · llm
   render/           renderer · reframe · captions
   workers/          job_worker · pipeline · progress · cleanup
   utils/            urls · files · errors · logging
 frontend/src/       App · api · components
-scripts/            setup · start · dev · make_test_video
+scripts/            setup · doctor · start · dev · make_test_video
 ```
 
 ---

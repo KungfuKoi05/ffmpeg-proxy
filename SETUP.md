@@ -215,6 +215,18 @@ instead.
 
 ## 8. Verify the install
 
+The quickest check, and the one that tells you whether YouTube downloads will
+actually work from this machine:
+
+```bash
+./scripts/doctor.sh
+```
+
+It verifies every dependency, your disk space and the built UI, then asks
+YouTube for the metadata of a Creative Commons video. If that last step fails
+it names the cause and the fix — and reminds you that the "use a video file"
+route works regardless.
+
 ```bash
 # Fast unit tests - about a second
 ./.venv/bin/python -m pytest -m "not e2e" -q
@@ -230,6 +242,38 @@ curl -s http://127.0.0.1:8000/api/system/status | python3 -m json.tool
 ```
 
 `"ready": true` means every required tool is present.
+
+---
+
+---
+
+## 9. If YouTube refuses to download
+
+YouTube challenges automated downloads, especially from datacenter, VPN or CI
+addresses. If `doctor.sh` reports a bot check or rate limit, point yt-dlp at a
+browser you are already signed into:
+
+```
+# in .env
+YTDLP_COOKIES_FROM_BROWSER=chrome
+```
+
+Accepted: `chrome`, `chromium`, `firefox`, `safari`, `edge`, `brave`, `opera`,
+`vivaldi`, `whale`. Add a profile with a colon, e.g. `firefox:work`.
+
+This uses your own logged-in session and bypasses nothing — a video you cannot
+watch while signed in is still refused. Alternatives:
+
+```
+YTDLP_COOKIES_FILE=/path/to/cookies.txt   # an exported cookie jar
+YTDLP_PROXY=http://127.0.0.1:8080         # route through a proxy
+```
+
+On macOS, reading Chrome/Safari cookies may prompt for keychain access the
+first time.
+
+**Or skip YouTube entirely.** Click "or use a video file" on the home screen,
+or drag a file onto the page. Same clips, same output, no network needed.
 
 ---
 

@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import type { AspectRatio, JobOptions, Quality } from '../api'
 import { ChevronIcon, ScissorsIcon, SpinnerIcon } from './Icons'
 
 interface Props {
   onSubmit: (url: string, options: Partial<JobOptions>) => void
+  onUpload: (file: File, options: Partial<JobOptions>) => void
   busy: boolean
   disabled: boolean
 }
@@ -20,8 +21,10 @@ const QUALITIES: { value: Quality; label: string }[] = [
   { value: 'highest', label: 'Highest available' },
 ]
 
-export default function UrlForm({ onSubmit, busy, disabled }: Props) {
+export default function UrlForm({ onSubmit, onUpload, busy, disabled }: Props) {
   const [url, setUrl] = useState('')
+  const [dragging, setDragging] = useState(false)
+  const fileInput = useRef<HTMLInputElement>(null)
   const [open, setOpen] = useState(false)
   const [aspect, setAspect] = useState<AspectRatio>('9:16')
   const [captions, setCaptions] = useState(false)
@@ -29,21 +32,46 @@ export default function UrlForm({ onSubmit, busy, disabled }: Props) {
   const [clipCount, setClipCount] = useState<number | null>(null)
   const [maxLength, setMaxLength] = useState(60)
 
-  function submit(event: React.FormEvent) {
-    event.preventDefault()
-    if (!url.trim() || busy || disabled) return
-    onSubmit(url.trim(), {
+  function currentOptions(): Partial<JobOptions> {
+    return {
       aspect_ratio: aspect,
       captions,
       quality,
       clip_count: clipCount,
       min_clip_seconds: 30,
       max_clip_seconds: maxLength,
-    })
+    }
+  }
+
+  function submit(event: React.FormEvent) {
+    event.preventDefault()
+    if (!url.trim() || busy || disabled) return
+    onSubmit(url.trim(), currentOptions())
+  }
+
+  function handleFile(file: File | null | undefined) {
+    if (!file || busy || disabled) return
+    onUpload(file, currentOptions())
+  }
+
+  function onDrop(event: React.DragEvent) {
+    event.preventDefault()
+    setDragging(false)
+    handleFile(event.dataTransfer.files?.[0])
   }
 
   return (
-    <form onSubmit={submit} className="w-full">
+    <form
+      onSubmit={submit}
+      className="w-full"
+      onDragOver={(e) => {
+        if (busy || disabled) return
+        e.preventDefault()
+        setDragging(true)
+      }}
+      onDragLeave={() => setDragging(false)}
+      onDrop={onDrop}
+    >
       <div className="flex flex-col gap-3 sm:flex-row">
         <div className="relative flex-1">
           <input
@@ -69,7 +97,7 @@ export default function UrlForm({ onSubmit, busy, disabled }: Props) {
         </button>
       </div>
 
-      <div className="mt-3">
+      <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
@@ -79,7 +107,35 @@ export default function UrlForm({ onSubmit, busy, disabled }: Props) {
           <ChevronIcon className={`h-4 w-4 transition-transform ${open ? 'rotate-180' : ''}`} />
           Options
         </button>
+
+        <div className="text-sm text-ink-500 dark:text-ink-400">
+          or{' '}
+          <button
+            type="button"
+            onClick={() => fileInput.current?.click()}
+            disabled={busy || disabled}
+            className="font-medium text-brand-600 underline-offset-2 transition hover:underline disabled:opacity-50 dark:text-brand-300"
+          >
+            use a video file
+          </button>
+          <input
+            ref={fileInput}
+            type="file"
+            accept="video/*,.mp4,.mov,.mkv,.webm,.m4v,.avi"
+            className="hidden"
+            onChange={(e) => {
+              handleFile(e.target.files?.[0])
+              e.target.value = ''
+            }}
+          />
+        </div>
       </div>
+
+      {dragging && (
+        <div className="mt-3 rounded-xl border-2 border-dashed border-brand-500 bg-brand-50 px-4 py-6 text-center text-sm font-medium text-brand-700 dark:bg-brand-500/10 dark:text-brand-300">
+          Drop the video file to start
+        </div>
+      )}
 
       {open && (
         <div className="animate-rise mt-2 grid gap-5 rounded-xl border border-ink-200 bg-white p-5 dark:border-ink-800 dark:bg-ink-900/60 sm:grid-cols-2">

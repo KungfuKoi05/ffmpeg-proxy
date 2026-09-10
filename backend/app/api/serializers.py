@@ -50,6 +50,7 @@ def job_to_out(job: Job, *, token: str | None = None) -> JobOut:
 
     return JobOut(
         id=job.id,
+        source_kind=job.source_kind or "youtube",
         status=job.status,
         stage=job.stage_message or STAGE_LABELS.get(job.status, job.status),
         progress=round(job.progress, 1),

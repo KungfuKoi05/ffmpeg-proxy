@@ -70,8 +70,10 @@ class Job(Base):
     owner_token: Mapped[str] = mapped_column(String(64), index=True, default=_uuid)
 
     # --- source video -------------------------------------------------
-    video_id: Mapped[str] = mapped_column(String(16), index=True)
-    source_url: Mapped[str] = mapped_column(String(256))
+    # "youtube" (fetched with yt-dlp) or "upload" (a file the user provided).
+    source_kind: Mapped[str] = mapped_column(String(16), default="youtube")
+    video_id: Mapped[str | None] = mapped_column(String(16), index=True, default=None)
+    source_url: Mapped[str] = mapped_column(String(256), default="")
     title: Mapped[str | None] = mapped_column(String(512), default=None)
     channel: Mapped[str | None] = mapped_column(String(256), default=None)
     duration: Mapped[float | None] = mapped_column(Float, default=None)

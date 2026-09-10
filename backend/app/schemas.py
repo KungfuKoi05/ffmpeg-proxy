@@ -71,7 +71,8 @@ class ClipOut(BaseModel):
 
 
 class VideoOut(BaseModel):
-    video_id: str
+    # None for uploaded files, which have no YouTube identity.
+    video_id: str | None
     title: str | None
     channel: str | None
     duration: float | None
@@ -89,6 +90,7 @@ class JobError(BaseModel):
 
 class JobOut(BaseModel):
     id: str
+    source_kind: str
     status: str
     stage: str
     progress: float

@@ -68,6 +68,19 @@ class Settings:
     audio_bitrate: str = field(default_factory=lambda: _env("AUDIO_BITRATE", "192k"))
     prefer_hardware_encoder: bool = field(default_factory=lambda: _env_bool("PREFER_HARDWARE_ENCODER", False))
 
+    # yt-dlp access helpers
+    # YouTube increasingly demands a signed-in session ("confirm you're not a
+    # bot"). Pointing yt-dlp at a browser you're already logged into is the
+    # supported fix; nothing is bypassed, we just present your own session.
+    ytdlp_cookies_from_browser: str = field(
+        default_factory=lambda: _env("YTDLP_COOKIES_FROM_BROWSER", "")
+    )
+    ytdlp_cookies_file: str = field(default_factory=lambda: _env("YTDLP_COOKIES_FILE", ""))
+    ytdlp_proxy: str = field(default_factory=lambda: _env("YTDLP_PROXY", ""))
+
+    # Uploads
+    max_upload_mb: int = field(default_factory=lambda: _env_int("MAX_UPLOAD_MB", 2048))
+
     # Speech to text
     whisper_model: str = field(default_factory=lambda: _env("WHISPER_MODEL", "base"))
     whisper_enabled: bool = field(default_factory=lambda: _env_bool("WHISPER_ENABLED", True))
@@ -90,6 +103,10 @@ class Settings:
             if o.strip()
         )
     )
+
+    @property
+    def cookies_configured(self) -> bool:
+        return bool(self.ytdlp_cookies_from_browser or self.ytdlp_cookies_file)
 
     @property
     def llm_available(self) -> bool:

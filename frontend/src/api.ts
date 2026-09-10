@@ -19,7 +19,7 @@ export interface JobOptions {
 }
 
 export interface VideoInfo {
-  video_id: string
+  video_id: string | null
   title: string | null
   channel: string | null
   duration: number | null
@@ -37,6 +37,8 @@ export interface ApiError {
 
 export interface Job {
   id: string
+  /** 'youtube' for a downloaded video, 'upload' for a file the user provided. */
+  source_kind: 'youtube' | 'upload'
   status:
     | 'QUEUED' | 'DOWNLOADING' | 'ANALYZING' | 'SELECTING_CLIPS'
     | 'PROCESSING' | 'COMPLETED' | 'FAILED' | 'EXPIRED' | 'CANCELLED'
@@ -181,6 +183,54 @@ export const api = {
     })
     setToken(result.owner_token)
     return result.job
+  },
+
+  /**
+   * Start a job from a local file. Uses FormData rather than JSON so the
+   * browser streams the upload instead of buffering a base64 copy.
+   */
+  async createJobFromUpload(file: File, options: Partial<JobOptions>): Promise<Job> {
+    const form = new FormData()
+    form.append('file', file)
+    if (options.aspect_ratio) form.append('aspect_ratio', options.aspect_ratio)
+    if (options.quality) form.append('quality', options.quality)
+    form.append('captions', String(options.captions ?? false))
+    if (options.clip_count != null) form.append('clip_count', String(options.clip_count))
+    if (options.min_clip_seconds != null) form.append('min_clip_seconds', String(options.min_clip_seconds))
+    if (options.max_clip_seconds != null) form.append('max_clip_seconds', String(options.max_clip_seconds))
+
+    const token = getToken()
+    const headers = new Headers()
+    if (token) headers.set('X-Owner-Token', token)
+    // Content-Type is deliberately unset: the browser must add the multipart
+    // boundary itself.
+
+    let response: Response
+    try {
+      response = await fetch('/api/jobs/upload', {
+        method: 'POST',
+        body: form,
+        headers,
+        credentials: 'include',
+      })
+    } catch {
+      throw new RequestFailed({
+        code: 'offline',
+        message: "We couldn't reach the app's server.",
+        hint: 'Make sure the backend is running, then try again.',
+      })
+    }
+
+    const body = await response.json().catch(() => null)
+    if (!response.ok) {
+      const detail = body?.detail
+      if (detail && typeof detail === 'object' && 'message' in detail) {
+        throw new RequestFailed(detail as ApiError)
+      }
+      throw new RequestFailed({ code: `http_${response.status}`, message: 'That upload failed.' })
+    }
+    setToken(body.owner_token)
+    return body.job as Job
   },
 
   getJob: (jobId: string) => request<Job>(`/api/jobs/${jobId}`),

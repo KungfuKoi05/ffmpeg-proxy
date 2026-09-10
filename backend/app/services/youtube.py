@@ -70,8 +70,29 @@ def ytdlp_version() -> str | None:
         return None
 
 
+class _YtdlpLogger:
+    """yt-dlp writes to stderr even when quiet. Send it to our log instead.
+
+    Its errors are already surfaced to the user as a translated exception, so
+    printing the raw text as well is just noise in the terminal.
+    """
+
+    def debug(self, message: str) -> None:
+        log.debug("yt-dlp: %s", message)
+
+    def info(self, message: str) -> None:
+        log.debug("yt-dlp: %s", message)
+
+    def warning(self, message: str) -> None:
+        log.debug("yt-dlp: %s", message)
+
+    def error(self, message: str) -> None:
+        log.debug("yt-dlp: %s", message)
+
+
 def _base_opts() -> dict:
     return {
+        "logger": _YtdlpLogger(),
         "quiet": True,
         "no_warnings": True,
         "noprogress": True,
@@ -83,7 +104,51 @@ def _base_opts() -> dict:
         "extractor_retries": 2,
         # We only ever process one video at a time; never follow playlists.
         "playlist_items": "1",
+        **_access_opts(),
     }
+
+
+# Browsers yt-dlp can read cookies from.
+SUPPORTED_COOKIE_BROWSERS = (
+    "brave", "chrome", "chromium", "edge", "firefox", "opera", "safari", "vivaldi", "whale",
+)
+
+
+def _access_opts() -> dict:
+    """Optional credentials and routing, from configuration only.
+
+    This presents the user's own logged-in session to YouTube. It does not
+    circumvent any access control - a video you cannot watch while signed in
+    is still a video this app will refuse.
+    """
+    opts: dict = {}
+
+    browser = settings.ytdlp_cookies_from_browser.strip().lower()
+    if browser:
+        # Accepts "firefox" or "firefox:profile-name".
+        name, _, profile = browser.partition(":")
+        if name in SUPPORTED_COOKIE_BROWSERS:
+            # yt-dlp expects (browser, profile, keyring, container).
+            opts["cookiesfrombrowser"] = (name, profile or None, None, None)
+        else:
+            log.warning(
+                "YTDLP_COOKIES_FROM_BROWSER=%r is not a browser yt-dlp knows; ignoring. "
+                "Supported: %s",
+                browser, ", ".join(SUPPORTED_COOKIE_BROWSERS),
+            )
+
+    cookie_file = settings.ytdlp_cookies_file.strip()
+    if cookie_file:
+        path = Path(cookie_file).expanduser()
+        if path.is_file():
+            opts["cookiefile"] = str(path)
+        else:
+            log.warning("YTDLP_COOKIES_FILE points at %s, which does not exist; ignoring", path)
+
+    if settings.ytdlp_proxy.strip():
+        opts["proxy"] = settings.ytdlp_proxy.strip()
+
+    return opts
 
 
 def _translate(exc: Exception) -> Exception:

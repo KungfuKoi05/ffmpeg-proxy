@@ -71,6 +71,24 @@ export default function App() {
     }
   }
 
+  async function startUpload(file: File, options: Partial<JobOptions>) {
+    setError(null)
+    setClips([])
+    setStarting(true)
+    try {
+      setJob(await api.createJobFromUpload(file, options))
+    } catch (err) {
+      setJob(null)
+      setError(
+        err instanceof RequestFailed
+          ? { code: err.code, message: err.message, hint: err.hint }
+          : { code: 'unknown', message: 'Something went wrong with that upload.' },
+      )
+    } finally {
+      setStarting(false)
+    }
+  }
+
   async function cancel() {
     if (!job) return
     stopPolling()
@@ -116,7 +134,7 @@ export default function App() {
             </p>
 
             <div className="mt-8">
-              <UrlForm onSubmit={start} busy={starting} disabled={blocked} />
+              <UrlForm onSubmit={start} onUpload={startUpload} busy={starting} disabled={blocked} />
             </div>
 
             <div className="mt-5 space-y-3">
@@ -129,7 +147,7 @@ export default function App() {
               {[
                 ['30–60 seconds', 'Every clip is a complete thought, cut on sentence boundaries.'],
                 ['Up to 1080p', 'No watermark, no upscaling, original audio preserved.'],
-                ['Runs locally', 'Your video never leaves this machine.'],
+                ['Runs locally', 'A YouTube link, or a video file you already have.'],
               ].map(([title, body]) => (
                 <div
                   key={title}

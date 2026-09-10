@@ -3,14 +3,16 @@ from __future__ import annotations
 
 import uuid
 
-from fastapi import APIRouter, Depends, HTTPException, Request, Response, status
+from fastapi import APIRouter, Depends, File, Form, HTTPException, Request, Response, UploadFile, status
 from sqlalchemy.orm import Session
 
 from ..config import settings
 from ..database import get_db
 from ..models import Job, JobStatus
-from ..schemas import ClipOut, JobCreate, JobCreated, JobOut, VideoOut, VideoPreview
-from ..services import media, storage, youtube
+from ..schemas import ClipOut, JobCreate, JobCreated, JobOptions, JobOut, VideoOut, VideoPreview
+from ..services import media, storage, uploads, youtube
+from pydantic import ValidationError
+
 from ..utils.errors import UserFacingError, to_user_error
 from ..utils.files import format_timestamp
 from ..utils.logging import get_logger
@@ -162,6 +164,120 @@ def create_job(
         httponly=True,
         samesite="lax",
         path="/",
+    )
+    return JobCreated(job=job_to_out(job, token=token), owner_token=token)
+
+
+@router.post("/upload", response_model=JobCreated, status_code=status.HTTP_201_CREATED)
+def create_job_from_upload(
+    request: Request,
+    response: Response,
+    file: UploadFile = File(..., description="A video file to cut into clips"),
+    aspect_ratio: str = Form("9:16"),
+    captions: bool = Form(False),
+    quality: str = Form("1080p"),
+    clip_count: int | None = Form(None),
+    min_clip_seconds: float = Form(settings.min_clip_seconds),
+    max_clip_seconds: float = Form(settings.max_clip_seconds),
+    db: Session = Depends(get_db),
+) -> JobCreated:
+    """Create a job from a video file the user already has.
+
+    Everything after this point is identical to a YouTube job - same
+    transcript, scoring, selection and rendering path. This route exists so
+    the app is useful even when YouTube refuses to serve a download.
+    """
+    media.require_ffmpeg()
+    uploads.check_disk_headroom()
+
+    if not job_manager.has_capacity():
+        raise HTTPException(
+            status_code=429,
+            detail={
+                "code": "queue_full",
+                "message": "Too many videos are being processed right now.",
+                "hint": "Wait for the current jobs to finish, then try again.",
+            },
+        )
+
+    # Validate the options through the same model the JSON route uses, so both
+    # entry points enforce identical limits.
+    try:
+        options = JobOptions(
+            aspect_ratio=aspect_ratio,
+            captions=captions,
+            quality=quality,
+            clip_count=clip_count,
+            min_clip_seconds=min_clip_seconds,
+            max_clip_seconds=max_clip_seconds,
+        )
+    except ValidationError as exc:
+        message = str(exc.errors()[0].get("msg", "Those settings aren't valid."))
+        raise HTTPException(
+            status_code=422,
+            detail={"code": "invalid_request", "message": message.replace("Value error, ", "")},
+        ) from exc
+
+    staging = storage.staging_path(uploads.safe_extension(file.filename))
+    try:
+        uploads.stream_to_disk(file.file, staging)
+        source = uploads.verify(staging, filename=file.filename)
+    except UserFacingError as exc:
+        staging.unlink(missing_ok=True)
+        raise HTTPException(status_code=422, detail=exc.to_dict()) from exc
+    except Exception as exc:
+        staging.unlink(missing_ok=True)
+        error = to_user_error(exc)
+        log.exception("upload failed: %s", exc)
+        raise HTTPException(status_code=422, detail=error.to_dict()) from exc
+    finally:
+        file.file.close()
+
+    token = owner_token_from(request) or uuid.uuid4().hex
+    job = Job(
+        owner_token=token,
+        source_kind="upload",
+        video_id=None,
+        source_url="",
+        title=source.title,
+        channel=None,
+        duration=source.duration,
+        thumbnail_url=None,
+        source_width=source.info.width,
+        source_height=source.info.height,
+        source_fps=source.info.fps,
+        aspect_ratio=options.aspect_ratio,
+        captions=int(options.captions),
+        quality=options.quality,
+        requested_clips=options.clip_count,
+        min_clip_seconds=options.min_clip_seconds,
+        max_clip_seconds=options.max_clip_seconds,
+    )
+    db.add(job)
+    db.commit()
+    db.refresh(job)
+
+    # Only now that the job exists do we know where the file belongs.
+    try:
+        final_path = uploads.move_into_job(staging, storage.work_dir(job.id))
+    except OSError as exc:
+        db.delete(job)
+        db.commit()
+        staging.unlink(missing_ok=True)
+        raise HTTPException(
+            status_code=422,
+            detail={"code": "upload_failed", "message": "We couldn't save that file.", "hint": ""},
+        ) from exc
+
+    job.source_path = str(final_path)
+    db.commit()
+    db.refresh(job)
+
+    job_manager.submit(job.id)
+
+    response.set_cookie(
+        OWNER_COOKIE, token, max_age=settings.job_ttl_hours * 3600,
+        httponly=True, samesite="lax", path="/",
     )
     return JobCreated(job=job_to_out(job, token=token), owner_token=token)
 

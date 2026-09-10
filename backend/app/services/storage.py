@@ -57,6 +57,19 @@ def zip_path(job_id: str) -> Path:
     return safe_join(job_dir(job_id), "clips.zip")
 
 
+def staging_dir() -> Path:
+    """Where an upload lands before we know whether we'll accept it."""
+    path = safe_join(settings.temp_dir, "_staging")
+    path.mkdir(parents=True, exist_ok=True)
+    return path
+
+
+def staging_path(suffix: str = ".mp4") -> Path:
+    import uuid
+
+    return staging_dir() / f"{uuid.uuid4().hex}{suffix}"
+
+
 def cleanup_work_dir(job_id: str) -> None:
     """Delete the downloaded source once every clip has been rendered."""
     try:
@@ -116,6 +129,8 @@ def sweep_orphans(known_job_ids: set[str]) -> int:
         if not root.exists():
             continue
         for entry in root.iterdir():
+            if entry.name.startswith('_'):
+                continue
             if entry.is_dir() and entry.name not in known_job_ids:
                 remove_tree(entry)
                 removed += 1

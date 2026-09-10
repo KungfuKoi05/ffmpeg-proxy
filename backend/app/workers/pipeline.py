@@ -91,7 +91,8 @@ def _execute(job_id: str, reporter: ProgressReporter) -> PipelineOutcome:
         job = session.get(Job, job_id)
         if job is None:
             raise UserFacingError(code="job_missing", message="This job no longer exists.")
-        video = ParsedVideo(job.video_id)
+        source_kind = job.source_kind or "youtube"
+        video = ParsedVideo(job.video_id) if job.video_id else None
         options = {
             "aspect": job.aspect_ratio,
             "captions": bool(job.captions),
@@ -99,14 +100,18 @@ def _execute(job_id: str, reporter: ProgressReporter) -> PipelineOutcome:
             "requested_clips": job.requested_clips,
             "title": job.title,
             "source_max_height": job.source_height,
+            "source_path": job.source_path,
         }
         job.started_at = datetime.now(timezone.utc)
         job.status = JobStatus.DOWNLOADING.value
 
     clips_out, scratch = storage.prepare_job_dirs(job_id)
 
-    # ---------------------------------------------------------------- download
-    reporter.set_stage(JobStatus.DOWNLOADING)
+    # ---------------------------------------------------------------- source
+    reporter.set_stage(
+        JobStatus.DOWNLOADING,
+        "Reading your video file…" if source_kind == "upload" else None,
+    )
     _check_cancelled(reporter)
 
     def download_progress(fraction: float, message: str) -> None:
@@ -116,13 +121,38 @@ def _execute(job_id: str, reporter: ProgressReporter) -> PipelineOutcome:
             low=P_DOWNLOAD[0], high=P_DOWNLOAD[1], fraction=fraction, message=message
         )
 
-    result = youtube.download_video(
-        video,
-        scratch,
-        max_height=_max_height_for(options["quality"], options["source_max_height"]),
-        want_subtitles=True,
-        on_progress=download_progress,
-    )
+    if source_kind == "upload":
+        # The file is already on disk - validated when it was accepted.
+        source_path = Path(options["source_path"] or "")
+        if not source_path.is_file():
+            raise UserFacingError(
+                code="upload_missing",
+                message="The uploaded file is no longer available.",
+                hint="Upload it again.",
+            )
+        subtitle_paths = sorted(
+            p for p in source_path.parent.iterdir()
+            if p.is_file() and p.suffix.lower() in {".srt", ".vtt", ".json3", ".ass"}
+        )
+        result = youtube.DownloadResult(video_path=source_path, subtitle_paths=subtitle_paths)
+        reporter.stage_progress(
+            low=P_DOWNLOAD[0], high=P_DOWNLOAD[1], fraction=1.0, message="Reading your video file…"
+        )
+    else:
+        if video is None:
+            raise UserFacingError(
+                code="job_invalid",
+                message="This job has no video to process.",
+                hint="Start again with a YouTube link or a file.",
+            )
+        result = youtube.download_video(
+            video,
+            scratch,
+            max_height=_max_height_for(options["quality"], options["source_max_height"]),
+            want_subtitles=True,
+            on_progress=download_progress,
+        )
+
     source_path = result.video_path
     info = media.probe(source_path)
 
@@ -346,9 +376,22 @@ def _choose_clips(
     )
     ctx = ScoringContext(transcript=transcript, scene=scene, video_duration=duration)
     fallback = score_candidates(fallback, ctx)
-    # Without text, speech coverage is the only real quality signal we have.
+    # With no text, the language signals are meaningless - keeping them would
+    # be inventing confidence. Score only on what the audio really tells us:
+    # how much of the window is speech, how clean its edges are, and length.
     for cand in fallback:
-        cand.score = round(scene.speech_ratio(cand.start, cand.end), 4)
+        speech = scene.speech_ratio(cand.start, cand.end)
+        cand.breakdown = {
+            "speech_coverage": round(speech, 4),
+            "boundary": cand.breakdown.get("boundary", 0.5),
+            "duration_fit": cand.breakdown.get("duration_fit", 0.5),
+        }
+        cand.score = round(
+            0.45 * speech
+            + 0.30 * cand.breakdown["boundary"]
+            + 0.25 * cand.breakdown["duration_fit"],
+            4,
+        )
     fallback.sort(key=lambda c: c.score, reverse=True)
     selected = clip_selector.select_clips(
         fallback, video_duration=duration, target_count=target

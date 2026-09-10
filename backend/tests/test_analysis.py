@@ -75,13 +75,41 @@ def test_custom_duration_bounds_are_honoured(sample_words):
     assert all(15 <= c.duration <= 25 for c in candidates)
 
 
-def test_fallback_candidates_snap_to_silence():
+def test_fallback_candidates_are_bounded_by_silence():
+    """With no transcript, speech runs between pauses act as the segments."""
     silences = [(45.0, 46.5), (95.0, 96.2), (150.0, 151.0)]
     candidates = candidate_generator.generate_fallback_candidates(200.0, silences=silences)
     assert candidates
     assert all(30 <= c.duration <= 60 for c in candidates)
-    # The first boundary should land on the detected pause, not on a fixed 45s grid.
-    assert candidates[0].end == pytest.approx(45.75, abs=0.5)
+    # Cuts land exactly on the pause, not on a fixed 45-second grid.
+    assert candidates[0].start == 0.0
+    assert candidates[0].end == pytest.approx(45.0, abs=0.01)
+    assert candidates[1].start == pytest.approx(46.5, abs=0.01)
+
+
+def test_fallback_gives_the_selector_more_than_a_fixed_partition():
+    """A contiguous partition would let the selector take only every other piece.
+
+    The separation rule between chosen clips rejects back-to-back candidates,
+    so the fallback must produce overlapping windows or it silently halves the
+    clip count.
+    """
+    silences = [(i * 5.0 + 4.2, i * 5.0 + 4.85) for i in range(72)]
+    candidates = candidate_generator.generate_fallback_candidates(364.0, silences=silences)
+    assert len(candidates) > 50, "a fixed partition would give roughly seven"
+
+    starts = sorted(c.start for c in candidates)
+    assert len(set(starts)) > 10, "windows must slide, not tile"
+
+
+def test_fallback_without_any_pauses_still_returns_usable_windows():
+    """Continuous music or noise: an even split is the honest last resort."""
+    candidates = candidate_generator.generate_fallback_candidates(364.0, silences=[])
+    assert candidates
+    assert all(30 <= c.duration <= 60 for c in candidates)
+    # Consecutive pieces must be separated enough for the selector to take both.
+    for a, b in zip(candidates, candidates[1:]):
+        assert b.start - a.end >= 1.5
 
 
 # ---------------------------------------------------------------------- scoring
