@@ -127,8 +127,9 @@ setup_agents() {
   sync_repo "$AGENTS_GIT" "$src"
 
   say "installing agents into ${CLAUDE_CONFIG_DIR:-$HOME/.claude}/agents"
-  # --no-interactive keeps this usable from CI and non-TTY shells; the
-  # installer otherwise opens a wizard whenever stdout is a terminal.
+  # --tool already suppresses the wizard (its case arm sets interactive_mode=no),
+  # so --no-interactive is belt-and-braces: it keeps this working if that
+  # coupling ever changes, and makes the non-interactive intent explicit.
   "$src/scripts/install.sh" --tool claude-code --no-interactive
 
   local dest=${CLAUDE_CONFIG_DIR:-$HOME/.claude}/agents
@@ -138,6 +139,12 @@ setup_agents() {
 mkdir -p "$WORKDIR"
 [ "$DO_ULTRON" = 1 ] && setup_ultron
 [ "$DO_AGENTS" = 1 ] && setup_agents
+
+# --start is meaningless without the server half; say so rather than exiting
+# silently as though it had been honoured.
+if [ "$DO_START" = 1 ] && [ "$DO_ULTRON" = 0 ]; then
+  warn "--start ignored: --agents-only skips the Ultron install"
+fi
 
 if [ "$DO_START" = 1 ] && [ "$DO_ULTRON" = 1 ]; then
   say "starting ultron on $ULTRON_HOST:$ULTRON_PORT"
