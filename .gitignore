@@ -1,0 +1,10 @@
+# The AI trading bot is a SEPARATE project that happens to live in this working
+# tree. It has its own git repository in trading-bot/ and is destined for its
+# own GitHub repo, so it is deliberately not tracked here -- this repo is an
+# ffmpeg proxy, and mixing an unrelated trading system into its history (and
+# into a public repo) is not wanted.
+#
+#   cd trading-bot && git log        # its own history lives there
+#   git clone ai-trading-bot.bundle  # a complete clonable copy
+trading-bot/
+ai-trading-bot.bundle
