@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Closeloop</title>
+<link rel="stylesheet" href="/styles.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#128260;</text></svg>">
+</head>
+<body>
+
+<div id="login" class="login-wrap hidden">
+  <div class="card">
+    <h2>Closeloop</h2>
+    <p class="sub">Sign in to the operator console.</p>
+    <form id="login-form">
+      <label for="login-email">Email</label>
+      <input id="login-email" type="email" autocomplete="username" required>
+      <label for="login-password">Password</label>
+      <input id="login-password" type="password" autocomplete="current-password" required>
+      <button class="btn" type="submit" style="width:100%">Sign in</button>
+    </form>
+    <div id="login-error" class="notice bad hidden"></div>
+  </div>
+</div>
+
+<div id="app" class="hidden">
+  <header class="topbar">
+    <div class="brand">Close<span>loop</span></div>
+    <nav class="tabs" id="tabs"></nav>
+    <div class="spacer"></div>
+    <select id="client-picker" style="width:auto;margin:0;max-width:260px"></select>
+    <span id="mode-pill" class="mode"></span>
+    <button class="btn secondary sm" id="logout">Sign out</button>
+  </header>
+  <main id="view"></main>
+</div>
+
+<script src="/app.js"></script>
+</body>
+</html>
