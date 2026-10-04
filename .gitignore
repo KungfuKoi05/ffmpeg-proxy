@@ -8,3 +8,13 @@
 #   git clone ai-trading-bot.bundle  # a complete clonable copy
 trading-bot/
 ai-trading-bot.bundle
+
+# The AI revenue agency is likewise a SEPARATE project living in this working
+# tree. It has its own git repository in revenue-agency/ and belongs in its own
+# GitHub repo -- this repo is an ffmpeg proxy, and an unrelated sales-automation
+# system does not belong in its history.
+#
+#   cd revenue-agency && git log            # its own history lives there
+#   git clone revenue-agency.bundle         # a complete clonable copy
+revenue-agency/
+revenue-agency.bundle
