@@ -1,0 +1,15 @@
+{
+  "name": "site-audit",
+  "private": true,
+  "type": "module",
+  "description": "Browser audit for static sample sites: errors, overflow, tap targets, behaviour, no-JS, reduced motion, axe.",
+  "scripts": {
+    "audit": "node audit.mjs",
+    "lighthouse": "lighthouse"
+  },
+  "dependencies": {
+    "axe-core": "4.10.3",
+    "lighthouse": "12.8.2",
+    "playwright-core": "1.56.1"
+  }
+}
