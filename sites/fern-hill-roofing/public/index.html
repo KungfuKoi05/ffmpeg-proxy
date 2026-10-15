@@ -1,0 +1,495 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fern Hill Roofing · Tacoma roof replacement and repair (sample site)</title>
+<meta name="description" content="Sample website for a fictional Tacoma roofer: roof replacement, leak repair and moss removal, with tear-offs scheduled on dry days.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0e1113">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preload" href="fonts/libre-franklin-700-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/source-serif-4-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="styles.css">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body>
+
+<!-- Shared drawings. One flat language: filled shapes in the palette's colours, no outlines. -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <pattern id="courses-dark" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#2b3236"/>
+      <rect x="1" y="1" width="22" height="10" fill="#3a4247"/>
+      <rect x="25" y="1" width="22" height="10" fill="#353d42"/>
+      <rect x="-11" y="13" width="22" height="10" fill="#353d42"/>
+      <rect x="13" y="13" width="22" height="10" fill="#3a4247"/>
+      <rect x="37" y="13" width="22" height="10" fill="#3f484d"/>
+    </pattern>
+    <pattern id="courses-new" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#1c2226"/>
+      <rect x="1" y="1" width="22" height="10" fill="#2a3135"/>
+      <rect x="25" y="1" width="22" height="10" fill="#262d31"/>
+      <rect x="-11" y="13" width="22" height="10" fill="#262d31"/>
+      <rect x="13" y="13" width="22" height="10" fill="#2a3135"/>
+      <rect x="37" y="13" width="22" height="10" fill="#2e363a"/>
+    </pattern>
+    <pattern id="siding" width="40" height="16" patternUnits="userSpaceOnUse">
+      <rect width="40" height="16" fill="#4d6a3c"/>
+      <rect y="13" width="40" height="3" fill="#3f5a31"/>
+    </pattern>
+    <pattern id="siding-light" width="40" height="16" patternUnits="userSpaceOnUse">
+      <rect width="40" height="16" fill="#c9d2cf"/>
+      <rect y="13" width="40" height="3" fill="#aebab6"/>
+    </pattern>
+    <symbol id="swatch" viewBox="0 0 120 150">
+      <rect width="120" height="150" fill="#0e1113" opacity=".35"/>
+      <g fill="currentColor">
+        <rect x="0" y="0" width="38" height="34"/><rect x="41" y="0" width="38" height="34"/><rect x="82" y="0" width="38" height="34"/>
+        <rect x="-20" y="38" width="38" height="34"/><rect x="21" y="38" width="38" height="34"/><rect x="62" y="38" width="38" height="34"/><rect x="103" y="38" width="38" height="34"/>
+        <rect x="0" y="76" width="38" height="34"/><rect x="41" y="76" width="38" height="34"/><rect x="82" y="76" width="38" height="34"/>
+        <rect x="-20" y="114" width="38" height="36"/><rect x="21" y="114" width="38" height="36"/><rect x="62" y="114" width="38" height="36"/><rect x="103" y="114" width="38" height="36"/>
+      </g>
+      <g fill="#ffffff" opacity=".12"><rect x="0" y="0" width="38" height="5"/><rect x="41" y="0" width="38" height="5"/><rect x="21" y="38" width="38" height="5"/><rect x="62" y="38" width="38" height="5"/><rect x="41" y="76" width="38" height="5"/><rect x="21" y="114" width="38" height="5"/></g>
+    </symbol>
+  </defs>
+</svg>
+
+<aside class="demo-note" aria-label="About this sample site"><p>Sample site. Fern Hill Roofing is a made-up company; prices, phone, email and licence number are placeholders.</p></aside>
+
+<header class="hero" id="top">
+  <div class="name-band" aria-hidden="true"><span>Fern Hill Roofing</span></div>
+  <h1 class="sr-only">Fern Hill Roofing, Tacoma</h1>
+
+  <nav class="link-row" aria-label="Sections">
+    <a class="tile-link" href="#prices">Prices</a>
+    <a class="tile-link" href="#process">How a job runs</a>
+    <a class="tile-link" href="#layers">What goes on</a>
+    <a class="tile-link" href="#faq">Questions</a>
+  </nav>
+
+  <div class="rail-left">
+    <figure class="tile tile-gauge">
+      <svg viewBox="0 0 300 450" preserveAspectRatio="xMidYMid slice" role="img" aria-labelledby="gauge-t">
+        <title id="gauge-t">Drawing of a rain gauge on a fence post, filled to about seven inches</title>
+        <rect width="300" height="450" fill="#33461f"/>
+        <rect x="0" y="330" width="300" height="120" fill="#2a3a19"/>
+        <rect x="128" y="250" width="44" height="200" fill="#5b4a37"/>
+        <rect x="128" y="250" width="14" height="200" fill="#6b5842"/>
+        <rect x="100" y="96" width="100" height="26" fill="#c9d2cf"/>
+        <rect x="112" y="118" width="76" height="238" fill="#c9d2cf" opacity=".35"/>
+        <rect x="112" y="190" width="76" height="166" fill="#3d8bf2"/>
+        <rect x="112" y="190" width="76" height="8" fill="#7fb0f5"/>
+        <rect x="112" y="118" width="8" height="238" fill="#ffffff" opacity=".35"/>
+        <g fill="#0e1113">
+          <rect x="170" y="140" width="18" height="3"/><rect x="176" y="164" width="12" height="3"/>
+          <rect x="170" y="188" width="18" height="3"/><rect x="176" y="212" width="12" height="3"/>
+          <rect x="170" y="236" width="18" height="3"/><rect x="176" y="260" width="12" height="3"/>
+          <rect x="170" y="284" width="18" height="3"/><rect x="176" y="308" width="12" height="3"/>
+          <rect x="170" y="332" width="18" height="3"/>
+        </g>
+        <g font-family="Libre Franklin, sans-serif" font-weight="700" font-size="16" fill="#ffffff">
+          <text x="204" y="146">8</text><text x="204" y="194">7</text><text x="204" y="242">6</text><text x="204" y="290">5</text><text x="204" y="338">4</text>
+        </g>
+        <rect x="104" y="356" width="92" height="12" fill="#8b969a"/>
+        <rect x="150" y="268" width="40" height="10" fill="#8b969a"/>
+        <circle cx="160" cy="273" r="3" fill="#0e1113"/><circle cx="180" cy="273" r="3" fill="#0e1113"/>
+        <g class="drops" fill="#9fc2f0">
+          <rect x="60" y="20" width="3" height="16"/><rect x="230" y="60" width="3" height="16"/><rect x="40" y="150" width="3" height="16"/>
+          <rect x="250" y="190" width="3" height="16"/><rect x="80" y="260" width="3" height="16"/><rect x="220" y="300" width="3" height="16"/>
+          <rect x="150" y="40" width="3" height="16"/>
+        </g>
+        <path d="M30 372c10-14 26-14 36 0z M240 380c8-10 20-10 28 0z" fill="#4f6b2a"/>
+      </svg>
+    </figure>
+    <ul class="tile facts" aria-label="What we do">
+      <li>Replacements in composition, metal and cedar</li>
+      <li>Leak repair, usually the same week</li>
+      <li>Moss cleared by hand, zinc strips fitted</li>
+      <li>Gutters, flashing and roof vents</li>
+      <li>Storm tarps up within a day</li>
+    </ul>
+  </div>
+
+  <div class="hero-main">
+    <figure class="tile tile-picture">
+      <svg viewBox="0 0 1200 760" preserveAspectRatio="xMidYMid slice" role="img" aria-labelledby="hero-t">
+        <title id="hero-t">Drawing of Craftsman houses in Tacoma's North End under rain, Mount Rainier behind; one roof under a blue storm tarp</title>
+        <rect width="1200" height="760" fill="#1a1f22"/>
+        <path d="M250 430 L520 170 L560 190 L600 150 L700 250 L760 230 L980 430z" fill="#9fb0ab"/>
+        <path d="M520 170 L560 190 L600 150 L640 200 L610 240 L585 215 L555 260 L520 230 L470 300 L420 330z" fill="#e9eeec"/>
+        <path d="M600 150 L700 250 L760 230 L800 290 L740 300 L690 280 L650 300z" fill="#c9d2cf"/>
+        <path d="M0 470 L160 420 L330 450 L520 405 L700 440 L900 400 L1200 450 L1200 760 L0 760z" fill="#22301a"/>
+        <path d="M0 520 L220 480 L420 510 L640 470 L880 505 L1200 470 L1200 760 L0 760z" fill="#2a3a19"/>
+        <!-- house 1 -->
+        <g>
+          <rect x="40" y="560" width="300" height="200" fill="url(#siding)"/>
+          <path d="M10 572 L190 440 L370 572z" fill="url(#courses-dark)"/>
+          <rect x="10" y="568" width="360" height="10" fill="#8b969a"/>
+          <rect x="250" y="440" width="34" height="80" fill="#5b4a37"/>
+          <rect x="246" y="436" width="42" height="10" fill="#6b5842"/>
+          <rect x="244" y="512" width="46" height="8" fill="#8b969a"/>
+          <rect x="80" y="610" width="70" height="80" fill="#f3f5f4" opacity=".85"/>
+          <rect x="112" y="610" width="6" height="80" fill="#4d6a3c"/>
+          <rect x="230" y="610" width="70" height="80" fill="#f3f5f4" opacity=".85"/>
+          <rect x="262" y="610" width="6" height="80" fill="#4d6a3c"/>
+          <path d="M150 500 L190 470 L230 500z" fill="#c9d2cf"/>
+          <rect x="340" y="578" width="8" height="182" fill="#8b969a"/>
+        </g>
+        <!-- house 2, under a tarp -->
+        <g>
+          <rect x="420" y="540" width="330" height="220" fill="url(#siding-light)"/>
+          <path d="M390 552 L585 410 L780 552z" fill="url(#courses-dark)"/>
+          <path d="M470 494 L585 410 L700 494 L690 520 L480 520z" fill="#3d8bf2"/>
+          <path d="M585 410 L700 494 L690 520 L585 444z" fill="#2f74d0"/>
+          <g fill="#0e1113"><rect x="486" y="512" width="10" height="10"/><rect x="560" y="512" width="10" height="10"/><rect x="636" y="512" width="10" height="10"/><rect x="580" y="430" width="10" height="10"/></g>
+          <rect x="390" y="548" width="390" height="10" fill="#8b969a"/>
+          <rect x="460" y="590" width="80" height="100" fill="#1a1f22"/>
+          <rect x="470" y="600" width="60" height="80" fill="#3d8bf2" opacity=".55"/>
+          <rect x="630" y="590" width="80" height="100" fill="#1a1f22"/>
+          <rect x="640" y="600" width="60" height="80" fill="#f3f5f4" opacity=".7"/>
+          <rect x="545" y="660" width="70" height="100" fill="#5b4a37"/>
+          <g font-family="Libre Franklin, sans-serif" font-weight="700" font-size="20" fill="#0e1113"><text x="552" y="652">1907</text></g>
+        </g>
+        <!-- house 3 -->
+        <g>
+          <rect x="840" y="575" width="330" height="185" fill="url(#siding)"/>
+          <path d="M810 588 L1005 455 L1200 588z" fill="url(#courses-dark)"/>
+          <g fill="#4f6b2a"><circle cx="900" cy="560" r="12"/><circle cx="918" cy="566" r="9"/><circle cx="1080" cy="552" r="10"/><circle cx="1050" cy="530" r="8"/><circle cx="960" cy="520" r="7"/></g>
+          <g fill="#6f8a3a"><circle cx="896" cy="556" r="5"/><circle cx="1076" cy="548" r="4"/><circle cx="1046" cy="527" r="3"/></g>
+          <rect x="810" y="584" width="390" height="10" fill="#8b969a"/>
+          <rect x="880" y="625" width="90" height="70" fill="#f3f5f4" opacity=".85"/>
+          <rect x="1040" y="625" width="90" height="70" fill="#f3f5f4" opacity=".85"/>
+          <rect x="1166" y="594" width="8" height="166" fill="#8b969a"/>
+        </g>
+        <!-- crow on the ridge -->
+        <path d="M576 404 l14 -10 l12 4 l8 -6 l-2 10 l-10 6 l-14 0 z" fill="#0e1113"/>
+        <g class="rain" fill="#9fc2f0" opacity=".45">
+          <rect x="40" y="0" width="2" height="34"/><rect x="130" y="80" width="2" height="34"/><rect x="220" y="30" width="2" height="34"/>
+          <rect x="310" y="140" width="2" height="34"/><rect x="400" y="60" width="2" height="34"/><rect x="490" y="200" width="2" height="34"/>
+          <rect x="580" y="20" width="2" height="34"/><rect x="670" y="120" width="2" height="34"/><rect x="760" y="260" width="2" height="34"/>
+          <rect x="850" y="70" width="2" height="34"/><rect x="940" y="180" width="2" height="34"/><rect x="1030" y="10" width="2" height="34"/>
+          <rect x="1120" y="230" width="2" height="34"/><rect x="85" y="300" width="2" height="34"/><rect x="175" y="380" width="2" height="34"/>
+          <rect x="355" y="330" width="2" height="34"/><rect x="535" y="310" width="2" height="34"/><rect x="715" y="360" width="2" height="34"/>
+          <rect x="895" y="330" width="2" height="34"/><rect x="1075" y="390" width="2" height="34"/><rect x="265" y="470" width="2" height="34"/>
+          <rect x="805" y="460" width="2" height="34"/><rect x="985" y="480" width="2" height="34"/><rect x="1165" y="120" width="2" height="34"/>
+        </g>
+      </svg>
+    </figure>
+    <p class="tile statement">Roofs built for the wet months, laid in the dry&nbsp;ones.</p>
+  </div>
+
+  <ul class="rail-right" aria-label="Rain and scheduling">
+    <li class="rail-tile r1"><span class="rail-big">~7&nbsp;in.</span> of rain in an average Tacoma November</li>
+    <li class="rail-tile r2"><span class="rail-big">&lt;1&nbsp;in.</span> in an average July</li>
+    <li class="rail-tile r3">Repairs and tarps in any month</li>
+    <li class="rail-tile r4">Replacements booked for runs of dry days</li>
+    <li class="rail-tile r5"><a class="action-tile" data-book href="mailto:estimates@fernhill-roofing.example?subject=Roof%20inspection%20request">Book a free inspection</a></li>
+  </ul>
+</header>
+
+<main>
+
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <span>Tear-offs on dry days only · Fern Hill Roofing · </span><span>Tear-offs on dry days only · Fern Hill Roofing · </span>
+  </div>
+</div>
+
+<section class="intro board" aria-labelledby="intro-h">
+  <h2 id="intro-h" class="tile slogan" data-reveal>Built for<br>rain</h2>
+  <div class="tile figure-tile" data-reveal style="--i:1">
+    <span class="figure-word">7&nbsp;in.</span>
+    <span class="figure-note">November’s average rainfall in Tacoma. July gets less than one.</span>
+  </div>
+  <figure class="tile tile-moss" data-reveal style="--i:2">
+    <svg viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice" role="img" aria-labelledby="moss-t">
+      <title id="moss-t">Close drawing of shingle courses with moss in the gaps and a zinc strip along the ridge</title>
+      <rect width="400" height="400" fill="url(#courses-dark)"/>
+      <rect x="0" y="0" width="400" height="46" fill="#a7b0b3"/>
+      <rect x="0" y="40" width="400" height="6" fill="#8b969a"/>
+      <g fill="#5b666b"><circle cx="40" cy="22" r="4"/><circle cx="140" cy="22" r="4"/><circle cx="240" cy="22" r="4"/><circle cx="340" cy="22" r="4"/></g>
+      <g fill="#4f6b2a">
+        <path d="M60 180c10-26 44-30 58-4 10 18-6 30-28 30s-38-8-30-26z"/>
+        <path d="M230 250c14-30 60-30 70 0 6 18-14 26-36 26s-42-8-34-26z"/>
+        <path d="M120 330c8-20 36-22 46 0 6 14-10 22-24 22s-28-8-22-22z"/>
+        <path d="M300 120c8-18 32-20 40 0 4 12-8 18-20 18s-26-6-20-18z"/>
+      </g>
+      <g fill="#6f8a3a">
+        <circle cx="78" cy="176" r="8"/><circle cx="96" cy="170" r="6"/><circle cx="254" cy="246" r="9"/><circle cx="276" cy="240" r="7"/>
+        <circle cx="136" cy="330" r="6"/><circle cx="316" cy="118" r="5"/>
+      </g>
+      <g fill="#8aa04a"><circle cx="86" cy="168" r="3"/><circle cx="264" cy="236" r="3"/><circle cx="142" cy="324" r="2"/></g>
+      <g fill="#ffffff" opacity=".18"><rect x="20" y="96" width="3" height="3"/><rect x="190" y="150" width="3" height="3"/><rect x="330" y="210" width="3" height="3"/><rect x="60" y="280" width="3" height="3"/><rect x="250" y="360" width="3" height="3"/></g>
+    </svg>
+  </figure>
+  <div class="tile intro-text" data-reveal style="--i:3">
+    <p>Here a roof rarely fails in the sun. It fails at the edges, where water sits: a lifted shingle by the gutter, a chimney with tired flashing, moss packed into the gaps and holding water against the mat. We build every roof against that. Ice-and-water membrane along the eaves and in the valleys, synthetic underlayment over the whole deck, flashing bent on site for your chimney and walls, and enough attic ventilation to keep the decking dry from below. Then we book the tear-off for a run of dry days, so your house is never open to the sky in November. Repairs we do in any weather, usually the same week you call.</p>
+  </div>
+</section>
+
+
+<section class="prices" id="prices" aria-labelledby="prices-h">
+  <div class="prices-head">
+    <h2 id="prices-h" class="head"><span class="soft">What a new roof costs</span><br>in Tacoma</h2>
+    <a class="button" data-book href="mailto:estimates@fernhill-roofing.example?subject=Roof%20inspection%20request">Book a free inspection</a>
+  </div>
+
+  <div class="estimator" data-estimator>
+    <div class="tabs" role="tablist" aria-label="Roofing material">
+      <button class="tab" role="tab" id="tab-comp" aria-controls="panel-comp" aria-selected="true" data-material="comp"><span class="tab-name">Composition</span><span class="tab-note">Lasts about 25–30 years</span></button>
+      <button class="tab" role="tab" id="tab-metal" aria-controls="panel-metal" aria-selected="false" tabindex="-1" data-material="metal"><span class="tab-name">Standing-seam metal</span><span class="tab-note">Lasts 40 years or more</span></button>
+      <button class="tab" role="tab" id="tab-cedar" aria-controls="panel-cedar" aria-selected="false" tabindex="-1" data-material="cedar"><span class="tab-name">Cedar shake</span><span class="tab-note">Lasts about 25–35 years</span></button>
+    </div>
+
+    <div class="bands-wrap">
+      <div class="bands" role="tabpanel" id="panel-comp" aria-labelledby="tab-comp" data-panel="comp">
+        <h3 class="panel-title">Composition shingle</h3>
+        <div class="band"><span class="band-size nums">15 squares</span><span class="band-title">One-storey rambler<span class="band-note">About 1,500 sq ft of roof, low pitch</span></span><span class="band-price nums">$9,000–$12,750<span class="band-days">1 dry day</span></span></div>
+        <div class="band"><span class="band-size nums">22 squares</span><span class="band-title">Two-storey Craftsman<span class="band-note">About 2,200 sq ft, one chimney, two valleys</span></span><span class="band-price nums">$13,200–$18,700<span class="band-days">2 dry days</span></span></div>
+        <div class="band"><span class="band-size nums">30 squares</span><span class="band-title">Large or steep roof<span class="band-note">About 3,000 sq ft, dormers or a steep pitch</span></span><span class="band-price nums">$18,000–$25,500<span class="band-days">2 dry days</span></span></div>
+      </div>
+      <div class="bands" role="tabpanel" id="panel-metal" aria-labelledby="tab-metal" data-panel="metal">
+        <h3 class="panel-title">Standing-seam metal</h3>
+        <div class="band"><span class="band-size nums">15 squares</span><span class="band-title">One-storey rambler<span class="band-note">About 1,500 sq ft of roof, low pitch</span></span><span class="band-price nums">$18,000–$25,500<span class="band-days">3 dry days</span></span></div>
+        <div class="band"><span class="band-size nums">22 squares</span><span class="band-title">Two-storey Craftsman<span class="band-note">About 2,200 sq ft, one chimney, two valleys</span></span><span class="band-price nums">$26,400–$37,400<span class="band-days">4 dry days</span></span></div>
+        <div class="band"><span class="band-size nums">30 squares</span><span class="band-title">Large or steep roof<span class="band-note">About 3,000 sq ft, dormers or a steep pitch</span></span><span class="band-price nums">$36,000–$51,000<span class="band-days">5 dry days</span></span></div>
+      </div>
+      <div class="bands" role="tabpanel" id="panel-cedar" aria-labelledby="tab-cedar" data-panel="cedar">
+        <h3 class="panel-title">Cedar shake</h3>
+        <div class="band"><span class="band-size nums">15 squares</span><span class="band-title">One-storey rambler<span class="band-note">About 1,500 sq ft of roof, low pitch</span></span><span class="band-price nums">$19,500–$28,500<span class="band-days">3 dry days</span></span></div>
+        <div class="band"><span class="band-size nums">22 squares</span><span class="band-title">Two-storey Craftsman<span class="band-note">About 2,200 sq ft, one chimney, two valleys</span></span><span class="band-price nums">$28,600–$41,800<span class="band-days">4 dry days</span></span></div>
+        <div class="band"><span class="band-size nums">30 squares</span><span class="band-title">Large or steep roof<span class="band-note">About 3,000 sq ft, dormers or a steep pitch</span></span><span class="band-price nums">$39,000–$57,000<span class="band-days">5 dry days</span></span></div>
+      </div>
+
+      <div class="band band-yours" data-yours hidden>
+        <label class="band-size nums" for="squares"><span data-out="squares">22</span> squares</label>
+        <span class="band-title">Your roof<span class="band-note"><input id="squares" type="range" min="8" max="45" step="1" value="22" aria-describedby="squares-help"><span id="squares-help" class="sr-only">Roof size in squares. One square is 100 square feet.</span></span></span>
+        <span class="band-price nums" aria-live="polite"><span data-out="price">$13,200–$18,700</span><span class="band-days" data-out="days">2 dry days</span></span>
+      </div>
+    </div>
+  </div>
+  <p class="small fine-print">Sample figures for this demo site. A real price is itemised after we’ve been on the roof and in the attic. One square is 100&nbsp;sq&nbsp;ft of roof.</p>
+</section>
+
+<section class="process" id="process" aria-labelledby="process-h">
+  <div class="process-head">
+    <h2 id="process-h" class="head" data-reveal>How a job runs</h2>
+    <p data-reveal style="--i:1">You will always know which stage we’re in. A leak repair usually goes straight from the inspection to the build, and is done the same week.</p>
+  </div>
+  <div class="stages" data-stages>
+    <div class="stage s1 is-open">
+      <h3><button class="stage-btn" aria-expanded="true" aria-controls="stage-1">Inspect</button></h3>
+      <div class="stage-body" id="stage-1"><p>We walk the roof, go into the attic and look at the decking from below. You get photographs of everything we saw, good and bad, the same day.</p></div>
+    </div>
+    <div class="stage s2">
+      <h3><button class="stage-btn" aria-expanded="false" aria-controls="stage-2">Estimate</button></h3>
+      <div class="stage-body" id="stage-2"><p>Itemised and in writing: every material, the sheets of decking we expect to replace, and the price of each extra sheet if we find more rot once the old roof is off.</p></div>
+    </div>
+    <div class="stage s3">
+      <h3><button class="stage-btn" aria-expanded="false" aria-controls="stage-3">Schedule</button></h3>
+      <div class="stage-body" id="stage-3"><p>We book the tear-off for a run of dry days and watch the forecast with you. If rain moves in, we move the date. Your house is never left open overnight.</p></div>
+    </div>
+    <div class="stage s4">
+      <h3><button class="stage-btn" aria-expanded="false" aria-controls="stage-4">Build</button></h3>
+      <div class="stage-body" id="stage-4"><p>Old roof off, deck repaired, membrane at the eaves and valleys, underlayment, flashing, the new roof and ridge vents. One slope open at a time.</p></div>
+    </div>
+    <div class="stage s5">
+      <h3><button class="stage-btn" aria-expanded="false" aria-controls="stage-5">Clean up</button></h3>
+      <div class="stage-body" id="stage-5"><p>A magnet sweep for nails across the yard and drive, gutters cleared, and a walk around the house with you before we leave.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="layers" id="layers" aria-labelledby="layers-h">
+  <div class="layers-phone" role="img" aria-label="Drawing of a roof in section, from attic rafters to ridge vent"></div>
+  <div class="mosaic" data-mosaic>
+    <!-- 24 tiles; five carry content, the rest show one piece each of the cross-section drawing -->
+    <div class="m"></div><div class="m"></div><div class="m"></div><div class="m"></div>
+    <h2 id="layers-h" class="m m-colour m-heading">Every layer, in writing</h2>
+    <div class="m"></div>
+    <div class="m"></div>
+    <p class="m m-colour m-fact c2">Ice-and-water membrane at every eave and valley</p>
+    <div class="m"></div><div class="m"></div><div class="m"></div><div class="m"></div>
+    <div class="m"></div><div class="m"></div><div class="m"></div>
+    <p class="m m-colour m-fact c3">Synthetic underlayment over the whole deck</p>
+    <div class="m"></div><div class="m"></div>
+    <p class="m m-colour m-fact c4">Step and counter flashing bent on site</p>
+    <div class="m"></div><div class="m"></div><div class="m"></div>
+    <a class="m m-colour m-action" data-book href="mailto:estimates@fernhill-roofing.example?subject=Roof%20inspection%20request">Book an inspection</a>
+    <div class="m"></div>
+  </div>
+  <p class="small caption">Drawing: a roof in section, from attic rafters to ridge vent.</p>
+</section>
+
+<section class="about" aria-labelledby="about-h">
+  <h2 id="about-h" class="head" data-reveal>A small local crew</h2>
+  <p class="lead" data-reveal style="--i:1">We work within about twenty miles of the Fern Hill neighbourhood in south Tacoma. The person who inspects your roof is on the crew that builds it.</p>
+  <div class="about-tiles">
+    <figure class="about-picture" data-reveal style="--i:2">
+      <svg viewBox="0 0 1000 625" preserveAspectRatio="xMidYMid slice" role="img" aria-labelledby="house-t">
+        <title id="house-t">Drawing of a two-storey Craftsman house with a new dark roof and a ladder at the eave</title>
+        <rect width="1000" height="625" fill="#c9d2cf"/>
+        <rect y="520" width="1000" height="105" fill="#4d6a3c"/>
+        <rect y="520" width="1000" height="14" fill="#3f5a31"/>
+        <rect x="220" y="260" width="560" height="265" fill="url(#siding)"/>
+        <path d="M150 280 L500 70 L850 280z" fill="url(#courses-new)"/>
+        <rect x="150" y="276" width="700" height="12" fill="#8b969a"/>
+        <path d="M380 210 L500 140 L620 210 L620 250 L380 250z" fill="#3f5a31"/>
+        <rect x="430" y="180" width="140" height="56" fill="#f3f5f4"/>
+        <rect x="496" y="180" width="8" height="56" fill="#3f5a31"/>
+        <rect x="660" y="96" width="44" height="120" fill="#5b4a37"/>
+        <rect x="654" y="90" width="56" height="12" fill="#6b5842"/>
+        <rect x="652" y="200" width="60" height="10" fill="#a7b0b3"/>
+        <rect x="200" y="400" width="600" height="20" fill="#2a3a19"/>
+        <rect x="230" y="420" width="18" height="100" fill="#f3f5f4"/><rect x="752" y="420" width="18" height="100" fill="#f3f5f4"/>
+        <rect x="490" y="420" width="20" height="100" fill="#f3f5f4"/>
+        <rect x="290" y="310" width="120" height="70" fill="#1a1f22"/><rect x="300" y="318" width="100" height="54" fill="#f3f5f4" opacity=".8"/>
+        <rect x="590" y="310" width="120" height="70" fill="#1a1f22"/><rect x="600" y="318" width="100" height="54" fill="#f3f5f4" opacity=".8"/>
+        <rect x="550" y="430" width="70" height="90" fill="#5b4a37"/>
+        <rect x="300" y="440" width="90" height="60" fill="#1a1f22"/><rect x="308" y="448" width="74" height="44" fill="#f3f5f4" opacity=".8"/>
+        <g fill="#a7b0b3"><rect x="840" y="200" width="12" height="330" transform="rotate(14 846 365)"/><rect x="880" y="200" width="12" height="330" transform="rotate(14 886 365)"/></g>
+        <g fill="#8b969a"><rect x="830" y="260" width="56" height="8" transform="rotate(14 858 264)"/><rect x="822" y="320" width="56" height="8" transform="rotate(14 850 324)"/><rect x="814" y="380" width="56" height="8" transform="rotate(14 842 384)"/><rect x="806" y="440" width="56" height="8" transform="rotate(14 834 444)"/></g>
+        <rect x="160" y="288" width="8" height="240" fill="#8b969a"/>
+        <g font-family="Libre Franklin, sans-serif" font-weight="700" font-size="18" fill="#0e1113"><text x="560" y="424">1912</text></g>
+      </svg>
+      <p class="about-note">Inspections are free and take about an hour. We go in the attic too, so wear what you like and keep the dog in.</p>
+    </figure>
+    <div class="about-side" data-reveal style="--i:3">
+      <div class="region-tile">
+        <svg viewBox="0 0 300 200" role="img" aria-labelledby="region-t">
+          <title id="region-t">Schematic map: a twenty-mile service circle around Fern Hill, with Commencement Bay to the north</title>
+          <rect width="300" height="200" fill="#33461f"/>
+          <path d="M0 0 H300 V40 C250 48 220 30 190 44 C160 58 150 36 120 40 C90 44 60 30 0 46 Z" fill="#3d8bf2" opacity=".55"/>
+          <circle cx="150" cy="118" r="70" fill="#4d6a3c"/>
+          <circle cx="150" cy="118" r="7" fill="#ffffff"/>
+          <text x="164" y="123" font-family="Libre Franklin, sans-serif" font-weight="700" font-size="15" fill="#ffffff">Fern Hill</text>
+        </svg>
+      </div>
+      <dl class="pairs">
+        <div><dt>Based in</dt><dd>Fern Hill, Tacoma</dd></div>
+        <div><dt>Works within</dt><dd>About 20 miles</dd></div>
+        <div><dt>Repairs</dt><dd>All year</dd></div>
+        <div><dt>Office</dt><dd>Mon–Fri, 7–5</dd></div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section class="faq" id="faq" aria-labelledby="faq-h">
+  <h2 id="faq-h" class="head faq-title">Questions we get</h2>
+  <div class="faq-list">
+    <details name="faq" open>
+      <summary>Can you replace a roof in winter?<span class="pm" aria-hidden="true"></span></summary>
+      <p>We can, but we’d rather not. A tear-off leaves the deck open, so we book replacements for runs of dry days, which in Tacoma mostly means summer and early autumn. Repairs and storm tarps we do in any month.</p>
+    </details>
+    <details name="faq">
+      <summary>Do I need a full tear-off, or can you roof over?<span class="pm" aria-hidden="true"></span></summary>
+      <p>Code allows a second layer on some roofs, but we rarely advise it here. The old layer holds water, adds weight and hides rot in the decking. We’ll tell you what we see from the attic before you decide.</p>
+    </details>
+    <details name="faq">
+      <summary>How long does a replacement take?<span class="pm" aria-hidden="true"></span></summary>
+      <p>Most composition roofs take one to three dry days. Metal and cedar take longer. The estimator above shows the dry days for each size, and your written estimate gives the exact plan.</p>
+    </details>
+    <details name="faq">
+      <summary>Is moss really a problem?<span class="pm" aria-hidden="true"></span></summary>
+      <p>Yes. Moss holds water against the shingles and lifts their edges, which is how leaks start. We clear it by hand and fit zinc strips at the ridge. We never pressure-wash a roof; it strips the granules.</p>
+    </details>
+    <details name="faq">
+      <summary>Will you work with my insurance?<span class="pm" aria-hidden="true"></span></summary>
+      <p>We’ll photograph the damage and write an itemised estimate you can send to your insurer. The claim itself stays between you and them.</p>
+    </details>
+    <details name="faq">
+      <summary>What warranty comes with a new roof?<span class="pm" aria-hidden="true"></span></summary>
+      <p>The manufacturer’s warranty on materials, plus our own workmanship warranty. Its length and what it covers are written into your estimate before you sign.</p>
+    </details>
+    <details name="faq">
+      <summary>Are you licensed and insured?<span class="pm" aria-hidden="true"></span></summary>
+      <p>Yes. Washington requires every roofing contractor to be registered with Labor &amp; Industries. Our registration number is at the bottom of this page, and we’ll show proof of insurance at the inspection.</p>
+    </details>
+  </div>
+</section>
+
+<section class="contact" id="contact" aria-labelledby="contact-h">
+  <div class="swatch-strip" aria-hidden="true">
+    <div class="swatch-track">
+      <svg class="sw w34" style="color:#3a4247"><use href="#swatch"/></svg>
+      <svg class="sw w11" style="color:#6b5842"><use href="#swatch"/></svg>
+      <svg class="sw w32" style="color:#4f6b2a"><use href="#swatch"/></svg>
+      <svg class="sw w34" style="color:#8b969a"><use href="#swatch"/></svg>
+      <svg class="sw w11" style="color:#2f74d0"><use href="#swatch"/></svg>
+      <svg class="sw w32" style="color:#5b666b"><use href="#swatch"/></svg>
+      <svg class="sw w34" style="color:#9c7b55"><use href="#swatch"/></svg>
+      <svg class="sw w11" style="color:#1c2226"><use href="#swatch"/></svg>
+      <svg class="sw w32" style="color:#a7b0b3"><use href="#swatch"/></svg>
+      <svg class="sw w34" style="color:#3f5a31"><use href="#swatch"/></svg>
+      <svg class="sw w11" style="color:#4c565c"><use href="#swatch"/></svg>
+      <svg class="sw w32" style="color:#c9d2cf"><use href="#swatch"/></svg>
+      <svg class="sw w34" style="color:#3a4247"><use href="#swatch"/></svg>
+      <svg class="sw w11" style="color:#6b5842"><use href="#swatch"/></svg>
+      <svg class="sw w32" style="color:#4f6b2a"><use href="#swatch"/></svg>
+      <svg class="sw w34" style="color:#8b969a"><use href="#swatch"/></svg>
+      <svg class="sw w11" style="color:#2f74d0"><use href="#swatch"/></svg>
+      <svg class="sw w32" style="color:#5b666b"><use href="#swatch"/></svg>
+      <svg class="sw w34" style="color:#9c7b55"><use href="#swatch"/></svg>
+      <svg class="sw w11" style="color:#1c2226"><use href="#swatch"/></svg>
+      <svg class="sw w32" style="color:#a7b0b3"><use href="#swatch"/></svg>
+      <svg class="sw w34" style="color:#3f5a31"><use href="#swatch"/></svg>
+      <svg class="sw w11" style="color:#4c565c"><use href="#swatch"/></svg>
+      <svg class="sw w32" style="color:#c9d2cf"><use href="#swatch"/></svg>
+    </div>
+  </div>
+  <h2 id="contact-h" class="head" data-reveal>Book an inspection</h2>
+  <form class="bar" action="mailto:estimates@fernhill-roofing.example" method="get" data-contact>
+    <input type="hidden" name="subject" value="Roof inspection request">
+    <div class="cell">
+      <label class="sr-only" for="c-name">Your name</label>
+      <input class="cell-input" id="c-name" name="name" autocomplete="name" placeholder="Your name" required>
+    </div>
+    <div class="cell">
+      <label class="sr-only" for="c-addr">Address of the roof</label>
+      <input class="cell-input" id="c-addr" name="address" autocomplete="street-address" placeholder="Address of the roof" required>
+    </div>
+    <button class="cell cell-submit" type="submit">Send the request</button>
+  </form>
+  <div class="bar-notes small">
+    <p>Or call <a class="link-plain" href="tel:+12535550147">(253) 555-0147</a>. We answer within one working day; storm calls any hour.</p>
+    <p>Opens your email app with the details filled in.</p>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="block-mark" aria-hidden="true">
+    <span style="--h:100%">F</span><span style="--h:78%">E</span><span style="--h:90%">R</span><span style="--h:66%">N</span>
+    <span class="gap"></span>
+    <span style="--h:86%">H</span><span style="--h:72%">I</span><span style="--h:96%">L</span><span style="--h:62%">L</span>
+  </div>
+  <div class="footer-cols">
+    <ul class="footer-links" aria-label="Services">
+      <li><a class="link" href="#prices">Replacement</a></li>
+      <li><a class="link" href="#faq">Leak repair</a></li>
+      <li><a class="link" href="#faq">Moss removal</a></li>
+      <li><a class="link" href="#layers">Flashing and gutters</a></li>
+    </ul>
+    <ul class="footer-links" aria-label="This page">
+      <li><a class="link" href="#prices">Prices</a></li>
+      <li><a class="link" href="#process">How a job runs</a></li>
+      <li><a class="link" href="#faq">Questions</a></li>
+      <li><a class="link" href="#contact">Book an inspection</a></li>
+    </ul>
+    <div class="footer-contact">
+      <p><a class="link" href="tel:+12535550147">(253) 555-0147</a><br><a class="link" href="mailto:estimates@fernhill-roofing.example">estimates@fernhill-roofing.example</a></p>
+      <p>Fern Hill, Tacoma, Washington<br>WA L&amp;I registration: SAMPLE-000000</p>
+    </div>
+  </div>
+  <div class="footer-last">
+    <p class="small">© <span data-year>2026</span> Fern Hill Roofing, a fictional company. Every picture on this page is a drawing; a real site would use photographs of the company’s own jobs.</p>
+    <a class="button button-small" href="#top">Back to top</a>
+  </div>
+</footer>
+
+<script src="app.js" defer></script>
+</body>
+</html>
