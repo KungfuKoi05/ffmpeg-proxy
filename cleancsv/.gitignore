@@ -1,0 +1,10 @@
+node_modules/
+dist/
+test-results/
+playwright-report/
+*.log
+.DS_Store
+.env
+.env.*
+# Never commit real customer files. Put local test files here.
+private-data/
