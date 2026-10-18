@@ -76,7 +76,10 @@ for (const width of [320, 390, 768, 1024, 1440]) {
 
 // ---------- 2. behaviour ----------
 const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+const vendorHits = [];
+page.on('request', (r) => { if (/\/vendor\//.test(r.url())) vendorHits.push(r.url().replace(/^.*\//, '')); });
 await page.goto(URL_, { waitUntil: 'networkidle' });
+check(vendorHits.length === 0, 'GSAP is not downloaded with the first screen', vendorHits.join(', '));
 
 const deadAnchors = await page.evaluate(() => [...document.querySelectorAll('a[href^="#"]')].map((a) => a.getAttribute('href')).filter((h) => h.length > 1 && !document.getElementById(h.slice(1))));
 check(deadAnchors.length === 0, 'every in-page link has a target', deadAnchors.join(', '));
@@ -108,20 +111,37 @@ check(hrefs.length >= 2 && hrefs.every((h) => /^mailto:estimates@fernhill-roofin
 await page.focus('#squares'); await page.keyboard.press('ArrowLeft');
 check(await page.textContent('[data-out="squares"]') === '44', 'slider works from the keyboard', await page.textContent('[data-out="squares"]'));
 
-// layers: three stages while scrolling through the section
-const stages = [];
-const box = await page.evaluate(() => { const r = document.querySelector('[data-layers]').getBoundingClientRect(); return { top: r.top + scrollY, h: r.height }; });
-for (const f of [0.1, 0.5, 0.9]) {
-  await page.evaluate((y) => window.scrollTo(0, y), Math.round(box.top + (box.h - 900) * f));
-  await page.waitForTimeout(250);
-  stages.push(await page.getAttribute('[data-layers]', 'data-stage'));
-}
-check(JSON.stringify(stages) === '["1","2","3"]', 'layers zoom steps through three distances on scroll', JSON.stringify(stages));
+// layers: GSAP ScrollTrigger scrubs the zoom with the scroll (whole house → chimney flashing → ridge)
+const STAGE2 = [11.6, 10.6, 32.8, 33.8], STAGE3 = [14.4, 37.8, 54.3, 30.9];
+const near = (a, b, tol = 0.6) => a.length === 4 && a.every((v, i) => Math.abs(v - b[i]) <= tol);
+const crop = (p) => p.evaluate(() => (getComputedStyle(document.querySelector('.frame img')).objectViewBox.match(/-?[\d.]+/g) || []).map(Number).concat([0, 0, 0, 0]).slice(0, 4));
+const layersBox = (p) => p.evaluate(() => { const r = document.querySelector('[data-layers]').getBoundingClientRect(); return { top: r.top + scrollY, h: r.height }; });
+const scrollTo = async (p, box, f) => { await p.evaluate((y) => window.scrollTo(0, y), Math.round(box.top + (box.h - 900) * f)); await p.waitForTimeout(1200); };
+const lbox = await layersBox(page);
+await scrollTo(page, lbox, 0.02);
+check(await page.evaluate(() => typeof window.gsap?.version === 'string' && !!window.ScrollTrigger), 'GSAP and ScrollTrigger load (self-hosted) once the zoom section is near', `${await page.evaluate(() => window.gsap?.version)} via ${vendorHits.join(', ')}`);
+check(await page.evaluate(() => document.querySelector('[data-layers]').classList.contains('is-scrubbed')), 'the zoom is driven by GSAP');
+const crops = [];
+for (const f of [0.02, 0.25, 0.5, 0.95]) { await scrollTo(page, lbox, f); crops.push(await crop(page)); }
+check(near(crops[0], [0, 0, 0, 0]), 'zoom starts on the whole house', JSON.stringify(crops[0]));
+check(!near(crops[1], [0, 0, 0, 0]) && !near(crops[1], STAGE2), 'zoom moves smoothly between distances (not in jumps)', JSON.stringify(crops[1]));
+check(near(crops[2], STAGE2), 'zoom holds on the chimney flashing mid-way', JSON.stringify(crops[2]));
+check(near(crops[3], STAGE3), 'zoom ends on the ridge', JSON.stringify(crops[3]));
 const zoomOk = await page.evaluate(() => { const f = document.querySelector('.frame').getBoundingClientRect(); const i = document.querySelector('.frame img').getBoundingClientRect(); return Math.abs(f.width - i.width) < 2 && Math.abs(f.height - i.height) < 2; });
 check(zoomOk, 'zoomed photo stays inside its frame');
-const capVisible = await page.evaluate(() => getComputedStyle(document.querySelector('.layers-caption')).opacity);
-await page.waitForTimeout(600);
-check(await page.evaluate(() => getComputedStyle(document.querySelector('.layers-caption')).opacity) === '1', 'caption appears at the last distance', capVisible);
+check(await page.evaluate(() => ['.half-2', '.layers-caption'].map((s) => getComputedStyle(document.querySelector(s)).opacity).every((o) => o === '1')), 'heading and caption are fully shown at the end');
+await scrollTo(page, lbox, 0.02);
+check(near(await crop(page), [0, 0, 0, 0]) && await page.evaluate(() => getComputedStyle(document.querySelector('.layers-caption')).opacity) === '0', 'scrolling back up reverses the zoom', JSON.stringify(await crop(page)));
+
+// if GSAP fails to load, the three-step CSS zoom still works
+const noGsap = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+const pg = await noGsap.newPage();
+await pg.route('**/vendor/*.js', (r) => r.abort());
+await pg.goto(URL_, { waitUntil: 'load' });
+const gbox = await layersBox(pg); const steps = [];
+for (const f of [0.1, 0.5, 0.9]) { await scrollTo(pg, gbox, f); steps.push(await pg.getAttribute('[data-layers]', 'data-stage')); }
+check(JSON.stringify(steps) === '["1","2","3"]', 'without GSAP, the zoom falls back to three steps', JSON.stringify(steps));
+await noGsap.close();
 
 // faq: one answer open at a time
 await page.evaluate(() => document.querySelector('#faq').scrollIntoView());
@@ -149,7 +169,12 @@ await nojs.close();
 // ---------- 4. reduced motion ----------
 const rm = await browser.newContext({ reducedMotion: 'reduce', viewport: { width: 1440, height: 900 } });
 const p3 = await rm.newPage();
+const rmVendor = [];
+p3.on('request', (r) => { if (/\/vendor\//.test(r.url())) rmVendor.push(r.url()); });
 await p3.goto(URL_, { waitUntil: 'networkidle' });
+await p3.evaluate(async () => { for (let y = 0; y < document.body.scrollHeight; y += 500) { window.scrollTo(0, y); await new Promise((r) => setTimeout(r, 30)); } });
+await p3.waitForTimeout(800);
+check(rmVendor.length === 0, 'reduced motion: GSAP is never downloaded', rmVendor.join(', '));
 const anim = await p3.evaluate(() => ['.name-word', '.slot', '.slot img', '.hero-foot'].map((s) => getComputedStyle(document.querySelector(s)).animationName));
 check(anim.every((a) => a === 'none'), 'reduced motion: no load animations', anim.join(', '));
 check(await p3.evaluate(() => getComputedStyle(document.querySelector('.frame img')).transitionDuration) === '0s', 'reduced motion: zoom changes without travel');

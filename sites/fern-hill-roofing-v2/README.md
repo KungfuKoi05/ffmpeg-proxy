@@ -4,7 +4,7 @@ A second, from-scratch draft of the sample site for a **made-up** Tacoma roofer.
 direction and real-looking photos instead of drawings. The first draft lives in `sites/fern-hill-roofing`
 on the `claude/example-roofing-site` branch, in case you want to compare them.
 
-Plain HTML, CSS and JavaScript in `public/`. No build step. A phone downloads about 260 KB in total.
+Plain HTML, CSS and JavaScript in `public/`. No build step. A phone downloads about 260 KB on the first screen, plus about 46 KB (compressed) of GSAP if the visitor scrolls to the zoom section.
 
 ## The idea
 
@@ -18,6 +18,15 @@ The rest of the page carries one promise: **tear-offs only on dry days.**
 - The third step of the job ("We wait for dry days") is the only line in the warm accent colour.
 
 **Interactive part:** a roof-size slider. It updates the price range and dry days for all three roof types, and the booking emails pick up the size.
+
+## The one GSAP moment
+
+In the "Every layer / in writing" section, the house photo zooms with your scroll, from the whole house to the chimney flashing to the ridge. It pauses on each, and scrolling back up reverses it. This uses [GSAP](https://gsap.com) 3.15.0 with its ScrollTrigger plugin.
+
+- **Self-hosted** in `public/vendor/`, so the security policy still allows only this site's own files.
+- **Loaded only when the section is about a screen and a half away.** It adds about 46 KB compressed, and keeping it off the first screen keeps the first screen just as fast. Loading it up front had dropped Lighthouse phone performance from 100 to 96 and pushed the main image from 1.6 s to 2.8 s.
+- **Fallback.** Without GSAP, in browsers that can't crop with `object-view-box`, or when the visitor prefers reduced motion, the zoom falls back to three fixed steps. Reduced-motion visitors never download GSAP at all.
+- **License.** GSAP uses its "Standard no-charge license": free for commercial sites, including client sites, but not OSI open source. See https://gsap.com/standard-license. The license header stays in the files.
 
 ## Everything that is fake and must be replaced
 
@@ -36,7 +45,7 @@ All of these were run on this exact code.
 | --- | --- |
 | Lighthouse 12.8, phone | Performance 100 · Accessibility 100 · Best practices 100 · SEO 63 |
 | Lighthouse 12.8, desktop | Performance 100 · Accessibility 100 · Best practices 100 · SEO 63 |
-| `audit.mjs` (5 widths, under the real `_headers` security policy) | 52 / 52 pass |
+| `audit.mjs` (5 widths, under the real `_headers` security policy) | 61 / 61 pass |
 | taste-skill `inspect.mjs` | 0 failures, 1 warning (no video) |
 
 SEO is low on purpose: the page tells search engines not to list it. For a real client, remove `<meta name="robots">` from `public/index.html` and the `X-Robots-Tag` line from `public/_headers`.
@@ -46,7 +55,7 @@ SEO is low on purpose: the page tells search engines not to list it. For a real 
 - no console errors or failed requests, and every photo loads
 - no sideways scroll, nothing past the screen edge, tap targets at least 44 px
 - price rows match the formula, and the slider (mouse and keyboard) updates every row, the screen-reader caption and the booking links
-- the zoom section steps through its three distances
+- GSAP stays off the first screen, loads near the zoom section, and scrubs the zoom smoothly (start, between, chimney, ridge, and back again). The three-step fallback works with GSAP blocked, and reduced-motion visitors never download it.
 - one FAQ answer opens at a time
 - the page reads fully with JavaScript off, and nothing animates under "reduce motion"
 - axe-core finds no accessibility violations

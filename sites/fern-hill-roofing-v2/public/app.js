@@ -53,6 +53,14 @@ function bookingHref(squares) {
 (() => {
   const section = document.querySelector('[data-layers]');
   if (!section) return;
+  const img = section.querySelector('.frame img');
+  const half2 = section.querySelector('.half-2');
+  const caption = section.querySelector('.layers-caption');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const canCrop = window.CSS && CSS.supports('object-view-box', 'inset(0%)');
+
+  // Baseline: three fixed distances switched by CSS. Runs until GSAP takes over, and for good when
+  // GSAP is unavailable, the browser cannot crop with object-view-box, or the visitor prefers reduced motion.
   let ticking = false;
   function update() {
     ticking = false;
@@ -66,6 +74,45 @@ function bookingHref(squares) {
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onScroll, { passive: true });
   update();
+
+  if (reduce || !canCrop || !('IntersectionObserver' in window)) return;
+
+  // Upgrade: GSAP ScrollTrigger scrubs the zoom with the scroll, pausing on the chimney flashing and the
+  // ridge. GSAP (about 46 KB compressed) is only fetched when the section comes near, so it never
+  // competes with the first screen.
+  const load = (src) => new Promise((resolve, reject) => {
+    const tag = document.createElement('script');
+    tag.src = src; tag.onload = resolve; tag.onerror = reject;
+    document.head.appendChild(tag);
+  });
+  function scrub() {
+    window.removeEventListener('scroll', onScroll);
+    window.removeEventListener('resize', onScroll);
+    delete section.dataset.stage;
+    gsap.registerPlugin(ScrollTrigger);
+    section.classList.add('is-scrubbed');
+    const box = { t: 0, r: 0, b: 0, l: 0 };
+    const draw = () => { img.style.objectViewBox = `inset(${box.t}% ${box.r}% ${box.b}% ${box.l}%)`; };
+    gsap.timeline({
+      defaults: { ease: 'none' },
+      scrollTrigger: { trigger: section, start: 'top top', end: 'bottom bottom', scrub: 0.6 },
+    })
+      .to(box, { t: 11.6, r: 10.6, b: 32.8, l: 33.8, duration: 1, ease: 'power1.inOut', onUpdate: draw })
+      .fromTo(half2, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.4 }, 0.4)
+      .to({}, { duration: 0.25 })
+      .to(box, { t: 14.4, r: 37.8, b: 54.3, l: 30.9, duration: 1, ease: 'power1.inOut', onUpdate: draw })
+      .fromTo(caption, { opacity: 0 }, { opacity: 1, duration: 0.3 }, '-=0.3')
+      .to({}, { duration: 0.25 });
+  }
+  const io = new IntersectionObserver((entries) => {
+    if (!entries.some((e) => e.isIntersecting)) return;
+    io.disconnect();
+    load('vendor/gsap.min.js')
+      .then(() => load('vendor/ScrollTrigger.min.js'))
+      .then(scrub)
+      .catch(() => { /* stay on the three-step zoom */ });
+  }, { rootMargin: '150% 0px' });
+  io.observe(section);
 })();
 
 // ---------- reveal once on entering the viewport ----------

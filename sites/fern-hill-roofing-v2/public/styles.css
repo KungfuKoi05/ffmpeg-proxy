@@ -147,6 +147,8 @@ p { text-wrap: pretty; }
 /* stage 2: the chimney flashing (1.8x around 76% 26%); stage 3: the ridge (3.2x around 45% 21%) */
 .layers[data-stage="2"] .frame img { object-view-box: inset(11.6% 10.6% 32.8% 33.8%); }
 .layers[data-stage="3"] .frame img { object-view-box: inset(14.4% 37.8% 54.3% 30.9%); }
+/* when GSAP scrubs the zoom with the scroll, it sets every value itself: no CSS transitions in the way */
+.layers.is-scrubbed .frame img, .layers.is-scrubbed .half-2, .layers.is-scrubbed .layers-caption { transition: none; }
 @supports not (object-view-box: inset(0%)) {
   .frame img { transition: transform 700ms var(--ease-in-out); }
   .layers[data-stage="2"] .frame img { transform-origin: 76% 26%; transform: scale(1.8); }
