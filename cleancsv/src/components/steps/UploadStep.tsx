@@ -1,5 +1,5 @@
 import { ArrowRight, FileSpreadsheet, FlaskConical, Lock, Upload as UploadIcon } from 'lucide-react'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { DELIMITERS, ENCODINGS, delimiterName } from '../../engine/parse'
 import { MAX_BYTES, formatBytes } from '../../engine/limits'
 import { SAMPLE_CSV, SAMPLE_FILE_NAME, SAMPLE_PROBLEMS } from '../../engine/sample'
@@ -30,6 +30,16 @@ export function UploadStep() {
       void parse(source, encoding, delimiter)
     }
   }
+
+  // A hosted demo can set window.CLEANCSV_START_WITH_SAMPLE so the page opens with the sample loaded.
+  useEffect(() => {
+    const g = globalThis as { CLEANCSV_START_WITH_SAMPLE?: boolean }
+    if (g.CLEANCSV_START_WITH_SAMPLE && !upload && !session) {
+      g.CLEANCSV_START_WITH_SAMPLE = false
+      void parse(sourceFromText(SAMPLE_FILE_NAME, SAMPLE_CSV))
+    }
+    // Runs once on first show.
+  }, [])
 
   const onFiles = (files: FileList | null) => {
     const f = files?.[0]

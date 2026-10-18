@@ -110,7 +110,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const navigate = useCallback((r: Route) => {
-    const hash = r === 'clean' ? '#/' : `#/${r}`
+    // Plain tokens (#history, not #/history) so links also work where only simple anchors are allowed.
+    const hash = `#${r}`
     if (location.hash !== hash) location.hash = hash
     setRoute(r)
     window.scrollTo?.(0, 0)

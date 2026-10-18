@@ -5,7 +5,7 @@ import { canUndo } from '../../engine/history'
 import { countFormulaCells, defaultExportName, ensureCsvExtension, hasNonAscii, toCSV, verifyExport, type ExportOptions } from '../../engine/export'
 import { buildReport } from '../../engine/report'
 import type { Delimiter } from '../../engine/types'
-import { downloadText } from '../../lib/download'
+import { saveText } from '../../lib/download'
 import { useApp } from '../../state'
 import { SaveRecipeDialog } from '../RecipeDialogs'
 import { Alert, Button, Card, Checkbox, Dialog, Select, Spinner, Stat, TextInput } from '../ui'
@@ -34,21 +34,24 @@ export function DownloadStep() {
   const unresolved = analysis.findings.filter((f) => f.severity !== 'info')
   const cellChanges = session.entries.slice(0, session.cursor).reduce((n, e) => n + e.result.changes.cells.length, 0)
 
-  const downloadCsv = () => {
+  const downloadCsv = async () => {
     const out = toCSV(table, opts)
     const check = verifyExport(out.text, table, opts)
     if (!check.ok) {
       setVerified({ ok: false, text: `We stopped the download because the file did not match what you see (${check.problem}). Please report this problem.` })
       return
     }
-    if (!downloadText(exportName, out.text, 'text/csv;charset=utf-8')) {
-      notify('Your browser blocked the download. Try again, or allow downloads for this page.', 'error')
+    const result = await saveText(exportName, out.text, 'text/csv;charset=utf-8')
+    if (result.status === 'failed') {
+      notify(result.message, 'error')
       return
     }
-    setVerified({
-      ok: true,
-      text: `Checked before saving: ${exportName} has ${table.rows.length.toLocaleString('en-US')} rows and ${table.headers.length} columns, matching what you see${out.protectedCells ? `, with ${out.protectedCells} formula-like cell(s) protected` : ''}.`,
-    })
+    if (result.status === 'declined') {
+      notify('Nothing was saved, because you cancelled.', 'info')
+      return
+    }
+    const checked = `${exportName} has ${table.rows.length.toLocaleString('en-US')} rows and ${table.headers.length} columns, matching what you see${out.protectedCells ? `, with ${out.protectedCells} formula-like cell(s) protected` : ''}.`
+    setVerified({ ok: true, text: result.status === 'saved' ? `Saved. Checked before saving: ${checked}` : `Checked before saving: ${checked}` })
     addHistory({
       id: `h_${Date.now().toString(36)}`,
       fileName: session.meta.fileName,
@@ -62,11 +65,13 @@ export function DownloadStep() {
     })
   }
 
-  const downloadReport = () => {
+  const downloadReport = async () => {
     const out = toCSV(table, opts)
     const report = buildReport(session, { exportName, protectedCells: out.protectedCells, unresolved })
     const reportName = exportName.replace(/\.(csv|tsv|txt)$/i, '') + '-change-report.txt'
-    if (!downloadText(reportName, report, 'text/plain;charset=utf-8')) notify('Your browser blocked the download.', 'error')
+    const result = await saveText(reportName, report, 'text/plain;charset=utf-8')
+    if (result.status === 'failed') notify(result.message, 'error')
+    else if (result.status === 'saved') notify(`Saved ${reportName}.`)
   }
 
   return (
@@ -128,10 +133,10 @@ export function DownloadStep() {
             />
           </div>
           <div className="flex flex-wrap gap-2 pt-1">
-            <Button variant="primary" size="lg" onClick={downloadCsv}>
+            <Button variant="primary" size="lg" onClick={() => void downloadCsv()}>
               <Download className="h-5 w-5" aria-hidden /> Download cleaned CSV
             </Button>
-            <Button size="lg" onClick={downloadReport}>
+            <Button size="lg" onClick={() => void downloadReport()}>
               <FileText className="h-5 w-5" aria-hidden /> Download change report
             </Button>
           </div>

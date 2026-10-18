@@ -31,7 +31,7 @@ function NavList({ onPick }: { onPick?: () => void }) {
       {NAV.map(({ route: r, label, Icon }) => (
         <li key={r}>
           <a
-            href={r === 'clean' ? '#/' : `#/${r}`}
+            href={`#${r}`}
             onClick={(e) => {
               e.preventDefault()
               navigate(r)
@@ -87,7 +87,7 @@ export function Layout({ children }: { children: ReactNode }) {
         </div>
       </aside>
 
-      <header className="sticky top-0 z-30 flex items-center justify-between border-b border-slate-200 bg-white px-4 py-3 lg:hidden">
+      <header className="sticky top-[env(safe-area-inset-top,0px)] z-30 flex items-center justify-between border-b border-slate-200 bg-white px-4 py-3 lg:hidden">
         <Logo />
         <button
           type="button"

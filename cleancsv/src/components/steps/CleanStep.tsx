@@ -170,7 +170,7 @@ export function CleanStep() {
           </Button>
         </div>
       </div>
-      <div className="sticky top-14 z-20 -mx-4 border-y border-slate-200 bg-slate-50/95 px-4 py-2 backdrop-blur lg:top-0">
+      <div className="sticky top-[calc(3.5rem+env(safe-area-inset-top,0px))] z-20 -mx-4 border-y border-slate-200 bg-slate-50/95 px-4 py-2 backdrop-blur lg:top-[env(safe-area-inset-top,0px)]">
         <UndoRedoBar />
       </div>
       {analysisPending && (

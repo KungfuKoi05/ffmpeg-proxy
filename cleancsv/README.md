@@ -143,7 +143,7 @@ npm run preview # serves dist/ at http://localhost:4173
 ## Testing
 
 ```bash
-npm test               # 149 unit + component tests (Vitest, React Testing Library, jsdom)
+npm test               # 153 unit + component tests (Vitest, React Testing Library, jsdom)
 npm run typecheck      # TypeScript, strict mode
 npx playwright install chromium   # once, if Playwright has no browser yet
 npm run test:e2e       # 11 browser tests (Playwright) against the production build
@@ -160,6 +160,7 @@ What the tests cover:
 | Email, placeholder, formula-risk, date, number, phone and cluster helpers | `src/engine/values.test.ts` |
 | Every finding (incl. user rules and the sample file), undo/redo, reset, preview equals apply, export round-trip, formula protection, export verification, file names, recipe save/replay/mismatch/validation, change report | `src/engine/session.test.ts` |
 | Background problem check never shows a previous file's results; small files are checked instantly | `src/lib/useAnalysis.test.tsx` |
+| Saving files: uses the claude.ai page's save feature when present, never claims a save the viewer cancelled, falls back to a normal download | `src/lib/download.test.ts` |
 | UI: upload without a Web Worker, error display, apply/undo by keyboard, destructive confirmation, reset confirmation, recipe storage (and no file data in storage), blocked storage, download summary | `src/App.test.tsx` |
 | Browser: full workflow with real downloads checked line by line, reset, uploads, broken files, broken quotes, ambiguous dates, recipe replay and mismatch, phone layout with no sideways scrolling, axe WCAG 2.1 AA scan of every screen, keyboard-only use, 100,000-row file | `e2e/*.spec.ts` |
 
