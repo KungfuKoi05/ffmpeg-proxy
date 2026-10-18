@@ -40,9 +40,20 @@ export function useAnalysis(table: Table | null, rules: Rule[] | undefined, file
       // If the worker could not finish, fall back to checking on the page.
       setBg({ analysis: e.data.analysis ?? analyze(table, rules), table, rules, fileKey })
     }
+    // If the worker cannot start (for example a host blocks it), check on the page instead.
+    const onError = (e: Event) => {
+      e.preventDefault?.()
+      if (id !== latest.current) return
+      w.removeEventListener('message', onMessage)
+      setBg({ analysis: analyze(table, rules), table, rules, fileKey })
+    }
     w.addEventListener('message', onMessage)
+    w.addEventListener('error', onError)
     w.postMessage({ id, table, rules: rules ?? [] })
-    return () => w.removeEventListener('message', onMessage)
+    return () => {
+      w.removeEventListener('message', onMessage)
+      w.removeEventListener('error', onError)
+    }
   }, [table, rules, w, fileKey])
 
   if (!table) return { analysis: null, pending: false }

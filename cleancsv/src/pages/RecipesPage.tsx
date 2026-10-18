@@ -3,7 +3,7 @@ import { useRef, useState } from 'react'
 import { describeStep } from '../engine/describe'
 import { isRecipe } from '../engine/recipes'
 import type { Recipe } from '../engine/types'
-import { downloadText } from '../lib/download'
+import { saveText } from '../lib/download'
 import { sanitizeFileName } from '../engine/export'
 import { useApp } from '../state'
 import { Alert, Button, Card, Dialog, TextInput } from '../components/ui'
@@ -77,7 +77,11 @@ function RecipeCard({ r }: { r: Recipe }) {
             </Button>
             <Button
               size="sm"
-              onClick={() => downloadText(`${sanitizeFileName(r.name, 'recipe')}.cleancsv-recipe.json`, JSON.stringify(r, null, 2), 'application/json')}
+              onClick={async () => {
+                const res = await saveText(`${sanitizeFileName(r.name, 'recipe')}.cleancsv-recipe.json`, JSON.stringify(r, null, 2), 'application/json')
+                if (res.status === 'failed') notify(res.message, 'error')
+                else if (res.status === 'saved') notify(`Saved the recipe “${r.name}” as a file.`)
+              }}
               aria-label={`Download ${r.name} as a file`}
             >
               <Download className="h-4 w-4" aria-hidden /> Export
