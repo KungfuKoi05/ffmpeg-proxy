@@ -1,0 +1,13 @@
+{
+  "name": "fern-hill-roofing-v2-audit",
+  "private": true,
+  "type": "module",
+  "description": "Browser audit for the Fern Hill Roofing draft 2 sample site.",
+  "scripts": {
+    "audit": "node audit.mjs public"
+  },
+  "dependencies": {
+    "axe-core": "4.10.3",
+    "playwright-core": "1.56.1"
+  }
+}

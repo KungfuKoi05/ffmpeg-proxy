@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fern Hill Roofing · Tacoma roof replacement and repair (sample site)</title>
+<meta name="description" content="Sample website for a fictional Tacoma roofer: roof replacement and leak repair, with tear-offs booked only for runs of dry days.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#1a2039">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preload" href="fonts/bodoni-moda-500-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/jost-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" as="image" type="image/webp" imagesrcset="photos/fern-640.webp 640w, photos/fern-1024.webp 1024w" imagesizes="(max-width: 760px) calc(100vw - 32px), min(35vw, 560px)">
+<link rel="stylesheet" href="styles.css">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body>
+
+<aside class="demo-note" aria-label="About this sample site">
+  <p>Sample site for a made-up company. Photos are AI-generated; prices, phone and email are placeholders.</p>
+</aside>
+
+<header class="hero" id="top">
+  <nav class="topbar" aria-label="Main">
+    <a class="wordmark" href="#top">Fern Hill Roofing</a>
+    <ul class="toplinks">
+      <li><a class="link" href="#prices">Prices</a></li>
+      <li><a class="link" href="#process">How a job runs</a></li>
+      <li><a class="link" href="#faq">Questions</a></li>
+      <li><a class="link" href="#contact">Contact</a></li>
+    </ul>
+    <a class="call-link" href="tel:+12535550147">Call</a>
+  </nav>
+
+  <h1 class="name">
+    <span class="name-word">Fern</span>
+    <span class="slot"><picture><source type="image/webp" srcset="photos/fern-640.webp 640w, photos/fern-1024.webp 1024w" sizes="(max-width: 760px) calc(100vw - 32px), min(35vw, 560px)"><img fetchpriority="high" src="photos/fern.jpg" width="1024" height="688" alt="A fern growing out of a moss-filled gutter at the edge of an old shingle roof"></picture></span>
+    <span class="name-word">Hill</span>
+    <span class="sr-only"> Roofing, Tacoma</span>
+  </h1>
+
+  <div class="hero-foot">
+    <p>Roof replacement and leak repair in Tacoma. We fix the gutters ferns grow in, and we only tear a roof off on dry days.</p>
+    <a class="button" data-book href="mailto:estimates@fernhill-roofing.example?subject=Roof%20inspection%20request">Book a free inspection</a>
+  </div>
+</header>
+
+<main>
+
+<section class="intro" aria-label="Dry days only">
+  <div class="intro-pin">
+    <p class="statement">We only open a roof when the forecast gives us a run of dry days.</p>
+  </div>
+  <div class="intro-photos">
+    <figure class="ip ip-1" data-reveal>
+      <picture><source type="image/webp" srcset="photos/tearoff-480.webp 480w, photos/tearoff-800.webp 800w" sizes="(max-width: 760px) 64vw, 40vw"><img src="photos/tearoff.jpg" width="800" height="1000" loading="lazy" alt="A roofer in a hi-vis vest and harness tearing old shingles off a steep roof under a clear blue sky"></picture>
+      <figcaption>A tear-off belongs on a day like this.</figcaption>
+    </figure>
+    <figure class="ip ip-2" data-reveal>
+      <picture><source type="image/webp" srcset="photos/street-640.webp 640w, photos/street-1024.webp 1024w" sizes="(max-width: 760px) 78vw, 49vw"><img src="photos/street.jpg" width="1024" height="688" loading="lazy" alt="A street of Craftsman bungalows in steady rain, Mount Rainier faint behind"></picture>
+      <figcaption>Most of the year looks like this instead.</figcaption>
+    </figure>
+    <figure class="ip ip-3" data-reveal>
+      <picture><source type="image/webp" srcset="photos/tarp-480.webp 480w, photos/tarp-800.webp 800w" sizes="(max-width: 760px) 52vw, 31vw"><img src="photos/tarp.jpg" width="800" height="800" loading="lazy" alt="A blue storm tarp held down with wood battens over a wet roof"></picture>
+      <figcaption>Storm damage gets a tarp the same day, whatever the weather.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="prices" id="prices" aria-labelledby="prices-h">
+  <h2 id="prices-h" class="head prices-title"><span class="first">What a roof costs</span><br>in Tacoma, roughly</h2>
+  <div class="prices-body">
+    <figure class="prices-photo" data-reveal>
+      <picture><source type="image/webp" srcset="photos/moss-480.webp 480w, photos/moss-720.webp 720w" sizes="(max-width: 760px) 60vw, (max-width: 1100px) 32vw, 22vw"><img src="photos/moss.jpg" width="720" height="900" loading="lazy" alt="Thick moss growing between curling old shingles"></picture>
+    </figure>
+    <p class="table-name">Prices</p>
+    <div class="table-wrap" data-reveal style="--i:1">
+      <div class="size-row" data-sizer hidden>
+        <label for="squares">Your roof</label>
+        <input id="squares" type="range" min="8" max="45" step="1" value="22" aria-describedby="squares-help">
+        <output for="squares" class="nums"><span data-out="squares">22</span> squares</output>
+        <p id="squares-help" class="size-help">Slide to your roof’s size. A square is 100&nbsp;sq&nbsp;ft; most Tacoma houses are 15–30.</p>
+      </div>
+      <table class="price-table">
+        <caption class="sr-only">Sample prices. New roofs are shown for a roof of 22 squares.</caption>
+        <tbody class="group">
+          <tr><th scope="row">Composition</th><td data-days="comp">2 dry days</td><td class="nums" data-price="comp">$13,200–$18,700</td></tr>
+          <tr><th scope="row">Standing-seam metal</th><td data-days="metal">4 dry days</td><td class="nums" data-price="metal">$26,400–$37,400</td></tr>
+          <tr><th scope="row">Cedar shake</th><td data-days="cedar">4 dry days</td><td class="nums" data-price="cedar">$28,600–$41,800</td></tr>
+        </tbody>
+        <tbody class="group">
+          <tr><th scope="row">Leak repair</th><td>found at the source</td><td class="nums">from $450</td></tr>
+          <tr><th scope="row">Moss</th><td>cleared, zinc strips fitted</td><td class="nums">from $600</td></tr>
+          <tr><th scope="row">Storm tarp</th><td>up within a day</td><td class="nums">from $350</td></tr>
+        </tbody>
+        <tbody class="group">
+          <tr><th scope="row">Gutters</th><td>cleared and resealed</td><td class="nums">from $250</td></tr>
+          <tr><th scope="row">Inspection</th><td>roof and attic, with photos</td><td class="nums">Free</td></tr>
+        </tbody>
+      </table>
+      <p class="fine">Sample figures for this demo site. A real price is itemised after we’ve been on the roof and in the attic.</p>
+    </div>
+  </div>
+</section>
+
+<section class="process" id="process" aria-labelledby="process-h">
+  <h2 id="process-h" class="sr-only">How a job runs</h2>
+  <ol class="stairs">
+    <li class="step st1" data-reveal>
+      <h3 class="head">First, we look.</h3>
+      <p>Roof, gutters and attic. You get photographs of everything we saw, good and bad, the same day.</p>
+    </li>
+    <li class="step st2" data-reveal>
+      <h3 class="head">Then it’s in writing.</h3>
+      <p>Every material, the sheets of decking we expect to replace, and the price of each extra sheet if we find more.</p>
+    </li>
+    <li class="step st3" data-reveal>
+      <h3 class="head">We wait for dry days.</h3>
+      <p>The tear-off is booked for a run of dry days. If the forecast turns, the date moves and your roof stays shut.</p>
+    </li>
+    <li class="step st4" data-reveal>
+      <h3 class="head">The new roof goes on.</h3>
+      <p>Membrane, underlayment, flashing, roof and ridge vents. Then a magnet sweep for nails across the yard.</p>
+    </li>
+  </ol>
+</section>
+
+<section class="layers" aria-labelledby="layers-h" data-layers>
+  <div class="layers-pin">
+    <h2 id="layers-h" class="layers-title">
+      <span class="half half-1">Every layer</span>
+      <span class="half half-2">in writing</span>
+    </h2>
+    <figure class="frame">
+      <picture><source type="image/webp" srcset="photos/house-1440.webp 1440w" sizes="(max-width: 760px) 70vw, 30vw"><img src="photos/house.jpg" width="1440" height="1800" loading="lazy" alt="A two-storey Craftsman house with a new charcoal shingle roof, metal flashing around a brick chimney"></picture>
+    </figure>
+    <p class="layers-caption">Flashing bent on site for every chimney and wall, and a ridge vent along the peak. Each is a line on your estimate.</p>
+  </div>
+</section>
+
+<section class="faq" id="faq" aria-labelledby="faq-h">
+  <h2 id="faq-h" class="head faq-title">Questions we get asked</h2>
+  <div class="faq-list">
+    <details name="faq">
+      <summary>Can you replace a roof in winter?<span class="chev" aria-hidden="true"></span></summary>
+      <p>We can, but we’d rather not. A tear-off leaves the deck open, so we book replacements for runs of dry days, which in Tacoma mostly means summer and early autumn. Repairs and storm tarps we do in any month.</p>
+    </details>
+    <details name="faq">
+      <summary>Do I need a full tear-off?<span class="chev" aria-hidden="true"></span></summary>
+      <p>Code allows a second layer on some roofs, but we rarely advise it here. The old layer holds water, adds weight and hides rot in the decking. We’ll tell you what we saw from the attic before you decide.</p>
+    </details>
+    <details name="faq">
+      <summary>How long does a replacement take?<span class="chev" aria-hidden="true"></span></summary>
+      <p>Most composition roofs take one to three dry days; metal and cedar take longer. The price table shows the dry days for your roof’s size, and your written estimate gives the exact plan.</p>
+    </details>
+    <details name="faq">
+      <summary>Is moss really a problem?<span class="chev" aria-hidden="true"></span></summary>
+      <p>Yes. Moss holds water against the shingles and lifts their edges, which is how leaks start. We clear it by hand and fit zinc strips at the ridge. We never pressure-wash a roof; it strips the granules.</p>
+    </details>
+    <details name="faq">
+      <summary>Will you work with my insurance?<span class="chev" aria-hidden="true"></span></summary>
+      <p>We’ll photograph the damage and write an itemised estimate you can send to your insurer. The claim itself stays between you and them.</p>
+    </details>
+    <details name="faq">
+      <summary>Are you licensed and insured?<span class="chev" aria-hidden="true"></span></summary>
+      <p>Yes. Washington requires every roofing contractor to be registered with Labor &amp; Industries. Our number is at the foot of this page, and we bring proof of insurance to the inspection.</p>
+    </details>
+  </div>
+</section>
+
+<section class="contact" id="contact" aria-label="Contact">
+  <p class="contact-sentence" data-reveal>Leaks, moss, or a roof past its years: tell us what you’re seeing and we’ll come and look.</p>
+  <figure class="contact-photo" data-reveal style="--i:1">
+    <picture><source type="image/webp" srcset="photos/rainier-320.webp 320w, photos/rainier-520.webp 520w" sizes="(max-width: 760px) 96px, 160px"><img src="photos/rainier.jpg" width="520" height="520" loading="lazy" alt="Wet rooftops in Tacoma with Mount Rainier on the horizon"></picture>
+  </figure>
+  <div class="contact-links" data-reveal style="--i:2">
+    <p class="contact-q">Want us to look at yours?</p>
+    <a class="link-plain" href="tel:+12535550147">(253) 555-0147</a>
+    <a class="link-plain" data-book href="mailto:estimates@fernhill-roofing.example?subject=Roof%20inspection%20request">estimates@fernhill-roofing.example</a>
+    <p class="contact-meta">Tacoma, Washington. We reply within one working day; storm calls any hour.</p>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-top">
+    <p>Fern Hill Roofing<br>Fern Hill, Tacoma, Washington</p>
+    <p>Mon–Fri, 7–5<br>Storm calls any hour</p>
+    <p>Roof replacement and repair<br>WA L&amp;I registration: SAMPLE-000000</p>
+    <a class="link back" href="#top">Back to top</a>
+  </div>
+  <a class="footer-phone nums" href="tel:+12535550147">(253) 555-0147</a>
+  <div class="footer-meta">
+    <p><a class="link" href="#prices">Prices</a> · <a class="link" href="#process">How a job runs</a> · <a class="link" href="#faq">Questions</a></p>
+    <p>A sample site for a fictional company. Photos are AI-generated placeholders.</p>
+    <p>Tacoma, <span data-year>2026</span></p>
+  </div>
+</footer>
+
+<script src="app.js" defer></script>
+</body>
+</html>
