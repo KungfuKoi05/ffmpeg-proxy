@@ -1,0 +1,1804 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Baseline — Tennis Club &amp; Academy</title>
+<meta name="description" content="Baseline is a members' tennis club and academy where focused coaching meets championship courts.">
+<meta name="theme-color" content="#0f2f63">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://api.getlayers.ai">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="preload" as="image" href="https://api.getlayers.ai/storage/v1/object/public/public/assets/baseline-88535e4000/hero/hero-court.webp" fetchpriority="high">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500&amp;display=swap">
+<script type="importmap">
+{ "imports": { "lenis": "https://cdn.jsdelivr.net/npm/lenis@1.1.18/+esm" } }
+</script>
+<script>
+/* Runs before first paint: flags JS, scales the rem grid up above 1920px, and guards against a stuck loader. */
+(function () {
+  var html = document.documentElement;
+  html.classList.add("js");
+
+  var FONT_BASE = 16, BASE_W = 1920, COEF = 0.6666;
+  function fit() {
+    var reduction = ((BASE_W - innerWidth) / BASE_W) * 100 * COEF;
+    var size = FONT_BASE - (FONT_BASE * reduction) / 100;
+    if (size > FONT_BASE) html.style.fontSize = size + "px";
+    else html.style.removeProperty("font-size");
+  }
+  fit();
+  addEventListener("resize", fit);
+
+  if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+
+  // If the module never boots (very old browser), drop the curtain and show everything without motion.
+  var BOOT_FAILSAFE_MS = 4000;
+  setTimeout(function () {
+    if (window.__baselineBooted) return;
+    html.classList.add("no-motion");
+    var loader = document.getElementById("loader");
+    if (loader) loader.remove();
+  }, BOOT_FAILSAFE_MS);
+})();
+</script>
+<style>
+:root {
+  --background: #ffffff;
+  --foreground: #0a0a0a;
+  --brand: #2563c9;
+  --brand-deep: #0f2f63;
+  --brand-light: #5790e6;
+  --accent-teal: #0b6e97;
+  --surface: #f4f4f4;
+  --surface-card: #ffffff;
+  --ink: #0a0a0a;
+  --ink-soft: #717784;
+  --ghost: #d7dae1;
+  --hairline: #e6e8ec;
+  --on-brand: #ffffff;
+
+  --radius-card: 1.5rem;
+  --radius-card-lg: 2rem;
+  --radius-pill: 62.5rem;
+  --radius-xl: 0.75rem;
+
+  /* cubic-bezier stand-ins; JS swaps in exact linear() curves where supported */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-in-out-cubic: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-colors: cubic-bezier(0.4, 0, 0.2, 1);
+
+  --inset: 0.5rem;
+  --blur: blur(8px);
+  --glass-shadow: 0 10px 15px -3px rgba(15, 47, 99, 0.2), 0 4px 6px -4px rgba(15, 47, 99, 0.2);
+}
+@media (min-width: 640px) { :root { --inset: 0.75rem; } }
+
+/* ---------- Adaptive rem grid ---------- */
+html { font-size: 16px; -webkit-text-size-adjust: 100%; scrollbar-gutter: stable; }
+@media (max-width: 1920px) { html { font-size: 0.833333vw; } }
+@media (max-width: 1440px) { html { font-size: 1.111111vw; } }
+@media (max-width: 1024px) { html { font-size: 1.5625vw; } }
+@media (max-width: 640px)  { html { font-size: 4.444444vw; } }
+
+/* ---------- Reset ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; }
+img, svg, video { display: block; max-width: 100%; }
+body {
+  min-height: 100vh;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: "Onest", system-ui, sans-serif;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+h1, h2, h3, p, blockquote, figure, dl, dd { font-size: inherit; font-weight: inherit; }
+ul { list-style: none; padding: 0; }
+a { color: inherit; text-decoration: none; }
+button, input, textarea { font: inherit; color: inherit; letter-spacing: inherit; }
+button { cursor: pointer; background: none; border: 0; padding: 0; }
+address { font-style: normal; }
+:focus-visible { outline: 2px solid var(--brand-light); outline-offset: 2px; }
+[tabindex="-1"]:focus:not(:focus-visible) { outline: none; }
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}
+
+/* Lenis recommended CSS */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: clip; }
+.lenis.lenis-smooth iframe { pointer-events: none; }
+
+main { width: 100%; overflow-x: clip; padding: var(--inset); }
+
+/* ---------- Reveal primitives ---------- */
+.clip { display: inline-block; overflow: hidden; vertical-align: top; }
+.clip--word { padding-bottom: 0.12em; }
+.clip--line { display: block; padding-bottom: 0.14em; }
+.clip__in { display: inline-block; }
+.clip--line > .clip__in { display: block; }
+.fade-word { display: inline-block; }
+
+.js .clip__in,
+.js .fade-word {
+  opacity: 0;
+  transition:
+    transform var(--dur, 950ms) var(--ease, var(--ease-out-expo)) var(--delay, 0ms),
+    opacity var(--dur, 950ms) var(--ease, var(--ease-out-expo)) var(--delay, 0ms);
+}
+.js .clip__in { transform: translateY(115%); }
+.js .fade-word { transform: translateY(18px); }
+.js .is-revealed .clip__in,
+.js .is-revealed .fade-word { transform: none; opacity: 1; }
+.js .is-revealed .clip__in.is-reset { transform: translateY(115%); opacity: 0; transition: none; }
+.js .is-revealed .fade-word.is-reset { transform: translateY(18px); opacity: 0; transition: none; }
+
+.js [data-inview]:not([data-armed]) { opacity: 0; }
+
+.no-motion .clip__in,
+.no-motion .fade-word,
+.no-motion [data-inview] { transform: none !important; opacity: 1 !important; transition: none !important; }
+
+/* ---------- Shared components ---------- */
+.mark { flex-shrink: 0; }
+
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  font-size: 0.75rem; line-height: 1rem; font-weight: 500;
+  text-transform: uppercase; letter-spacing: 0.22em;
+}
+.eyebrow::before {
+  content: ""; flex-shrink: 0;
+  width: 0.375rem; height: 0.375rem; border-radius: var(--radius-pill);
+}
+.eyebrow--dark { color: var(--ink-soft); }
+.eyebrow--dark::before { background: var(--brand); }
+.eyebrow--light { color: rgba(255, 255, 255, 0.7); }
+.eyebrow--light::before { background: var(--brand-light); }
+
+.pill {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+  border-radius: var(--radius-pill); border: 1px solid transparent;
+  padding: 0.875rem 1.75rem;
+  font-size: 0.875rem; line-height: 1.25rem; font-weight: 500;
+  text-transform: uppercase; letter-spacing: 0.025em;
+  transition: background-color 150ms var(--ease-colors), color 150ms var(--ease-colors), border-color 150ms var(--ease-colors), opacity 150ms var(--ease-colors);
+}
+.pill__arrow { width: 1rem; height: 1rem; }
+.pill--light { background: #fff; color: var(--brand-deep); }
+.pill--solid { background: var(--ink); color: #fff; }
+.pill--outline { border-color: currentColor; color: var(--ink); }
+.pill:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.arrow-btn {
+  display: grid; place-items: center; flex-shrink: 0;
+  width: 3rem; height: 3rem; border-radius: var(--radius-pill); border: 1px solid;
+  transition: background-color 150ms var(--ease-colors), border-color 150ms var(--ease-colors), color 150ms var(--ease-colors);
+}
+.arrow-btn svg { width: 1.25rem; height: 1.25rem; }
+.arrow-btn--outline { border-color: var(--hairline); background: transparent; color: var(--ink); }
+.arrow-btn--solid { border-color: var(--ink); background: var(--ink); color: #fff; }
+
+.dots { display: flex; align-items: center; gap: 0.5rem; }
+.dot { display: block; padding: 0.375rem; }
+.dot span {
+  display: block; height: 0.375rem; width: 0.375rem; border-radius: var(--radius-pill);
+  transition: width 300ms var(--ease-colors), background-color 300ms var(--ease-colors);
+}
+.dot[aria-current="true"] span { width: 1.25rem; }
+.dots--dark .dot span { background: var(--ghost); }
+.dots--dark .dot[aria-current="true"] span { background: var(--ink); }
+.dots--light .dot span { background: rgba(255, 255, 255, 0.4); }
+.dots--light .dot[aria-current="true"] span { background: #fff; }
+
+.close-btn {
+  display: grid; place-items: center; flex-shrink: 0;
+  width: 2.5rem; height: 2.5rem; border-radius: var(--radius-pill);
+  transition: background-color 150ms var(--ease-colors);
+}
+.close-btn svg { width: 1.125rem; height: 1.125rem; }
+
+.glass {
+  border-radius: var(--radius-card);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.75rem;
+  box-shadow: var(--glass-shadow);
+  -webkit-backdrop-filter: var(--blur);
+  backdrop-filter: var(--blur);
+}
+
+.title-lg { font-size: 3rem; font-weight: 500; line-height: 1; letter-spacing: -0.025em; margin-top: 1rem; }
+
+/* ---------- Hero ---------- */
+.hero {
+  position: relative; isolation: isolate; overflow: hidden;
+  display: flex; flex-direction: column;
+  background: var(--brand-deep); color: var(--on-brand);
+  border-radius: var(--radius-card-lg);
+  height: calc(100vh - 1rem);
+  height: calc(100svh - 1rem);
+  min-height: 36rem;
+}
+.hero__plate { position: absolute; inset: 0; z-index: -10; }
+.hero__layer {
+  position: absolute; left: 0; right: 0; top: -16%;
+  width: 100%; height: 132%;
+  will-change: transform;
+}
+.hero__layer img { width: 100%; height: 100%; object-fit: cover; }
+.hero__shade {
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, rgba(15, 47, 99, 0.65), rgba(15, 47, 99, 0.35), rgba(15, 47, 99, 0.75));
+}
+
+.header {
+  display: flex; align-items: center;
+  padding: 1.5rem 1.5rem 0;
+  font-size: 0.75rem; line-height: 1rem; color: var(--on-brand);
+}
+.header__nav { display: none; flex: 1; gap: 2rem; }
+.header__nav a { color: rgba(255, 255, 255, 0.9); transition: color 150ms var(--ease-colors); }
+.header__brand { flex: 1; display: flex; }
+.brand {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  font-size: 1rem; line-height: 1.5rem; font-weight: 500;
+  text-transform: uppercase; letter-spacing: 0.2em;
+}
+.brand .mark { width: 1.25rem; height: 1.25rem; }
+.header__actions { flex: 1; display: flex; align-items: center; justify-content: flex-end; gap: 1rem; }
+.header__book {
+  display: none; text-transform: uppercase; letter-spacing: 0.025em;
+  text-underline-offset: 0.3em; text-decoration-thickness: 1px;
+}
+.burger {
+  display: grid; place-items: center;
+  width: 2.5rem; height: 2.5rem; border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.15);
+  -webkit-backdrop-filter: var(--blur); backdrop-filter: var(--blur);
+  transition: background-color 150ms var(--ease-colors);
+}
+.burger__bars { display: flex; flex-direction: column; gap: 5px; }
+.burger__bars span { display: block; width: 1rem; height: 1px; background: #fff; }
+
+.hero__title-wrap { padding: 1rem 1.5rem 0; container-type: inline-size; }
+/* 12.5vw is the spec size, but with Onest it is ~8.17em wide and cuts off the final "T";
+   12.1cqi caps it to the padded width. Delete the second font-size line for the raw 12.5vw. */
+.hero__title {
+  font-size: 12.5vw;
+  font-size: min(12.5vw, 12.1cqi);
+  font-weight: 500; text-transform: uppercase;
+  line-height: 0.85; letter-spacing: -0.02em; white-space: nowrap;
+}
+
+.hero__bottom {
+  margin-top: auto;
+  display: flex; flex-direction: column; gap: 1.5rem;
+  padding: 0 1.5rem 2rem;
+}
+.hero__tagline {
+  font-size: 2.4rem; font-weight: 500; text-transform: uppercase;
+  line-height: 0.95; letter-spacing: -0.025em; color: rgba(255, 255, 255, 0.85);
+}
+.hero__cluster { display: flex; align-items: flex-end; gap: 1rem; }
+
+.collection { display: none; flex-direction: column; gap: 0.75rem; width: 16rem; }
+.collection__stage { display: grid; }
+.collection__card { grid-area: 1 / 1; display: flex; gap: 0.75rem; }
+.collection__img { width: 3.5rem; height: 3.5rem; flex-shrink: 0; border-radius: var(--radius-xl); object-fit: cover; }
+.collection__text { display: flex; flex-direction: column; justify-content: center; gap: 0.125rem; min-width: 0; }
+.collection__brand { font-size: 0.7rem; line-height: 1.2; font-weight: 500; text-transform: uppercase; letter-spacing: 0.025em; }
+.collection__title { font-size: 0.7rem; line-height: 1.2; text-transform: uppercase; opacity: 0.8; }
+.collection__cta {
+  align-self: flex-start; margin-top: 0.25rem;
+  font-size: 0.65rem; line-height: 1.2;
+  text-decoration: underline; text-underline-offset: 0.2em; text-decoration-thickness: 1px;
+}
+
+.member { display: flex; align-items: stretch; gap: 0.75rem; width: 100%; max-width: 20rem; }
+.member__info { flex: 1; display: flex; flex-direction: column; justify-content: space-between; gap: 0.5rem; min-width: 0; }
+.member__value { font-size: 1.875rem; font-weight: 500; line-height: 1; }
+.member__avatars { display: flex; }
+.member__avatars span {
+  width: 1.25rem; height: 1.25rem; border-radius: var(--radius-pill);
+  border: 1px solid rgba(15, 47, 99, 0.4);
+}
+.member__avatars span + span { margin-left: -0.5rem; }
+.member__caption { font-size: 0.65rem; line-height: 1.2; opacity: 0.8; }
+.member__img { width: 4rem; aspect-ratio: 3 / 4; flex-shrink: 0; border-radius: var(--radius-xl); object-fit: cover; }
+
+/* ---------- Trust ---------- */
+.trust {
+  position: relative; isolation: isolate; overflow: hidden;
+  background: var(--background);
+  padding: 4rem 1.5rem;
+}
+.trust__badges { position: relative; z-index: 20; display: flex; flex-direction: column; gap: 1.5rem; }
+.percent {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  flex-shrink: 0; width: 7rem; height: 7rem; border-radius: var(--radius-pill);
+  background: var(--surface); text-align: center;
+}
+.percent__value { font-size: 1.5rem; line-height: 1.2; font-weight: 500; }
+.percent__caption { font-size: 0.6rem; line-height: 1.25; color: var(--ink-soft); max-width: 7em; margin-top: 0.25rem; }
+.badge {
+  display: flex; gap: 1rem; max-width: 28rem;
+  border-radius: var(--radius-card); background: var(--surface); padding: 1.25rem;
+}
+.badge__chip {
+  align-self: flex-start; flex-shrink: 0;
+  border-radius: var(--radius-xl); background: var(--background);
+  padding: 0.5rem 1rem; font-size: 1.25rem; line-height: 1.75rem; font-weight: 500;
+}
+.badge__title { font-size: 1.125rem; line-height: 1.75rem; font-weight: 500; }
+.badge__body { font-size: 0.75rem; line-height: 1.625; color: var(--ink-soft); margin-top: 0.25rem; }
+
+.ghost {
+  position: relative; z-index: 0; pointer-events: none; user-select: none; -webkit-user-select: none;
+  max-width: 88rem; margin: 3rem auto 0;
+  font-size: 8.2vw; font-weight: 500; text-transform: uppercase;
+  line-height: 1.02; letter-spacing: -0.025em;
+}
+.ghost__row { display: flex; justify-content: space-between; }
+.ghost__word { display: block; color: var(--ghost); }
+.ghost__word--ink { color: var(--ink); }
+
+.coach-pos { position: relative; z-index: 10; width: 13rem; margin: 2.5rem auto 0; }
+.coach {
+  position: relative; overflow: hidden;
+  aspect-ratio: 3 / 4; border-radius: var(--radius-card);
+  background: var(--brand); transform: rotate(6deg);
+}
+.coach__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.coach__caption {
+  position: absolute; left: 0.75rem; right: 0.75rem; bottom: 0.75rem; z-index: 3;
+  border-radius: var(--radius-xl); background: rgba(15, 47, 99, 0.4); color: #fff;
+  -webkit-backdrop-filter: var(--blur); backdrop-filter: var(--blur);
+  padding: 0.5rem 0.75rem;
+}
+.coach__name { display: block; font-size: 0.875rem; line-height: 1.25rem; font-weight: 500; }
+.coach__role { display: block; font-size: 0.65rem; line-height: 1.3; opacity: 0.8; }
+
+.trust__controls {
+  position: relative; z-index: 20;
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: 3rem;
+}
+
+/* ---------- Programs ---------- */
+.programs { background: var(--surface); padding: 6rem 1.5rem; }
+.programs .title-lg, .facilities .title-lg { line-height: 0.95; }
+.program-list { margin-top: 3.5rem; }
+.program { display: block; border-top: 1px solid var(--hairline); transition: background-color 150ms var(--ease-colors); }
+.program-list li:last-child .program { border-bottom: 1px solid var(--hairline); }
+.program:focus-visible { background: var(--background); }
+.program__row { display: flex; align-items: center; gap: 1.5rem; padding: 1.75rem 0; }
+.program__index { width: 2.5rem; flex-shrink: 0; font-size: 0.875rem; line-height: 1.25rem; font-weight: 500; color: var(--ink-soft); }
+.program__text { flex: 1; min-width: 0; }
+.program__name { display: block; font-size: 1.5rem; line-height: 2rem; font-weight: 500; letter-spacing: -0.025em; }
+.program__desc { display: block; font-size: 0.875rem; line-height: 1.25rem; color: var(--ink-soft); margin-top: 0.25rem; }
+.program__arrow {
+  display: grid; place-items: center; flex-shrink: 0;
+  width: 2.75rem; height: 2.75rem; border-radius: var(--radius-pill);
+  border: 1px solid var(--hairline); opacity: 0.55;
+}
+.program__arrow svg { width: 1.125rem; height: 1.125rem; }
+
+/* ---------- Facilities ---------- */
+.facilities {
+  position: relative;
+  background: var(--background); border-radius: var(--radius-card-lg);
+  margin-top: -2.5rem; padding: 4rem 1.5rem 5rem;
+}
+.facilities__grid { display: grid; grid-template-columns: minmax(0, 1fr); align-items: end; gap: 2.5rem; }
+.facilities__intro { max-width: 24rem; }
+.facilities__icon { width: 4rem; height: 4rem; border-radius: var(--radius-card); object-fit: cover; }
+.facilities__title { margin-top: 1.5rem; }
+.facilities__body { font-size: 0.875rem; line-height: 1.25rem; color: var(--ink-soft); max-width: 20rem; margin-top: 1.5rem; }
+.courts { display: flex; align-items: flex-end; gap: 1.25rem; }
+.courts > div { flex: 1; min-width: 0; }
+.courts > div:nth-child(2) { margin-bottom: 2rem; }
+.court {
+  position: relative; overflow: hidden;
+  aspect-ratio: 3 / 4; border-radius: var(--radius-card); background: var(--surface);
+}
+.court img { width: 100%; height: 100%; object-fit: cover; }
+.court__caption {
+  position: absolute; left: 0.75rem; right: 0.75rem; bottom: 0.75rem;
+  border-radius: var(--radius-xl); color: #fff;
+  -webkit-backdrop-filter: var(--blur); backdrop-filter: var(--blur);
+  padding: 0.75rem 1rem;
+}
+.court--clay .court__caption { background: rgba(15, 47, 99, 0.4); }
+.court--blue .court__caption { background: rgba(11, 110, 151, 0.55); }
+.court__name { font-size: 0.875rem; line-height: 1.25rem; font-weight: 500; }
+.court__desc { font-size: 0.65rem; line-height: 1.4; opacity: 0.85; margin-top: 0.125rem; }
+
+/* ---------- Stats ---------- */
+.stats {
+  margin-top: 0.75rem;
+  background: var(--brand-deep); color: var(--on-brand);
+  border-radius: var(--radius-card-lg);
+  padding: 5rem 1.5rem;
+}
+.stats__grid {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 2rem; row-gap: 3rem; margin-top: 4rem;
+}
+.stat { border-top: 1px solid rgba(255, 255, 255, 0.2); padding-top: 1.25rem; }
+.stat__value { display: block; font-size: 3.75rem; line-height: 1; font-weight: 500; letter-spacing: -0.025em; }
+.stat__label { display: block; font-size: 0.875rem; line-height: 1.25rem; color: rgba(255, 255, 255, 0.65); margin-top: 0.75rem; }
+
+/* ---------- Testimonials ---------- */
+.testimonials { background: var(--background); padding: 5rem 1.5rem; }
+.quotes { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.25rem; margin-top: 3.5rem; }
+.quotes > li { display: flex; }
+.quote {
+  display: flex; flex-direction: column; justify-content: space-between;
+  width: 100%; height: 100%;
+  border-radius: var(--radius-card); background: var(--surface); padding: 1.75rem;
+}
+.quote__mark { display: block; font-size: 2.25rem; line-height: 1; color: var(--brand); }
+.quote blockquote { font-size: 1.125rem; line-height: 1.625; color: var(--ink); margin-top: 1rem; }
+.quote figcaption { border-top: 1px solid var(--hairline); padding-top: 1rem; margin-top: 1.5rem; }
+.quote__name { display: block; font-weight: 500; }
+.quote__role { display: block; font-size: 0.875rem; line-height: 1.25rem; color: var(--ink-soft); }
+
+/* ---------- Footer ---------- */
+.footer {
+  margin-top: 0.75rem;
+  background: var(--brand-deep); color: var(--on-brand);
+  border-radius: var(--radius-card-lg);
+  padding: 3.5rem 1.5rem;
+}
+.footer__cta {
+  display: flex; flex-direction: column; gap: 2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15); padding-bottom: 3.5rem;
+}
+.footer__headline { font-size: 3.75rem; line-height: 0.92; font-weight: 500; letter-spacing: -0.025em; margin-top: 1rem; }
+.footer__cols { display: grid; gap: 2.5rem; padding: 3.5rem 0; }
+.footer__about { max-width: 20rem; }
+.footer__brand {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  font-size: 1.125rem; line-height: 1.75rem; font-weight: 500;
+  text-transform: uppercase; letter-spacing: 0.2em;
+}
+.footer__brand .mark { width: 1.25rem; height: 1.25rem; }
+.footer__blurb { font-size: 0.875rem; line-height: 1.25rem; color: rgba(255, 255, 255, 0.65); margin-top: 1rem; }
+.footer__address {
+  display: flex; flex-direction: column; gap: 0.25rem;
+  margin-top: 1.5rem; font-size: 0.875rem; line-height: 1.25rem; color: rgba(255, 255, 255, 0.8);
+}
+.footer__address a { align-self: flex-start; transition: color 150ms var(--ease-colors); }
+.footer__muted { color: rgba(255, 255, 255, 0.55); }
+.footer__heading {
+  font-size: 0.75rem; line-height: 1rem; font-weight: 500;
+  text-transform: uppercase; letter-spacing: 0.2em; color: rgba(255, 255, 255, 0.5);
+}
+.footer__links {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 0.75rem;
+  margin-top: 1rem; font-size: 0.875rem; line-height: 1.25rem; color: rgba(255, 255, 255, 0.8);
+}
+.footer__links a, .footer__bar a { transition: color 150ms var(--ease-colors); }
+.footer__bar {
+  display: flex; flex-direction: column; gap: 1.25rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.15); padding-top: 2rem;
+  font-size: 0.875rem; line-height: 1.25rem; color: rgba(255, 255, 255, 0.6);
+}
+.footer__bar ul { display: flex; flex-wrap: wrap; gap: 1.25rem; }
+
+/* ---------- Contact modal ---------- */
+.modal {
+  position: fixed; inset: 0; z-index: 90;
+  display: flex; align-items: flex-end; justify-content: center;
+  padding: 0.75rem; pointer-events: none;
+}
+.modal.is-open { pointer-events: auto; }
+.modal__backdrop {
+  position: absolute; inset: 0;
+  background: rgba(15, 47, 99, 0.4);
+  -webkit-backdrop-filter: var(--blur); backdrop-filter: var(--blur);
+  opacity: 0;
+}
+.modal__panel {
+  position: relative; width: 100%;
+  max-height: 92vh; max-height: 92svh; overflow-y: auto;
+  border-radius: var(--radius-card-lg); background: var(--surface-card); color: var(--ink);
+  padding: 1.5rem;
+  box-shadow: 0 25px 50px -12px rgba(15, 47, 99, 0.45);
+  opacity: 0;
+}
+.modal__head { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; }
+.modal__title { font-size: 2.25rem; line-height: 1; font-weight: 500; letter-spacing: -0.025em; margin-top: 0.75rem; }
+.modal .close-btn { background: var(--surface); color: var(--ink); }
+
+.form { display: flex; flex-direction: column; gap: 1rem; margin-top: 1.75rem; }
+.field { display: flex; flex-direction: column; gap: 0.5rem; }
+.field__label {
+  font-size: 0.75rem; line-height: 1rem; font-weight: 500;
+  text-transform: uppercase; letter-spacing: 0.18em; color: var(--ink-soft);
+}
+.field__input {
+  width: 100%; border-radius: var(--radius-xl);
+  border: 1px solid var(--hairline); background: var(--background); color: var(--ink);
+  padding: 0.75rem 1rem; font-size: 0.875rem; line-height: 1.25rem;
+  outline: none; resize: vertical;
+  transition: border-color 150ms var(--ease-colors), box-shadow 150ms var(--ease-colors);
+}
+.field__input::placeholder { color: var(--ink-soft); opacity: 0.7; }
+.field__input:focus { border-color: var(--brand-light); box-shadow: 0 0 0 1px var(--brand-light); }
+.form .pill { margin-top: 0.5rem; }
+
+.success {
+  margin-top: 2rem; border-radius: var(--radius-card);
+  background: var(--surface); padding: 1.5rem; text-align: center;
+}
+.success__icon {
+  display: grid; place-items: center; margin: 0 auto;
+  width: 3rem; height: 3rem; border-radius: var(--radius-pill);
+  background: var(--brand); color: #fff;
+}
+.success__icon svg { width: 1.375rem; height: 1.375rem; }
+.success__title { font-size: 1.125rem; line-height: 1.75rem; font-weight: 500; margin-top: 1rem; }
+.success__text { font-size: 0.875rem; line-height: 1.25rem; color: var(--ink-soft); margin-top: 0.5rem; }
+.success .pill { margin-top: 1.5rem; }
+
+/* ---------- Menu overlay ---------- */
+.menu { position: fixed; inset: 0; z-index: 70; display: flex; flex-direction: column; pointer-events: none; }
+.menu.is-open { pointer-events: auto; }
+.menu__backdrop { position: absolute; inset: 0; background: var(--brand-deep); opacity: 0; }
+.menu__panel {
+  position: relative; display: flex; flex-direction: column; height: 100%;
+  color: var(--on-brand);
+  padding: calc(var(--inset) + 1.5rem);
+  opacity: 0; pointer-events: none;
+}
+.menu.is-open .menu__panel > * { pointer-events: auto; }
+.menu__top { display: flex; align-items: center; justify-content: space-between; }
+.menu__top .brand { font-size: 1rem; }
+.menu .close-btn { background: rgba(255, 255, 255, 0.15); color: #fff; }
+.menu__nav { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; gap: 0.5rem; }
+.menu__link {
+  display: block; font-size: 3rem; line-height: 1; font-weight: 500; letter-spacing: -0.025em;
+  transition: color 150ms var(--ease-colors);
+}
+.menu__bottom {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.15); padding-top: 2rem;
+}
+.menu__social { display: flex; flex-wrap: wrap; gap: 1.25rem; font-size: 0.875rem; line-height: 1.25rem; color: rgba(255, 255, 255, 0.7); }
+.menu__social a { transition: color 150ms var(--ease-colors); }
+
+/* ---------- Loader ---------- */
+.loader {
+  position: fixed; inset: 0; z-index: 200;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2rem;
+  background: var(--brand-deep); color: #fff;
+  transition: transform 850ms var(--ease-in-out-cubic);
+}
+html:not(.js) .loader { display: none; }
+.loader.is-exiting { transform: translateY(-105%); }
+.loader__mark {
+  display: flex; align-items: center; gap: 0.75rem;
+  font-size: 1.5rem; line-height: 2rem; font-weight: 500;
+  text-transform: uppercase; letter-spacing: 0.2em;
+  opacity: 0; transform: translateY(16px);
+}
+.loader__mark .mark { width: 1.75rem; height: 1.75rem; }
+.loader__track {
+  width: 10rem; height: 1px; overflow: hidden;
+  border-radius: var(--radius-pill); background: rgba(255, 255, 255, 0.2);
+}
+.loader__fill {
+  height: 100%; background: #fff;
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 1280ms var(--ease-in-out-cubic) 120ms;
+}
+.loader.is-filling .loader__fill { transform: scaleX(1); }
+
+/* ---------- Hover colours (pointer devices only) ---------- */
+@media (hover: hover) {
+  .header__nav a:hover { color: #fff; }
+  .header__book:hover { text-decoration: underline; }
+  .burger:hover { background: rgba(255, 255, 255, 0.25); }
+  .pill--light:hover { background: var(--brand-light); color: #fff; }
+  .pill--solid:not(:disabled):hover { background: var(--brand-deep); }
+  .pill--outline:hover { background: var(--ink); border-color: var(--ink); color: #fff; }
+  .arrow-btn--outline:hover { border-color: var(--ink); }
+  .arrow-btn--solid:hover { background: var(--brand-deep); border-color: var(--brand-deep); }
+  .modal .close-btn:hover { background: var(--hairline); }
+  .menu .close-btn:hover { background: rgba(255, 255, 255, 0.25); }
+  .menu__link:hover { color: var(--brand-light); }
+  .menu__social a:hover, .footer__links a:hover, .footer__bar a:hover, .footer__address a:hover { color: #fff; }
+}
+
+/* ---------- Breakpoints ---------- */
+@media (max-width: 640px) {
+  /* keep form text at 16px+ so iOS Safari doesn't zoom on focus */
+  .field__input { font-size: max(0.875rem, 16px); }
+}
+@media (min-width: 640px) {
+  .header { padding: 2rem 2.5rem 0; }
+  .header__actions { gap: 1.25rem; }
+  .header__book { display: inline-block; }
+  .hero { height: calc(100vh - 1.5rem); height: calc(100svh - 1.5rem); }
+  .hero__title-wrap { padding: 1rem 2.5rem 0; }
+  .hero__bottom { flex-direction: row; justify-content: space-between; align-items: flex-end; padding: 0 2.5rem 2.5rem; }
+  .member { max-width: 15rem; }
+
+  .trust { padding: 5rem 2.5rem; }
+  .trust__badges { flex-direction: row; justify-content: space-between; align-items: flex-start; }
+  .percent { width: 8rem; height: 8rem; }
+  .badge { gap: 1.25rem; padding: 1.5rem; }
+  .coach-pos { position: absolute; left: 50%; top: 50%; width: 16rem; margin: 0; transform: translate(-50%, -50%); }
+  .trust__controls { margin-top: 6rem; }
+  .arrow-btn { width: 3.5rem; height: 3.5rem; }
+
+  .programs { padding: 6rem 2.5rem; }
+  .program__name { font-size: 1.875rem; line-height: 2.25rem; }
+  .facilities { padding: 4rem 2.5rem 5rem; }
+  .stats { padding: 5rem 2.5rem; }
+  .stat__value { font-size: 4.5rem; }
+  .testimonials { padding: 6rem 2.5rem; }
+
+  .footer { padding: 4rem 2.5rem; }
+  .footer__cta { flex-direction: row; justify-content: space-between; align-items: flex-end; }
+  .footer__bar { flex-direction: row; justify-content: space-between; align-items: center; }
+
+  .modal { align-items: center; padding: 1.5rem; }
+  .modal__panel { max-width: 32rem; padding: 2rem; }
+  .modal__title { font-size: 3rem; }
+
+  .menu__panel { padding: calc(var(--inset) + 2rem) calc(var(--inset) + 2.5rem); }
+  .menu__link { font-size: 4.5rem; }
+  .menu__bottom { flex-direction: row; justify-content: space-between; align-items: center; }
+}
+@media (min-width: 768px) {
+  .collection { display: flex; }
+  .facilities__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .quotes { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .footer__cols { grid-template-columns: 1.4fr 1fr 1fr 1fr; }
+}
+@media (min-width: 1024px) {
+  .header__nav { display: flex; }
+  .header__brand { justify-content: center; }
+  .stats__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js .clip__in, .js .fade-word, .loader, .loader__fill, .dot span { transition: none !important; }
+}
+</style>
+</head>
+<body>
+
+<div class="loader" id="loader" aria-hidden="true">
+  <div class="loader__mark" data-loader-mark>
+    <svg class="mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M4.8 5.6A9 9 0 0 0 4.8 18.4"/><path d="M19.2 5.6a9 9 0 0 1 0 12.8"/></svg>
+    <span>Baseline</span>
+  </div>
+  <div class="loader__track"><div class="loader__fill"></div></div>
+</div>
+
+<main>
+
+  <!-- 1–2) Hero with header -->
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero__plate">
+      <div class="hero__layer" data-parallax="hero">
+        <img src="https://api.getlayers.ai/storage/v1/object/public/public/assets/baseline-88535e4000/hero/hero-court.webp" alt="Player lunging for a shot on a hard court" loading="eager" fetchpriority="high" decoding="async">
+      </div>
+      <div class="hero__shade"></div>
+    </div>
+
+    <header class="header">
+      <nav class="header__nav" aria-label="Primary">
+        <a href="#programs">Programs &amp; Coaches</a>
+        <a href="#facilities">Club &amp; Events</a>
+      </nav>
+      <div class="header__brand">
+        <a class="brand" href="#" aria-label="Baseline, back to top">
+          <svg class="mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M4.8 5.6A9 9 0 0 0 4.8 18.4"/><path d="M19.2 5.6a9 9 0 0 1 0 12.8"/></svg>
+          <span>Baseline</span>
+        </a>
+      </div>
+      <div class="header__actions">
+        <button class="header__book" type="button" data-open-modal>Book a Visit</button>
+        <button class="burger" type="button" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="menu">
+          <span class="burger__bars" aria-hidden="true"><span></span><span></span></span>
+        </button>
+      </div>
+    </header>
+
+    <div class="hero__title-wrap">
+      <h1 id="hero-title" class="hero__title" data-reveal="heroTitle">
+        <span class="clip clip--word"><span class="clip__in">Own</span></span>
+        <span class="clip clip--word"><span class="clip__in">The</span></span>
+        <span class="clip clip--word"><span class="clip__in">Court</span></span>
+      </h1>
+    </div>
+
+    <div class="hero__bottom">
+      <p class="hero__tagline" data-reveal="heroTagline">
+        <span class="clip clip--line"><span class="clip__in">Show Up,</span></span>
+        <span class="clip clip--line"><span class="clip__in">Level Up</span></span>
+      </p>
+
+      <div class="hero__cluster">
+        <div class="collection" data-inview="collection" data-collection>
+          <div class="collection__stage" aria-roledescription="carousel" aria-label="Collections">
+            <article class="collection__card glass" aria-roledescription="slide" aria-label="1 of 3">
+              <img class="collection__img" src="https://api.getlayers.ai/storage/v1/object/public/public/assets/baseline-88535e4000/2.webp" alt="Player driving a backhand on a hard court" loading="lazy" decoding="async">
+              <div class="collection__text">
+                <p class="collection__brand">Baseline Pro</p>
+                <p class="collection__title">Featured Gear</p>
+                <a class="collection__cta" href="#shop">Shop the kit →</a>
+              </div>
+            </article>
+            <article class="collection__card glass" aria-roledescription="slide" aria-label="2 of 3">
+              <img class="collection__img" src="https://api.getlayers.ai/storage/v1/object/public/public/assets/baseline-88535e4000/3.webp" alt="Player stretching for a forehand on clay" loading="lazy" decoding="async">
+              <div class="collection__text">
+                <p class="collection__brand">Court Series</p>
+                <p class="collection__title">Summer Drop</p>
+                <a class="collection__cta" href="#shop">View the line →</a>
+              </div>
+            </article>
+            <article class="collection__card glass" aria-roledescription="slide" aria-label="3 of 3">
+              <img class="collection__img" src="https://api.getlayers.ai/storage/v1/object/public/public/assets/baseline-88535e4000/5.webp" alt="Player set in a ready stance on clay" loading="lazy" decoding="async">
+              <div class="collection__text">
+                <p class="collection__brand">Academy Kit</p>
+                <p class="collection__title">Junior Range</p>
+                <a class="collection__cta" href="#shop">Browse juniors →</a>
+              </div>
+            </article>
+          </div>
+          <div class="dots dots--light" role="group" aria-label="Choose a collection">
+            <button class="dot" type="button" aria-label="Show collection 1" aria-current="true"><span></span></button>
+            <button class="dot" type="button" aria-label="Show collection 2"><span></span></button>
+            <button class="dot" type="button" aria-label="Show collection 3"><span></span></button>
+          </div>
+        </div>
+
+        <article class="member glass" data-inview="member" aria-label="9K+ members on court">
+          <div class="member__info">
+            <p class="member__value">9K+</p>
+            <div class="member__avatars" aria-hidden="true">
+              <span style="background:#5790e6"></span><span style="background:#c2e029"></span><span style="background:#0b6e97"></span><span style="background:#ffffff"></span>
+            </div>
+            <p class="member__caption">Members on court</p>
+          </div>
+          <img class="member__img" src="https://api.getlayers.ai/storage/v1/object/public/public/assets/baseline-88535e4000/1.webp" alt="Player waiting to return on a clay court" loading="lazy" decoding="async">
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3) Trust -->
+  <section class="trust" aria-labelledby="trust-title" aria-roledescription="carousel">
+    <div class="trust__badges">
+      <div class="percent" data-inview="percent">
+        <p class="percent__value">100%</p>
+        <p class="percent__caption">Coaching built around your game</p>
+      </div>
+      <article class="badge" data-inview="badge">
+        <p class="badge__chip">#01</p>
+        <div>
+          <p class="badge__title">Trusted by serious players</p>
+          <p class="badge__body">From first-timers to nationally ranked juniors, players train here because the progress shows up on the scoreboard.</p>
+        </div>
+      </article>
+    </div>
+
+    <h2 id="trust-title" class="ghost" data-reveal="ghost">
+      <span class="ghost__row">
+        <span class="ghost__word" data-ghost="0"><span class="clip clip--word"><span class="clip__in">Expert</span></span></span>
+        <span class="ghost__word" data-ghost="1"><span class="clip clip--word"><span class="clip__in">Result-</span></span></span>
+      </span>
+      <span class="ghost__row">
+        <span class="ghost__word ghost__word--ink" data-ghost="2"><span class="clip clip--word"><span class="clip__in">Driven</span></span></span>
+        <span class="ghost__word" data-ghost="3"><span class="clip clip--word"><span class="clip__in">Coaching</span></span></span>
+      </span>
+    </h2>
+
+    <div class="coach-pos">
+      <div data-inview="coach">
+        <figure class="coach">
+          <img class="coach__img" src="https://api.getlayers.ai/storage/v1/object/public/public/assets/baseline-88535e4000/5.webp" alt="Head coach set in a ready stance on clay" loading="lazy" decoding="async">
+          <img class="coach__img" src="https://api.getlayers.ai/storage/v1/object/public/public/assets/baseline-88535e4000/4.webp" alt="Performance coach following through on a serve" loading="lazy" decoding="async" aria-hidden="true">
+          <img class="coach__img" src="https://api.getlayers.ai/storage/v1/object/public/public/assets/baseline-88535e4000/1.webp" alt="Juniors lead waiting to return on clay" loading="lazy" decoding="async" aria-hidden="true">
+          <figcaption class="coach__caption" aria-live="polite">
+            <span class="coach__name" data-coach-name>Marco Vidal</span>
+            <span class="coach__role" data-coach-role>Head Coach</span>
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <div class="trust__controls">
+      <button class="arrow-btn arrow-btn--outline" type="button" aria-label="Previous coach" data-trust-prev>
+        <svg data-hover="arrowIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><g transform="matrix(-1 0 0 1 24 0)"><path d="M5 12h14M13 6l6 6-6 6"/></g></svg>
+      </button>
+      <div class="dots dots--dark" role="group" aria-label="Choose a coach" data-trust-dots>
+        <button class="dot" type="button" aria-label="Show coach 1" aria-current="true"><span></span></button>
+        <button class="dot" type="button" aria-label="Show coach 2"><span></span></button>
+        <button class="dot" type="button" aria-label="Show coach 3"><span></span></button>
+      </div>
+      <button class="arrow-btn arrow-btn--solid" type="button" aria-label="Next coach" data-trust-next>
+        <svg data-hover="arrowIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </button>
+    </div>
+  </section>
+
+  <!-- 4) Programs -->
+  <section class="programs" id="programs" aria-labelledby="programs-title">
+    <p class="eyebrow eyebrow--dark">Training programs</p>
+    <h2 id="programs-title" class="title-lg" data-reveal="lines">
+      <span class="clip clip--line"><span class="clip__in">Built for</span></span>
+      <span class="clip clip--line"><span class="clip__in">every level</span></span>
+    </h2>
+    <ul class="program-list">
+      <li>
+        <a class="program" href="#junior">
+          <span class="program__row" data-inview="program" data-i="0">
+            <span class="program__index">01</span>
+            <span class="program__text">
+              <span class="program__name">Junior Development</span>
+              <span class="program__desc">Fundamentals, footwork, and match play for ages 6–14.</span>
+            </span>
+            <span class="program__arrow" data-hover="programArrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          </span>
+        </a>
+      </li>
+      <li>
+        <a class="program" href="#performance">
+          <span class="program__row" data-inview="program" data-i="1">
+            <span class="program__index">02</span>
+            <span class="program__text">
+              <span class="program__name">Performance Squad</span>
+              <span class="program__desc">High-volume training for competitive and ranked players.</span>
+            </span>
+            <span class="program__arrow" data-hover="programArrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          </span>
+        </a>
+      </li>
+      <li>
+        <a class="program" href="#adult">
+          <span class="program__row" data-inview="program" data-i="2">
+            <span class="program__index">03</span>
+            <span class="program__text">
+              <span class="program__name">Adult Clinics</span>
+              <span class="program__desc">Small-group sessions to sharpen technique and fitness.</span>
+            </span>
+            <span class="program__arrow" data-hover="programArrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          </span>
+        </a>
+      </li>
+      <li>
+        <a class="program" href="#private">
+          <span class="program__row" data-inview="program" data-i="3">
+            <span class="program__index">04</span>
+            <span class="program__text">
+              <span class="program__name">Private Coaching</span>
+              <span class="program__desc">One-to-one sessions tailored to your goals and schedule.</span>
+            </span>
+            <span class="program__arrow" data-hover="programArrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          </span>
+        </a>
+      </li>
+    </ul>
+  </section>
+
+  <!-- 5) Facilities -->
+  <section class="facilities" id="facilities" aria-labelledby="facilities-title">
+    <div class="facilities__grid">
+      <div class="facilities__intro">
+        <div data-inview="facilitiesIcon" style="width:4rem">
+          <img class="facilities__icon" src="https://api.getlayers.ai/storage/v1/object/public/public/assets/baseline-88535e4000/3.webp" alt="Player stretching for a forehand on clay" loading="lazy" decoding="async">
+        </div>
+        <h2 id="facilities-title" class="title-lg facilities__title" data-reveal="lines">
+          <span class="clip clip--line"><span class="clip__in">Tour Our</span></span>
+          <span class="clip clip--line"><span class="clip__in">World-Class</span></span>
+          <span class="clip clip--line"><span class="clip__in">Courts</span></span>
+        </h2>
+        <p class="facilities__body" data-reveal="facilitiesBody">Reserve a court for focused practice, squad drills, or private sessions — and train in the same conditions you'll compete in.</p>
+      </div>
+
+      <div class="courts">
+        <div data-inview="court" data-i="0">
+          <figure class="court court--clay" data-hover="court">
+            <img src="https://api.getlayers.ai/storage/v1/object/public/public/assets/baseline-88535e4000/1.webp" alt="Player on the baseline of an outdoor clay court" loading="lazy" decoding="async">
+            <figcaption class="court__caption">
+              <p class="court__name">Redline Clay</p>
+              <p class="court__desc">A fast outdoor clay court tuned for long, physical rallies.</p>
+            </figcaption>
+          </figure>
+        </div>
+        <div data-inview="court" data-i="1">
+          <figure class="court court--blue" data-hover="court">
+            <img src="https://api.getlayers.ai/storage/v1/object/public/public/assets/baseline-88535e4000/4.webp" alt="Player following through on a blue hard court" loading="lazy" decoding="async">
+            <figcaption class="court__caption">
+              <p class="court__name">Harbor Court</p>
+              <p class="court__desc">A sheltered hard court built for precision and night play.</p>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6) Stats -->
+  <section class="stats" aria-labelledby="stats-title">
+    <p class="eyebrow eyebrow--light">By the numbers</p>
+    <h2 id="stats-title" class="title-lg" data-reveal="lines">
+      <span class="clip clip--line"><span class="clip__in">A club that</span></span>
+      <span class="clip clip--line"><span class="clip__in">keeps score</span></span>
+    </h2>
+    <dl class="stats__grid">
+      <div class="stat" data-inview="stat" data-i="0">
+        <dt class="sr-only">Certified coaches</dt>
+        <dd><span class="stat__value">24</span><span class="stat__label" aria-hidden="true">Certified coaches</span></dd>
+      </div>
+      <div class="stat" data-inview="stat" data-i="1">
+        <dt class="sr-only">Championship courts</dt>
+        <dd><span class="stat__value">12</span><span class="stat__label" aria-hidden="true">Championship courts</span></dd>
+      </div>
+      <div class="stat" data-inview="stat" data-i="2">
+        <dt class="sr-only">Members training</dt>
+        <dd><span class="stat__value">9K+</span><span class="stat__label" aria-hidden="true">Members training</span></dd>
+      </div>
+      <div class="stat" data-inview="stat" data-i="3">
+        <dt class="sr-only">Years on the baseline</dt>
+        <dd><span class="stat__value">15</span><span class="stat__label" aria-hidden="true">Years on the baseline</span></dd>
+      </div>
+    </dl>
+  </section>
+
+  <!-- 7) Testimonials -->
+  <section class="testimonials" id="testimonials" aria-labelledby="testimonials-title">
+    <p class="eyebrow eyebrow--dark">What players say</p>
+    <h2 id="testimonials-title" class="title-lg" data-reveal="lines">
+      <span class="clip clip--line"><span class="clip__in">Loved by</span></span>
+      <span class="clip clip--line"><span class="clip__in">the locker room</span></span>
+    </h2>
+    <ul class="quotes">
+      <li data-inview="quote" data-i="0">
+        <figure class="quote" data-hover="quote">
+          <div>
+            <span class="quote__mark" aria-hidden="true">“</span>
+            <blockquote><p>I added a level to my serve in one season. The coaching is detailed and it actually sticks.</p></blockquote>
+          </div>
+          <figcaption><span class="quote__name">Priya Anand</span><span class="quote__role">Performance Squad</span></figcaption>
+        </figure>
+      </li>
+      <li data-inview="quote" data-i="1">
+        <figure class="quote" data-hover="quote">
+          <div>
+            <span class="quote__mark" aria-hidden="true">“</span>
+            <blockquote><p>Best courts in the city and a team that treats every member like a competitor.</p></blockquote>
+          </div>
+          <figcaption><span class="quote__name">Lukas Brenner</span><span class="quote__role">Adult Clinics</span></figcaption>
+        </figure>
+      </li>
+      <li data-inview="quote" data-i="2">
+        <figure class="quote" data-hover="quote">
+          <div>
+            <span class="quote__mark" aria-hidden="true">“</span>
+            <blockquote><p>My daughter went from shy beginner to club champion. Worth every minute.</p></blockquote>
+          </div>
+          <figcaption><span class="quote__name">Dana Okafor</span><span class="quote__role">Parent, Junior Development</span></figcaption>
+        </figure>
+      </li>
+    </ul>
+  </section>
+
+  <!-- 8) Footer -->
+  <footer class="footer" id="contact">
+    <div class="footer__cta">
+      <div>
+        <p class="eyebrow eyebrow--light">Get started</p>
+        <p class="footer__headline" data-reveal="lines">
+          <span class="clip clip--line"><span class="clip__in">Ready to</span></span>
+          <span class="clip clip--line"><span class="clip__in">play?</span></span>
+        </p>
+      </div>
+      <div data-inview="footerCta">
+        <button class="pill pill--light" type="button" data-open-modal>
+          <span>Book a Visit</span>
+          <svg class="pill__arrow" data-hover="pillArrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="footer__cols">
+      <div class="footer__about">
+        <p class="footer__brand">
+          <svg class="mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M4.8 5.6A9 9 0 0 0 4.8 18.4"/><path d="M19.2 5.6a9 9 0 0 1 0 12.8"/></svg>
+          <span>Baseline</span>
+        </p>
+        <p class="footer__blurb">A members' tennis club and academy where focused coaching meets championship courts.</p>
+        <address class="footer__address">
+          <a href="mailto:play@baseline.club">play@baseline.club</a>
+          <a href="tel:+12125550148">+1 (212) 555-0148</a>
+          <span class="footer__muted">120 Court Lane, New York</span>
+        </address>
+      </div>
+      <nav aria-labelledby="footer-programs">
+        <p class="footer__heading" id="footer-programs">Programs</p>
+        <ul class="footer__links">
+          <li><a href="#junior">Junior Development</a></li>
+          <li><a href="#performance">Performance Squad</a></li>
+          <li><a href="#adult">Adult Clinics</a></li>
+          <li><a href="#private">Private Coaching</a></li>
+        </ul>
+      </nav>
+      <nav aria-labelledby="footer-club">
+        <p class="footer__heading" id="footer-club">Club</p>
+        <ul class="footer__links">
+          <li><a href="#membership">Membership</a></li>
+          <li><a href="#facilities">Facilities</a></li>
+          <li><a href="#club">Events</a></li>
+          <li><a href="#shop">Pro Shop</a></li>
+        </ul>
+      </nav>
+      <nav aria-labelledby="footer-company">
+        <p class="footer__heading" id="footer-company">Company</p>
+        <ul class="footer__links">
+          <li><a href="#about">About</a></li>
+          <li><a href="#programs">Coaches</a></li>
+          <li><a href="#careers">Careers</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="footer__bar">
+      <p>© 2026 Baseline Tennis Club. All rights reserved.</p>
+      <nav aria-label="Social">
+        <ul>
+          <li><a href="#instagram">Instagram</a></li>
+          <li><a href="#x">X</a></li>
+          <li><a href="#youtube">YouTube</a></li>
+          <li><a href="#linkedin">LinkedIn</a></li>
+        </ul>
+      </nav>
+      <nav aria-label="Legal">
+        <ul>
+          <li><a href="#privacy">Privacy</a></li>
+          <li><a href="#terms">Terms</a></li>
+        </ul>
+      </nav>
+    </div>
+  </footer>
+</main>
+
+<!-- Contact modal -->
+<div class="modal" id="modal" inert>
+  <div class="modal__backdrop" data-close-modal></div>
+  <div class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="modal-title" data-lenis-prevent>
+    <div class="modal__head">
+      <div>
+        <p class="eyebrow eyebrow--dark">Book a visit</p>
+        <h2 id="modal-title" class="modal__title" data-reveal="modalTitle">
+          <span class="clip clip--line"><span class="clip__in">Come see</span></span>
+          <span class="clip clip--line"><span class="clip__in">the courts</span></span>
+        </h2>
+      </div>
+      <button class="close-btn" type="button" aria-label="Close" data-close-modal>
+        <svg data-hover="closeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+
+    <form class="form" id="visit-form" novalidate>
+      <label class="field">
+        <span class="field__label">Full name</span>
+        <input class="field__input" type="text" name="name" autocomplete="name" placeholder="Alex Rivera">
+      </label>
+      <label class="field">
+        <span class="field__label">Email</span>
+        <input class="field__input" type="email" name="email" autocomplete="email" placeholder="you@email.com">
+      </label>
+      <label class="field">
+        <span class="field__label">What would you like to play?</span>
+        <textarea class="field__input" name="message" rows="3" placeholder="I'd love to try a private lesson on the clay courts…"></textarea>
+      </label>
+      <button class="pill pill--solid" type="submit" data-submit>Request a visit</button>
+    </form>
+
+    <div class="success" hidden data-success>
+      <div class="success__icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>
+      </div>
+      <p class="success__title" tabindex="-1" data-success-title>Request received</p>
+      <p class="success__text" data-success-text></p>
+      <button class="pill pill--solid" type="button" data-close-modal>Done</button>
+    </div>
+  </div>
+</div>
+
+<!-- Fullscreen menu -->
+<div class="menu" id="menu" inert>
+  <div class="menu__backdrop" data-close-menu></div>
+  <div class="menu__panel" role="dialog" aria-modal="true" aria-label="Menu">
+    <div class="menu__top">
+      <a class="brand" href="#" aria-label="Baseline, back to top">
+        <svg class="mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M4.8 5.6A9 9 0 0 0 4.8 18.4"/><path d="M19.2 5.6a9 9 0 0 1 0 12.8"/></svg>
+        <span>Baseline</span>
+      </a>
+      <button class="close-btn" type="button" aria-label="Close menu" data-close-menu>
+        <svg data-hover="closeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <nav class="menu__nav" aria-label="Menu">
+      <a class="menu__link" href="#programs">Programs</a>
+      <a class="menu__link" href="#facilities">Facilities</a>
+      <a class="menu__link" href="#testimonials">Reviews</a>
+      <a class="menu__link" href="#contact">Contact</a>
+    </nav>
+    <div class="menu__bottom">
+      <button class="pill pill--light" type="button" data-open-modal>
+        <span>Book a Visit</span>
+        <svg class="pill__arrow" data-hover="pillArrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </button>
+      <ul class="menu__social" aria-label="Social">
+        <li><a href="#instagram">Instagram</a></li>
+        <li><a href="#x">X</a></li>
+        <li><a href="#youtube">YouTube</a></li>
+        <li><a href="#linkedin">LinkedIn</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+window.__baselineBooted = true;
+
+/* =====================================================================
+   Fixed parameters
+   ===================================================================== */
+const LOADER = { MIN_VISIBLE_MS: 1400, MAX_VISIBLE_MS: 2600, EXIT_MS: 850, REDUCED_MIN_VISIBLE_MS: 200 };
+const COLLECTION_INTERVAL_MS = 3800;
+const MODAL_FOCUS_DELAY_MS = 120;
+const MODAL_RESET_DELAY_MS = 350;
+const SUBMIT_STUB_MS = 900;
+const HOVER_MAX_DISABLED_WIDTH = 768;
+const SPRING_SUBSTEP_S = 0.001;
+const MAX_FRAME_S = 0.064;
+const INVIEW_THRESHOLD = 0.15;
+
+const IDENTITY = { opacity: 1, x: 0, y: 0, scale: 1, rotate: 0 };
+const PRECISION = { opacity: 0.001, scale: 0.0005, x: 0.02, y: 0.02, rotate: 0.02 };
+
+// In-view rise-ins: spring from `from` to the identity state, once.
+const INVIEW = {
+  collection:     { from: { opacity: 0, y: 28 }, delay: 650, config: { tension: 200, friction: 26 }, gate: true },
+  member:         { from: { opacity: 0, y: 28 }, delay: 780, config: { tension: 200, friction: 26 }, gate: true },
+  percent:        { from: { opacity: 0, scale: 0.9 }, config: { tension: 220, friction: 22 } },
+  badge:          { from: { opacity: 0, y: 24 }, delay: 120, config: { tension: 200, friction: 26 } },
+  coach:          { from: { opacity: 0, y: 60, scale: 0.92 }, config: { tension: 170, friction: 26 } },
+  program:        { from: { opacity: 0, y: 26 }, step: 90, config: { tension: 190, friction: 26 } },
+  facilitiesIcon: { from: { opacity: 0, scale: 0.85 }, config: { tension: 240, friction: 20 } },
+  court:          { from: { opacity: 0, y: 48 }, step: 140, config: { tension: 180, friction: 26 } },
+  stat:           { from: { opacity: 0, y: 30 }, step: 110, config: { tension: 180, friction: 24 } },
+  quote:          { from: { opacity: 0, y: 40 }, step: 120, config: { tension: 180, friction: 26 } },
+  footerCta:      { from: { opacity: 0, y: 20 }, delay: 150, config: { tension: 200, friction: 24 } },
+};
+
+// Hover springs (off at <= 768px).
+const HOVER = {
+  pillArrow:    { from: { x: 0 }, to: { x: 5 }, config: { tension: 320, friction: 20 } },
+  arrowIcon:    { from: { scale: 1 }, to: { scale: 1.15 }, config: { tension: 320, friction: 18 } },
+  programArrow: { from: { x: 0, opacity: 0.55 }, to: { x: 8, opacity: 1 }, config: { tension: 300, friction: 20 } },
+  court:        { from: { scale: 1 }, to: { scale: 1.03 }, config: { tension: 300, friction: 22 } },
+  quote:        { from: { y: 0 }, to: { y: -8 }, config: { tension: 300, friction: 22 } },
+  closeIcon:    { from: { rotate: 0 }, to: { rotate: 90 }, config: { tension: 300, friction: 18 } },
+};
+
+// Clip-mask / fade text reveals (timed tweens).
+const REVEAL = {
+  heroTitle:      { base: 0,   stagger: 140, duration: 1100, ease: "expo",  gate: true },
+  heroTagline:    { base: 350, stagger: 110, duration: 900,  ease: "expo",  gate: true },
+  lines:          { base: 0,   stagger: 120, duration: 950,  ease: "expo" },
+  ghost:          { base: 0,   stagger: 0,   duration: 700,  ease: "expo" },
+  facilitiesBody: { base: 250, stagger: 28,  duration: 700,  ease: "quart", split: true },
+  modalTitle:     { base: 0,   stagger: 90,  duration: 800,  ease: "expo",  manual: true },
+};
+
+const COLLECTION_FADE = { config: { tension: 210, friction: 24 }, in: { opacity: 1, y: 0, scale: 1 }, out: { opacity: 0, y: 16, scale: 0.96 } };
+const COACH_PHOTO_FADE = { tension: 260, friction: 26 };
+
+const OVERLAY = {
+  modalBackdrop: { tension: 240, friction: 30 },
+  modalPanel:    { tension: 240, friction: 26 },
+  modalPanelFrom: { opacity: 0, y: 28, scale: 0.96 },
+  menuBackdrop:  { tension: 260, friction: 30 },
+  menuPanel:     { tension: 220, friction: 28 },
+  menuPanelFrom: { opacity: 0, y: -24 },
+  menuLink:      { tension: 200, friction: 26 },
+  menuLinkFrom:  { opacity: 0, y: 28 },
+  menuLinkDelay: 120,
+  menuLinkStep:  70,
+  loaderMark:    { tension: 200, friction: 22 },
+  loaderMarkFrom: { opacity: 0, y: 16 },
+};
+
+// Scroll parallax: progress 0 when the section's top meets the viewport bottom, 1 when its bottom meets the top.
+const PARALLAX = [
+  { selector: "[data-parallax='hero']", axis: "y", from: 0,  to: 12 },
+  { selector: "[data-ghost='0']",       axis: "x", from: -3, to: 3 },
+  { selector: "[data-ghost='1']",       axis: "x", from: 3,  to: -3 },
+  { selector: "[data-ghost='2']",       axis: "x", from: -2, to: 4 },
+  { selector: "[data-ghost='3']",       axis: "x", from: 4,  to: -3 },
+];
+
+const TRUST_SLIDES = [
+  { words: ["Expert", "Result-", "Driven", "Coaching"], name: "Marco Vidal",    role: "Head Coach" },
+  { words: ["Sharper", "Faster", "Stronger", "Player"], name: "Elena Sokolova", role: "Performance Coach" },
+  { words: ["Future", "Champions", "Start", "Here"],    name: "James Okoro",    role: "Juniors Lead" },
+];
+
+/* =====================================================================
+   Environment
+   ===================================================================== */
+const html = document.documentElement;
+const REDUCED = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const $ = (sel, root = document) => root.querySelector(sel);
+const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
+const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
+
+const EASE = {
+  expo: (t) => (t >= 1 ? 1 : 1 - Math.pow(2, -10 * t)),
+  quart: (t) => 1 - Math.pow(1 - t, 4),
+  inOutCubic: (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2),
+};
+const EASE_VAR = { expo: "--ease-out-expo", quart: "--ease-out-quart", inOutCubic: "--ease-in-out-cubic" };
+const toLinear = (fn, n = 60) =>
+  `linear(${Array.from({ length: n + 1 }, (_, i) => +fn(i / n).toFixed(4)).join(", ")})`;
+if (CSS.supports("transition-timing-function", "linear(0, 1)")) {
+  for (const key in EASE) html.style.setProperty(EASE_VAR[key], toLinear(EASE[key]));
+}
+
+/* =====================================================================
+   Spring helper — react-spring's {tension, friction} model, mass 1
+   ===================================================================== */
+const activeSprings = new Set();
+
+function spring(el, initial, config, { clearAtRest = false } = {}) {
+  const props = {};
+  for (const k in initial) props[k] = { x: initial[k], v: 0, to: initial[k] };
+  const a = { el, props, config, clearAtRest, timer: 0, onRest: null };
+
+  a.set = (target, delay = 0) => {
+    clearTimeout(a.timer);
+    const go = () => {
+      for (const k in target) (props[k] ??= { x: target[k], v: 0, to: target[k] }).to = target[k];
+      if (REDUCED) {
+        for (const k in props) { props[k].x = props[k].to; props[k].v = 0; }
+        settle(a);
+        return;
+      }
+      activeSprings.add(a);
+    };
+    delay > 0 && !REDUCED ? (a.timer = setTimeout(go, delay)) : go();
+  };
+  a.jump = (values) => {
+    clearTimeout(a.timer);
+    for (const k in values) props[k] = { x: values[k], v: 0, to: values[k] };
+    activeSprings.delete(a);
+    render(a);
+  };
+  a.cancel = () => clearTimeout(a.timer);
+
+  render(a);
+  return a;
+}
+
+function render(a) {
+  const p = a.props;
+  const s = a.el.style;
+  let t = "";
+  if (p.x || p.y) t += `translate3d(${p.x ? p.x.x : 0}px, ${p.y ? p.y.x : 0}px, 0)`;
+  if (p.scale) t += ` scale(${p.scale.x})`;
+  if (p.rotate) t += ` rotate(${p.rotate.x}deg)`;
+  if (t) s.transform = t;
+  if (p.opacity) s.opacity = p.opacity.x;
+}
+
+function settle(a) {
+  activeSprings.delete(a);
+  render(a);
+  if (a.clearAtRest && Object.keys(a.props).every((k) => a.props[k].x === IDENTITY[k])) {
+    a.el.style.removeProperty("transform");
+    a.el.style.removeProperty("opacity");
+  }
+  a.onRest?.();
+}
+
+function stepSprings(dt) {
+  if (!dt) return;
+  for (const a of activeSprings) {
+    const { tension, friction } = a.config;
+    let moving = false;
+    for (const k in a.props) {
+      const p = a.props[k];
+      if (p.x === p.to && p.v === 0) continue;
+      for (let left = dt; left > 0; left -= SPRING_SUBSTEP_S) {
+        const h = Math.min(SPRING_SUBSTEP_S, left);
+        p.v += (-tension * (p.x - p.to) - friction * p.v) * h;
+        p.x += p.v * h;
+      }
+      const prec = PRECISION[k] ?? 0.01;
+      if (Math.abs(p.x - p.to) < prec && Math.abs(p.v) < prec * 10) { p.x = p.to; p.v = 0; }
+      else moving = true;
+    }
+    moving ? render(a) : settle(a);
+  }
+}
+
+/* =====================================================================
+   Lenis smooth scroll + scroll lock
+   ===================================================================== */
+let lenis = null;
+const locks = new Set();
+
+function applyLock() {
+  const s = html.style;
+  if (locks.size) {
+    lenis?.stop();
+    s.position = "relative";
+    s.overflow = "hidden";
+    s.height = "100%";
+  } else {
+    s.removeProperty("position");
+    s.removeProperty("overflow");
+    s.removeProperty("height");
+    lenis?.start();
+  }
+}
+const lock = (key) => { locks.add(key); applyLock(); };
+const unlock = (key) => { locks.delete(key); applyLock(); };
+
+import("lenis")
+  .then(({ default: Lenis }) => {
+    lenis = new Lenis({ smoothWheel: !REDUCED });
+    if (locks.size) lenis.stop();
+  })
+  .catch((err) => console.warn("Lenis did not load; falling back to native scrolling.", err));
+
+function scrollToTarget(target) {
+  if (lenis) { lenis.scrollTo(target, { immediate: REDUCED }); return; }
+  const behavior = REDUCED ? "auto" : "smooth";
+  if (typeof target === "number") window.scrollTo({ top: target, behavior });
+  else target.scrollIntoView({ behavior, block: "start" });
+}
+
+/* =====================================================================
+   Frame loop: Lenis → parallax → springs
+   ===================================================================== */
+const parallaxItems = PARALLAX.map((p) => {
+  const el = $(p.selector);
+  return { ...p, el, section: el.closest("section"), last: null };
+});
+
+function updateParallax() {
+  const vh = innerHeight;
+  const progressFor = new Map();
+  for (const item of parallaxItems) {
+    let progress = 0;
+    if (!REDUCED) {
+      if (!progressFor.has(item.section)) {
+        const r = item.section.getBoundingClientRect();
+        progressFor.set(item.section, clamp((vh - r.top) / (vh + r.height), 0, 1));
+      }
+      progress = progressFor.get(item.section);
+    }
+    const value = +(item.from + (item.to - item.from) * progress).toFixed(3);
+    if (value === item.last) continue;
+    item.last = value;
+    item.el.style.transform = item.axis === "y" ? `translate3d(0, ${value}%, 0)` : `translate3d(${value}%, 0, 0)`;
+  }
+}
+
+let lastFrame = 0;
+function frame(t) {
+  const dt = lastFrame ? clamp((t - lastFrame) / 1000, 0, MAX_FRAME_S) : 0;
+  lastFrame = t;
+  lenis?.raf(t);
+  updateParallax();
+  stepSprings(dt);
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+
+/* =====================================================================
+   Loader gate
+   ===================================================================== */
+let ready = false;
+const readyQueue = [];
+const onReady = (fn) => (ready ? fn() : readyQueue.push(fn));
+
+/* =====================================================================
+   In-view rise-ins + text reveals
+   ===================================================================== */
+const io = new IntersectionObserver((entries) => {
+  for (const entry of entries) {
+    if (!entry.isIntersecting) continue;
+    io.unobserve(entry.target);
+    entry.target.__play?.();
+  }
+}, { threshold: INVIEW_THRESHOLD });
+
+const identityOf = (from) => Object.fromEntries(Object.keys(from).map((k) => [k, IDENTITY[k]]));
+
+for (const el of $$("[data-inview]")) {
+  const preset = INVIEW[el.dataset.inview];
+  const delay = (preset.delay ?? 0) + Number(el.dataset.i ?? 0) * (preset.step ?? 0);
+  const anim = spring(el, { ...preset.from }, preset.config, { clearAtRest: true });
+  el.dataset.armed = "";
+  el.__play = () => anim.set(identityOf(preset.from), delay);
+  if (preset.gate) onReady(() => io.observe(el));
+  else io.observe(el);
+}
+
+function splitWords(el) {
+  const words = el.textContent.trim().split(/\s+/);
+  el.textContent = "";
+  words.forEach((word, i) => {
+    const span = document.createElement("span");
+    span.className = "fade-word";
+    span.textContent = word;
+    el.append(span);
+    if (i < words.length - 1) el.append(" ");
+  });
+}
+
+function timeReveal(el, preset) {
+  el.style.setProperty("--dur", `${preset.duration}ms`);
+  el.style.setProperty("--ease", `var(${EASE_VAR[preset.ease]})`);
+  $$(".clip__in, .fade-word", el).forEach((node, i) => {
+    node.style.setProperty("--delay", `${preset.base + i * preset.stagger}ms`);
+  });
+}
+
+// Re-run a reveal from its hidden state (modal title on each open).
+function replayReveal(el) {
+  const items = $$(".clip__in, .fade-word", el);
+  el.classList.add("is-revealed");
+  items.forEach((n) => n.classList.add("is-reset"));
+  void el.offsetWidth;
+  items.forEach((n) => n.classList.remove("is-reset"));
+}
+
+for (const el of $$("[data-reveal]")) {
+  const preset = REVEAL[el.dataset.reveal];
+  if (preset.split) splitWords(el);
+  timeReveal(el, preset);
+  if (preset.manual) continue;
+  el.__play = () => el.classList.add("is-revealed");
+  if (preset.gate) onReady(el.__play);
+  else io.observe(el);
+}
+
+/* =====================================================================
+   Hover springs
+   ===================================================================== */
+const hoverAllowed = () => !REDUCED && innerWidth > HOVER_MAX_DISABLED_WIDTH;
+
+for (const el of $$("[data-hover]")) {
+  const preset = HOVER[el.dataset.hover];
+  const anim = spring(el, { ...preset.from }, preset.config);
+  const trigger = el.closest("a, button") ?? el;
+  trigger.addEventListener("pointerenter", (e) => {
+    if (e.pointerType !== "touch" && hoverAllowed()) anim.set(preset.to);
+  });
+  trigger.addEventListener("pointerleave", () => anim.set(preset.from));
+}
+
+/* =====================================================================
+   Carousel dots
+   ===================================================================== */
+function bindDots(container, onPick) {
+  const dots = $$(".dot", container);
+  dots.forEach((dot, i) => dot.addEventListener("click", () => onPick(i)));
+  return (active) => dots.forEach((dot, i) => {
+    if (i === active) dot.setAttribute("aria-current", "true");
+    else dot.removeAttribute("aria-current");
+  });
+}
+
+/* =====================================================================
+   Hero collection slider (autoplay after the loader)
+   ===================================================================== */
+{
+  const root = $("[data-collection]");
+  const cards = $$(".collection__card", root);
+  const anims = cards.map((card, i) =>
+    spring(card, { ...(i === 0 ? COLLECTION_FADE.in : COLLECTION_FADE.out) }, COLLECTION_FADE.config));
+  let index = 0;
+  let timer = 0;
+  let paused = false;
+
+  const show = (i) => {
+    index = (i + cards.length) % cards.length;
+    cards.forEach((card, j) => {
+      const on = j === index;
+      anims[j].set(on ? COLLECTION_FADE.in : COLLECTION_FADE.out);
+      card.inert = !on;
+      card.setAttribute("aria-hidden", String(!on));
+    });
+    setDots(index);
+  };
+  const setDots = bindDots($(".dots", root), (i) => { show(i); restart(); });
+  const restart = () => {
+    clearInterval(timer);
+    if (!ready || REDUCED) return;
+    timer = setInterval(() => { if (!paused && !document.hidden) show(index + 1); }, COLLECTION_INTERVAL_MS);
+  };
+
+  show(0);
+  root.addEventListener("pointerenter", () => { paused = true; });
+  root.addEventListener("pointerleave", () => { paused = false; });
+  root.addEventListener("focusin", () => { paused = true; });
+  root.addEventListener("focusout", () => { paused = false; });
+  onReady(restart);
+}
+
+/* =====================================================================
+   Trust coach carousel
+   ===================================================================== */
+{
+  const ghost = $("#trust-title");
+  const ghostWords = $$(".ghost__word", ghost);
+  const photos = $$(".coach__img");
+  const photoAnims = photos.map((img, i) => spring(img, { opacity: i === 0 ? 1 : 0 }, COACH_PHOTO_FADE));
+  const nameEl = $("[data-coach-name]");
+  const roleEl = $("[data-coach-role]");
+  let index = 0;
+
+  const setWords = (words) => {
+    const fresh = ghostWords.map((wordEl, i) => {
+      const old = $(".clip__in", wordEl);
+      const next = document.createElement("span");
+      next.className = "clip__in is-reset";
+      next.textContent = words[i];
+      next.style.cssText = old.style.cssText;
+      old.replaceWith(next);
+      return next;
+    });
+    void ghost.offsetWidth;
+    fresh.forEach((n) => n.classList.remove("is-reset"));
+  };
+
+  const show = (i) => {
+    const next = (i + TRUST_SLIDES.length) % TRUST_SLIDES.length;
+    if (next === index) return;
+    index = next;
+    const slide = TRUST_SLIDES[index];
+
+    // New photo fades in on top; older ones are hidden once it lands.
+    const photo = photos[index];
+    photos.forEach((p) => { p.style.zIndex = p === photo ? "2" : "1"; });
+    photoAnims[index].jump({ opacity: 0 });
+    photoAnims[index].onRest = () => {
+      if (index !== photos.indexOf(photo)) return;
+      photos.forEach((p, j) => { if (j !== index) photoAnims[j].jump({ opacity: 0 }); });
+    };
+    photoAnims[index].set({ opacity: 1 });
+    photos.forEach((p, j) => p.setAttribute("aria-hidden", String(j !== index)));
+
+    nameEl.textContent = slide.name;
+    roleEl.textContent = slide.role;
+    setWords(slide.words);
+    setDots(index);
+  };
+
+  const setDots = bindDots($("[data-trust-dots]"), show);
+  $("[data-trust-prev]").addEventListener("click", () => show(index - 1));
+  $("[data-trust-next]").addEventListener("click", () => show(index + 1));
+}
+
+/* =====================================================================
+   Focus helpers
+   ===================================================================== */
+const FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+function trapTab(e, container) {
+  const items = $$(FOCUSABLE, container).filter((n) => n.getClientRects().length && !n.closest("[hidden]"));
+  if (!items.length) return;
+  const first = items[0];
+  const last = items[items.length - 1];
+  if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+  else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+}
+
+const burger = $("#burger");
+
+/* =====================================================================
+   Menu overlay
+   ===================================================================== */
+const menu = $("#menu");
+const menuBackdrop = spring($(".menu__backdrop", menu), { opacity: 0 }, OVERLAY.menuBackdrop);
+const menuPanel = spring($(".menu__panel", menu), { ...OVERLAY.menuPanelFrom }, OVERLAY.menuPanel);
+const menuLinks = $$(".menu__link", menu).map((el) => spring(el, { ...OVERLAY.menuLinkFrom }, OVERLAY.menuLink));
+let menuOpen = false;
+
+function openMenu() {
+  if (menuOpen) return;
+  menuOpen = true;
+  menu.inert = false;
+  menu.classList.add("is-open");
+  burger.setAttribute("aria-expanded", "true");
+  lock("menu");
+  menuBackdrop.set({ opacity: 1 });
+  menuPanel.set({ opacity: 1, y: 0 });
+  menuLinks.forEach((anim, i) => {
+    anim.jump({ ...OVERLAY.menuLinkFrom });
+    anim.set({ opacity: 1, y: 0 }, OVERLAY.menuLinkDelay + i * OVERLAY.menuLinkStep);
+  });
+  $(".close-btn", menu).focus({ preventScroll: true });
+}
+
+function closeMenu({ restoreFocus = true } = {}) {
+  if (!menuOpen) return;
+  menuOpen = false;
+  menu.classList.remove("is-open");
+  menu.inert = true;
+  burger.setAttribute("aria-expanded", "false");
+  menuLinks.forEach((anim) => anim.cancel());
+  menuBackdrop.set({ opacity: 0 });
+  menuPanel.set({ ...OVERLAY.menuPanelFrom });
+  unlock("menu");
+  if (restoreFocus) burger.focus({ preventScroll: true });
+}
+
+burger.addEventListener("click", openMenu);
+$$("[data-close-menu]", menu).forEach((el) => el.addEventListener("click", () => closeMenu()));
+
+/* =====================================================================
+   Contact modal — the form is a local stub and never touches the network
+   ===================================================================== */
+const modal = $("#modal");
+const modalBackdrop = spring($(".modal__backdrop", modal), { opacity: 0 }, OVERLAY.modalBackdrop);
+const modalPanel = spring($(".modal__panel", modal), { ...OVERLAY.modalPanelFrom }, OVERLAY.modalPanel);
+const modalTitle = $("#modal-title");
+const form = $("#visit-form");
+const nameInput = form.elements.namedItem("name");
+const submitBtn = $("[data-submit]", form);
+const success = $("[data-success]", modal);
+let modalOpen = false;
+let returnFocus = null;
+let focusTimer = 0;
+let resetTimer = 0;
+let submitTimer = 0;
+
+function resetForm() {
+  clearTimeout(submitTimer);
+  form.reset();
+  form.hidden = false;
+  success.hidden = true;
+  submitBtn.disabled = false;
+  submitBtn.textContent = "Request a visit";
+}
+
+function openModal(trigger) {
+  if (modalOpen) return;
+  modalOpen = true;
+  returnFocus = trigger ?? document.activeElement;
+  clearTimeout(resetTimer);
+  modal.inert = false;
+  modal.classList.add("is-open");
+  lock("modal");
+  modalBackdrop.set({ opacity: 1 });
+  modalPanel.set({ opacity: 1, y: 0, scale: 1 });
+  replayReveal(modalTitle);
+  focusTimer = setTimeout(() => nameInput.focus({ preventScroll: true }), MODAL_FOCUS_DELAY_MS);
+}
+
+function closeModal() {
+  if (!modalOpen) return;
+  modalOpen = false;
+  clearTimeout(focusTimer);
+  modal.classList.remove("is-open");
+  modal.inert = true;
+  modalBackdrop.set({ opacity: 0 });
+  modalPanel.set({ ...OVERLAY.modalPanelFrom });
+  unlock("modal");
+  resetTimer = setTimeout(resetForm, MODAL_RESET_DELAY_MS);
+  const target = returnFocus && !returnFocus.closest("[inert]") ? returnFocus : burger;
+  target.focus({ preventScroll: true });
+}
+
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+  if (submitBtn.disabled) return;
+  submitBtn.disabled = true;
+  submitBtn.textContent = "Sending…";
+  submitTimer = setTimeout(() => {
+    const firstName = nameInput.value.trim().split(/\s+/)[0] || "there";
+    $("[data-success-text]", success).textContent =
+      `Thanks, ${firstName} — our team will be in touch to lock in your visit.`;
+    form.hidden = true;
+    success.hidden = false;
+    $("[data-success-title]", success).focus({ preventScroll: true });
+  }, SUBMIT_STUB_MS);
+});
+
+$$("[data-close-modal]", modal).forEach((el) => el.addEventListener("click", closeModal));
+$$("[data-open-modal]").forEach((btn) => btn.addEventListener("click", () => {
+  if (btn.closest("#menu")) { closeMenu({ restoreFocus: false }); openModal(burger); }
+  else openModal(btn);
+}));
+
+/* =====================================================================
+   Keyboard + in-page anchors
+   ===================================================================== */
+addEventListener("keydown", (e) => {
+  if (e.key === "Escape") {
+    if (modalOpen) closeModal();
+    else if (menuOpen) closeMenu();
+  } else if (e.key === "Tab") {
+    if (modalOpen) trapTab(e, $(".modal__panel", modal));
+    else if (menuOpen) trapTab(e, $(".menu__panel", menu));
+  }
+});
+
+document.addEventListener("click", (e) => {
+  const link = e.target.closest('a[href^="#"]');
+  if (!link) return;
+  const id = link.getAttribute("href").slice(1);
+  const target = id ? document.getElementById(id) : null;
+  if (id && !target) return; // placeholder anchor: leave the browser default
+  e.preventDefault();
+  if (link.closest("#menu")) closeMenu({ restoreFocus: false });
+  scrollToTarget(target ?? 0);
+  if (target) {
+    if (!target.hasAttribute("tabindex")) target.setAttribute("tabindex", "-1");
+    target.focus({ preventScroll: true });
+  }
+});
+
+/* =====================================================================
+   Loader: hold ≥1400ms after load (force at 2600ms), then lift the curtain
+   ===================================================================== */
+{
+  const loader = $("#loader");
+  const markAnim = spring($("[data-loader-mark]", loader), { ...OVERLAY.loaderMarkFrom }, OVERLAY.loaderMark);
+  const minVisible = REDUCED ? LOADER.REDUCED_MIN_VISIBLE_MS : LOADER.MIN_VISIBLE_MS;
+  let counting = false;
+  let done = false;
+
+  lock("loader");
+  window.scrollTo(0, 0);
+  markAnim.set({ opacity: 1, y: 0 });
+  requestAnimationFrame(() => loader.classList.add("is-filling"));
+
+  const finish = () => {
+    if (done) return;
+    done = true;
+    ready = true;
+    html.classList.add("is-ready");
+    readyQueue.splice(0).forEach((fn) => fn());
+    unlock("loader");
+    if (REDUCED) { loader.remove(); return; }
+    loader.classList.add("is-exiting");
+    setTimeout(() => loader.remove(), LOADER.EXIT_MS);
+  };
+  const startCountdown = () => {
+    if (counting) return;
+    counting = true;
+    setTimeout(finish, minVisible);
+  };
+
+  if (document.readyState === "complete") startCountdown();
+  else addEventListener("load", startCountdown, { once: true });
+  setTimeout(finish, LOADER.MAX_VISIBLE_MS);
+}
+</script>
+</body>
+</html>
